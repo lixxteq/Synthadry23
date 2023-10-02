@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 0
+    path: Assets/Scenes/Demo.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 0
+    path: Assets/Scenes/Preloader.unity
+    guid: 781669b1d539f8bf99fd848249134217
+  - enabled: 0
+    path: Assets/Scenes/MainMenu.unity
+    guid: 59ed01e338fc5f38abc52ea06b1e382d
+  - enabled: 0
+    path: Assets/Scenes/Loader.unity
+    guid: 482a8c156e0d8334698acbb89a64f294
+  - enabled: 0
+    path: Assets/Scenes/ParkSecondScene.unity
+    guid: e51fed8724563184a8368a5eefc2654b
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
+  - enabled: 1
+    path: Assets/Scenes/First Scene Vladopol/First Scene.unity
+    guid: 4f9397a32810db24e930d2e7d85d1a9e
+  m_configObjects:
+    com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: ed1a3912b1bbe3c4690df7160156cf91,
+      type: 2}
+    com.unity.adaptiveperformance.samsung.android.provider_settings: {fileID: 11400000,
+      guid: a941258dafbc02f438b934cdb5722d4d, type: 2}
+    com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000,
+      guid: e91ce40489a0a9249831777a6254c0ff, type: 2}
