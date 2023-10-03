@@ -1,42 +1,41 @@
 using TMPro;
 using UnityEngine;
 using System;
+using UnityEditor;
 
 public class ItemObject : MonoBehaviour
 {
-    public Items itemStat;
+    public ItemSO itemStat;
     private GameObject player;
     private GameObject canvas;
-
-    public int currentAmmo = 5;
-    public int allAmmo = 20;
 
     [Header("0 - 100")]
     public float damage; 
     public float rateOfFire; //âûñòğåëîâ â ñåêóíäó
 
-    [Header("ÌÀÊÑÈÌÓÌ Â ÌÀÃÀÇÈÍÅ (0 - 99)")]
-    public int maximumAmmo; //â áàğàáàíå/ìàãàçèíå
+    public int currentAmmo = 5;
+    public int allAmmo = 20;
+
+    [Header("ÄÀËÜÍÎÑÒÜ")]
+    public float range = 50f;
 
     [Header("ÑÊÎĞÎÑÒĞÅËÜÍÎÑÒÜ")]
     public int maxLevelRateOfFire = 5;
     public int levelRateOfFire = 0;
 
+
     [Header("ÓĞÎÍ")]
     public int maxLevelDamage = 5;
     public int levelDamage = 0;
 
+    public bool isWeapon;
+
+    [Header("ÌÀÊÑÈÌÓÌ Â ÌÀÃÀÇÈÍÅ (0 - 99)")]
+    public int maximumAmmo; //â áàğàáàíå/ìàãàçèíå
+
     [Header("ÑÅÉ×ÀÑ Â ÌÀÃÀÇÈÍÅ")]
     public int maxLevelAmmo = 5;
     public int levelAmmo = 0;
-
-    [Header("ÄÀËÜÍÎÑÒÜ")]
-    public float range = 50f;
-
-    [Header("ÍÀÂÅÑÛ")]
-    public GameObject lantern;
-    public GameObject light;
-    public GameObject aim;
 
     [Header("İÊĞÀÍ")]
     public TextMeshProUGUI allAmmoInGameUi;
@@ -54,6 +53,11 @@ public class ItemObject : MonoBehaviour
     public ParticleSystem fireFx;
 
     private MainGunsController mainGunsController;
+
+    [Header("ÍÀÂÅÑÛ")]
+    public GameObject lantern;
+    public GameObject light;
+    public GameObject aim;
 
     private void Start()
     {
@@ -129,7 +133,7 @@ public class ItemObject : MonoBehaviour
 
     public void CheckItemParams()
     {
-        if (itemStat.type is Items.Type.firearms)
+        if (itemStat.type is ItemSO.Type.firearms)
         {
             Shoot();
         }
@@ -138,10 +142,10 @@ public class ItemObject : MonoBehaviour
     private void Update()
     {
         
-        if (Input.GetMouseButtonDown(0) && !player.GetComponent<CustomCharacterController>().isRunning && canvas.activeInHierarchy)
+/*        if (Input.GetMouseButtonDown(0) && !player.GetComponent<CustomCharacterController>().isRunning && canvas.activeInHierarchy)
         {
             
-        }
+        }*/
 
         if (Input.GetKeyDown(KeyCode.B))
         {

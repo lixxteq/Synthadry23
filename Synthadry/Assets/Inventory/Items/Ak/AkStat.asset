@@ -10,14 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6882a024ce99e3546867b3e50b78eff0, type: 3}
-  m_Name: AK
+  m_Name: AkStat
   m_EditorClassIdentifier: 
-  id: 7
-  itemName: AK
+  name: 0
   description: Kalash
-  prefab: {fileID: 0}
-  iconActive1K: {fileID: 21300000, guid: 026d4507f8b59ff4fb1cc44645d9a81a, type: 3}
-  iconDisable1K: {fileID: 0}
   type: 0
   rarity: 2
-  typeOfMissile: 0
+  iconActive1K: {fileID: 21300000, guid: 026d4507f8b59ff4fb1cc44645d9a81a, type: 3}
+  iconDisable1K: {fileID: 0}
+  positionOffset: {x: 0.36, y: 2.88, z: 1.36}
+  rotationOffset: {x: -61.756, y: 19.634, z: 49.709}
