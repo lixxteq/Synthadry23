@@ -5,7 +5,7 @@ using UnityEngine;
 public class ItemInteraction : MonoBehaviour
 {
     [SerializeField] private Transform cam;
-    [SerializeField] private int takeDistance = 8;
+    [SerializeField] private int takeDistance = 100;
     [SerializeField] private GameObject player;
     [SerializeField] LayerMask itemLayer;
     [SerializeField] LayerMask buffLayer;
@@ -13,15 +13,9 @@ public class ItemInteraction : MonoBehaviour
     [SerializeField] LayerMask componentLayer;
 
     private InventorySystem inventorySystem;
-/*
-    [SerializeField] private GameObject torch;*/
-/*    private Torch torchSystem;*/
-
-    //[SerializeField] TextMeshProUGUI txt_HoveredItem;
     void Start()
     {
         inventorySystem = player.GetComponent<InventorySystem>();
-/*        torchSystem = torch.GetComponent<Torch>();*/
     }
 
     // Update is called once per frame

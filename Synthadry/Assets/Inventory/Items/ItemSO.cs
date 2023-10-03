@@ -3,12 +3,13 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Item", menuName = "Create new Item")]
 [System.Serializable]
 
-public class Items : ScriptableObject
+public class ItemSO : ScriptableObject
 {
     public enum Name
     {
         ak,
-        revolver
+        revolver,
+        sword
     }
 
 
@@ -36,5 +37,6 @@ public class Items : ScriptableObject
     public Sprite iconActive1K;
     public Sprite iconDisable1K;
 
-
+    public Vector3 positionOffset;
+    public Vector3 rotationOffset;
 }

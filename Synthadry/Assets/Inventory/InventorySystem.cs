@@ -8,18 +8,29 @@ using System;
 public class InventorySystem : MonoBehaviour
 {
     [SerializeField] private Transform player;
+    public TakeInHand takeInHand;
+    public bool haveHeadlight;
     public MainGunsController MainGunsUi;
     public BuffsController BuffsUi;
 
     public List<GameObject> mainGuns;
     public List<GameObject> extraGuns;
-    public Boolean haveHeadlight;
 
     [SerializeField] private List<GameObject> UiExtraGuns;
     /*   0 - иконка
          1 - количество*/
 
-    public int activeMainGun = 0;
+    public int ActiveMainGun
+    {
+        get { return activeMainGun; }
+        set
+        {
+            activeMainGun = value;
+            takeInHand.takeMainGun(activeMainGun);
+        }
+    }
+
+    public int activeMainGun;
 
     public List<GameObject> hpBuffs;
     public List<GameObject> armorBuffs;
@@ -29,7 +40,7 @@ public class InventorySystem : MonoBehaviour
 
     [SerializeField] private int activeBuff = 0;
 
-    private ItemObject itemObject;
+    private ItemSO itemObject;
 
     private HPAndArmor hpAndArmor;
 /*
@@ -60,21 +71,12 @@ public class InventorySystem : MonoBehaviour
     void Start()
     {
         hpAndArmor = player.GetComponent<HPAndArmor>();
+        takeInHand = player.GetComponent<TakeInHand>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        /*        if (Input.GetKeyDown(KeyCode.T)) //БРОСОК ГРАНАТЫ
-                {
-                    if (extraGuns.Count > 0)
-                    {
-                        grenadeThrow.ThrowGrenade(extraGuns[extraGuns.Count - 1]);
-                        extraGuns.RemoveAt(extraGuns.Count - 1);
-                        UpdateInventoryUIItems();
-                    }
-                }*/
-
 
         if (Input.GetKeyDown(KeyCode.Q)) //СМЕНА АКТИВНОГО БАФФА
         {
@@ -89,66 +91,66 @@ public class InventorySystem : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            activeMainGun = 0;
+            ActiveMainGun = 0;
+            
+/*
             UpdateInventoryUIItems(activeMainGun);
-            MainGunsUi.UpdateMainGunsUi(activeMainGun);
+            MainGunsUi.UpdateMainGunsUi(activeMainGun);*/
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            if (mainGuns.Count > 1)
-            {
-                activeMainGun = 1;
-                UpdateInventoryUIItems(activeMainGun);
-                MainGunsUi.UpdateMainGunsUi(activeMainGun);
-            }
-
-
+            ActiveMainGun = 1;
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            if (mainGuns.Count > 2)
-            {
-                activeMainGun = 2;
-                UpdateInventoryUIItems(activeMainGun);
-                MainGunsUi.UpdateMainGunsUi(activeMainGun);
-            }
-
+            ActiveMainGun = 2;
 
         }
+
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            ActiveMainGun = 4;
+            takeInHand.ClearHands();
+
+        }
+
         if (Input.GetKeyDown(KeyCode.G)) //ВЫКИНУТЬ ПРЕДМЕТ
         {
             DiscardTheItem(activeMainGun);
 
-            activeMainGun = Math.Max(mainGuns.Count - 1, 0);
+            ActiveMainGun = Math.Max(mainGuns.Count - 1, 0);
+            mainGuns[ActiveMainGun].layer = 20;
 
-            UpdateInventoryUIItems(activeMainGun);
-            MainGunsUi.UpdateMainGunsUi(activeMainGun);
+
+            UpdateInventoryUIItems(ActiveMainGun);
+            MainGunsUi.UpdateMainGunsUi(ActiveMainGun);
         }
         if (Input.GetAxis("Mouse ScrollWheel") > 0f) //КОЛЁСИКОМ ВПЕРЁД
         {
             if (mainGuns.Count > 0)
             {
-                activeMainGun = (activeMainGun + 1) % mainGuns.Count;
+                ActiveMainGun = (ActiveMainGun + 1) % mainGuns.Count;
             } else
             {
-                activeMainGun = 0;
+                ActiveMainGun = 0;
             }
-            UpdateInventoryUIItems(activeMainGun);
-            MainGunsUi.UpdateMainGunsUi(activeMainGun);
+
+            UpdateInventoryUIItems(ActiveMainGun);
+            MainGunsUi.UpdateMainGunsUi(ActiveMainGun);
 
         }
         if (Input.GetAxis("Mouse ScrollWheel") < 0f) //КОЛЁСИКОМ НАЗАД
         {
             if (mainGuns.Count > 0)
             {
-                activeMainGun = (mainGuns.Count + activeMainGun - 1) % mainGuns.Count;
+                ActiveMainGun = (mainGuns.Count + ActiveMainGun - 1) % mainGuns.Count;
             } else
             {
-                activeMainGun = 0;
+                ActiveMainGun = 0;
             }
 
-            UpdateInventoryUIItems(activeMainGun);
-            MainGunsUi.UpdateMainGunsUi(activeMainGun);
+            UpdateInventoryUIItems(ActiveMainGun);
+            MainGunsUi.UpdateMainGunsUi(ActiveMainGun);
 
         }
     }
@@ -170,27 +172,23 @@ public class InventorySystem : MonoBehaviour
 
     public void PickUpItem(GameObject item)
     {
-        if (item.GetComponent<ItemObject>().itemStat.type.ToString() is "firearms" || item.GetComponent<ItemObject>().itemStat.type.ToString() is "coldWeapons")
+        if (item.GetComponent<ItemObject>())
         {
             if (mainGuns.Count < 3)
             {
-                Debug.Log("------------");
-                Debug.Log("mainGuns:");
                 mainGuns.Add(item);
-                for (int i = 0; i < mainGuns.Count; i++)
-                {
-                    Debug.Log(mainGuns[i]);
-                }
-                MainGunsUi.UpdateMainGunsUi(activeMainGun);
-                UpdateInventoryUIItems(activeMainGun);
-            } else
+/*                MainGunsUi.UpdateMainGunsUi(activeMainGun);
+                UpdateInventoryUIItems(activeMainGun);*/
+                item.SetActive(false);
+                item.layer = 0;
+            }
+            else
             {
-                Debug.Log("---------");
                 Debug.Log("Основной инвентарь уже полный");
             }
 
         }
-        else if (item.GetComponent<ItemObject>().itemStat.type.ToString() is "extra")
+/*        else if (item.GetComponent<ExtraObject>())
         {
             if (extraGuns.Count < 9)
             {
@@ -206,7 +204,7 @@ public class InventorySystem : MonoBehaviour
                 Debug.Log("Дополнительный (гранатный) инвентарь уже полный");
             }
 
-        }
+        }*/
 
     }
 

@@ -25,7 +25,7 @@ public class MouseOverPart : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     [SerializeField] private GameObject center;
 
     private InventorySystem inventorySystem;
-    private Items item;
+    private ItemSO item;
 
     void ClearInfoCenter()
     {
