@@ -12,6 +12,7 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
+  - TVE_FEATURE_BATCHING
   - TVE_FEATURE_CLIP
   - _DISABLE_DECALS
   - _DISABLE_SSR
@@ -145,7 +146,7 @@ Material:
     - _InteractionMaskValue: 0
     - _IsCollected: 0
     - _IsGrassShader: 1
-    - _IsIdentifier: 40082
+    - _IsIdentifier: 41094
     - _IsLeafShader: 1
     - _IsShared: 0
     - _IsSubsurfaceShader: 1
@@ -286,7 +287,7 @@ Material:
     - _UseShadowThreshold: 0
     - _VariationGlobalsMessage: 0
     - _VariationMotionMessage: 0
-    - _VertexDataMode: 0
+    - _VertexDataMode: 1
     - _VertexDynamicMode: 0
     - _VertexHeightValue: 0.6932245
     - _VertexMasksMode: 0

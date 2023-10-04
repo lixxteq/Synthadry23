@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class CustomTooltip : MonoBehaviour
 {
-    [SerializeField] private Camera cam;
+    private Camera cam;
 
     [SerializeField] private GameObject pointerParent;
 
@@ -19,7 +19,7 @@ public class CustomTooltip : MonoBehaviour
 
     void Start()
     {
-
+        cam = Camera.main;
     }
     void Update()
     {
@@ -34,7 +34,6 @@ public class CustomTooltip : MonoBehaviour
                 newPointer.SetActive(true);
                 newPointer.transform.position = Vector3.Lerp(newPointer.transform.position, screenPos, lerpTime * Time.deltaTime);
             }
-
         }
     }
 
@@ -65,7 +64,7 @@ public class CustomTooltip : MonoBehaviour
         }
     }
 
-    void OnDestroy()
+    private void OnDisable()
     {
         Destroy(newPointer);
     }

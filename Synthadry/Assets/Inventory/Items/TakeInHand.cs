@@ -20,7 +20,7 @@ public class TakeInHand : MonoBehaviour
         playerAnimator = gameObject.GetComponent<Animator>();
     }
 
-    public void takeMainGun(int activeGun)
+    public void takeMainGun(int activeGun, float endWeight = 1)
     {
         try
         {
@@ -30,7 +30,7 @@ public class TakeInHand : MonoBehaviour
                 gun.SetActive(false);
             }
             activeGunGameObject = mainGuns[activeGun];
-            SetAnimation(activeGunGameObject.GetComponent<ItemObject>().itemStat.name);
+            SetAnimation(activeGunGameObject.GetComponent<ItemObject>().itemStat.name, endWeight);
             activeGunGameObject.transform.SetParent(ItemPoint);
             activeGunGameObject.transform.localPosition = activeGunGameObject.GetComponent<ItemObject>().itemStat.positionOffset;
             activeGunGameObject.transform.localRotation = Quaternion.Euler(activeGunGameObject.GetComponent<ItemObject>().itemStat.rotationOffset);
@@ -50,7 +50,7 @@ public class TakeInHand : MonoBehaviour
         }
     }
 
-    void SetAnimation(ItemSO.Name itemName)
+    void SetAnimation(ItemSO.Name itemName, float endWeight)
     {
         try
         {
@@ -58,11 +58,11 @@ public class TakeInHand : MonoBehaviour
             {
                 case "ak":
                     ClearLayersWeight();
-                    StartCoroutine(LerpSetWeight(1));
+                    StartCoroutine(LerpSetWeight(1, endWeight));
                     break;
                 case "revolver":
                     ClearLayersWeight();
-                    StartCoroutine(LerpSetWeight(2));
+                    StartCoroutine(LerpSetWeight(2, endWeight));
                     break;
                 default:
                     break;
@@ -76,12 +76,13 @@ public class TakeInHand : MonoBehaviour
 
     }
 
-    IEnumerator LerpSetWeight(int layerIndex)
+    IEnumerator LerpSetWeight(int layerIndex, float endWeight)
     {
         float timeToStart = Time.time;
-        while (playerAnimator.GetLayerWeight(layerIndex) != 1f)
+        float targetValue = endWeight;
+        while (playerAnimator.GetLayerWeight(layerIndex) != targetValue)
         {
-            playerAnimator.SetLayerWeight(layerIndex, Mathf.Lerp(playerAnimator.GetLayerWeight(layerIndex), 1, (Time.time - timeToStart) * lerpSpeed)); //Here speed is the 1 or any number which decides the how fast it reach to one to other end.
+            playerAnimator.SetLayerWeight(layerIndex, Mathf.Lerp(playerAnimator.GetLayerWeight(layerIndex), endWeight, (Time.time - timeToStart) * lerpSpeed));
 
             yield return null;
         }

@@ -217,7 +217,7 @@ Material:
     - _IsCollected: 0
     - _IsForwardPathShader: 1
     - _IsGrassShader: 1
-    - _IsIdentifier: 39596
+    - _IsIdentifier: 40624
     - _IsLeafShader: 1
     - _IsLitShader: 1
     - _IsShared: 0
@@ -247,9 +247,9 @@ Material:
     - _MainMaskMinValue: 0
     - _MainMaskValue: 0
     - _MainMetallicValue: 0
-    - _MainNormalValue: 2
-    - _MainOcclusionValue: 0.5
-    - _MainSmoothnessValue: 0
+    - _MainNormalValue: -0.5
+    - _MainOcclusionValue: 1
+    - _MainSmoothnessValue: 0.171
     - _MaskMode: 0
     - _MessageGlobalsVariation: 0
     - _MessageMainMask: 0
@@ -446,7 +446,7 @@ Material:
     - _vertex_pivot_mode: 1
     m_Colors:
     - _AlphaMaskRemap: {r: 0, g: 0, b: 0, a: 0}
-    - _Color: {r: 0.7075472, g: 0.7075472, b: 0.7075472, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _ColorsMaskRemap: {r: 0, g: 0, b: 0, a: 0}
     - _DetailBlendRemap: {r: 0, g: 0, b: 0, a: 0}
     - _DoubleSidedConstants: {r: -1, g: -1, b: -1, a: 0}
@@ -459,11 +459,11 @@ Material:
     - _GradientMaskRemap: {r: 0, g: 0, b: 0, a: 0}
     - _LeavesMaskRemap: {r: 0, g: 0, b: 0, a: 2}
     - _LocalColors: {r: 1, g: 1, b: 1, a: 1}
-    - _MainColor: {r: 0.7075472, g: 0.7075472, b: 0.7075472, a: 1}
+    - _MainColor: {r: 1, g: 1, b: 1, a: 1}
     - _MainMaskRemap: {r: 0, g: 0, b: 0, a: 0}
     - _MainUVs: {r: 1, g: 1, b: 0, a: 0}
     - _MaxBoundsInfo: {r: 0.5, g: 1, b: 1, a: 0}
-    - _MotionHighlightColor: {r: 2.588235, g: 2.996078, b: 0.7843137, a: 1}
+    - _MotionHighlightColor: {r: 1.3669276, g: 1.5849055, b: 0.41117835, a: 1}
     - _NoiseColorOne: {r: 1, g: 1, b: 1, a: 1}
     - _NoiseColorTwo: {r: 1, g: 1, b: 1, a: 1}
     - _NoiseMaskRemap: {r: 0, g: 0, b: 0, a: 0}
@@ -471,7 +471,7 @@ Material:
     - _NoiseTintTwo: {r: 1, g: 1, b: 1, a: 1}
     - _OverlayMaskRemap: {r: 0, g: 0, b: 0, a: 0}
     - _SecondMaskRemap: {r: 0, g: 0, b: 0, a: 0}
-    - _SubsurfaceColor: {r: 0.2699546, g: 0.3411765, b: 0, a: 1}
+    - _SubsurfaceColor: {r: 0.52374756, g: 0.6603774, b: 0, a: 1}
     - _SubsurfaceDiffusion_Asset: {r: 2.2888926e+38, g: 1.2389358e-26, b: 7.69327e-37,
         a: 0.00018220427}
     - _SubsurfaceDiffusion_asset: {r: 2.2888926e+38, g: 1.2389358e-26, b: 7.69327e-37,

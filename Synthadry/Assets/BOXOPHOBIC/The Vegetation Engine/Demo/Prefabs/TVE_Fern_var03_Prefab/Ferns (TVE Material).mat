@@ -567,7 +567,7 @@ Material:
     - _IsCollected: 0
     - _IsForwardPathShader: 1
     - _IsHDPipeline: 1
-    - _IsIdentifier: 39346
+    - _IsIdentifier: 40368
     - _IsLeafShader: 1
     - _IsLitShader: 1
     - _IsShared: 0
@@ -633,8 +633,8 @@ Material:
     - _MotionScale_30: 20
     - _MotionScale_32: 10
     - _MotionSpace: 0
-    - _MotionSpeed_10: 6
-    - _MotionSpeed_20: 6
+    - _MotionSpeed_10: 0
+    - _MotionSpeed_20: 0
     - _MotionSpeed_30: 15
     - _MotionSpeed_32: 30
     - _MotionValue_20: 1

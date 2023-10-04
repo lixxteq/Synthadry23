@@ -8,6 +8,7 @@ using System;
 public class InventorySystem : MonoBehaviour
 {
     [SerializeField] private Transform player;
+
     public TakeInHand takeInHand;
     public bool haveHeadlight;
     public MainGunsController MainGunsUi;
@@ -17,16 +18,37 @@ public class InventorySystem : MonoBehaviour
     public List<GameObject> extraGuns;
 
     [SerializeField] private List<GameObject> UiExtraGuns;
-    /*   0 - иконка
-         1 - количество*/
+
+    private int mainGunCounterToggler = 0;
 
     public int ActiveMainGun
     {
         get { return activeMainGun; }
         set
         {
-            activeMainGun = value;
-            takeInHand.takeMainGun(activeMainGun);
+            if (activeMainGun == value)
+            {
+                if (mainGunCounterToggler != 0)
+                {
+                    activeMainGun = value;
+                    mainGunCounterToggler = 0;
+                    takeInHand.takeMainGun(activeMainGun);
+                }
+                else
+                {
+                    takeInHand.ClearHands();
+                    mainGunCounterToggler++;
+                }
+            } else
+            {
+                if (value <= mainGuns.Count)
+                {
+                    activeMainGun = value;
+                    takeInHand.takeMainGun(activeMainGun);
+                    mainGunCounterToggler = 0;
+                }
+            }
+
         }
     }
 
@@ -92,10 +114,6 @@ public class InventorySystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             ActiveMainGun = 0;
-            
-/*
-            UpdateInventoryUIItems(activeMainGun);
-            MainGunsUi.UpdateMainGunsUi(activeMainGun);*/
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
@@ -104,19 +122,18 @@ public class InventorySystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             ActiveMainGun = 2;
-
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
             ActiveMainGun = 4;
-            takeInHand.ClearHands();
+            
 
         }
 
         if (Input.GetKeyDown(KeyCode.G)) //ВЫКИНУТЬ ПРЕДМЕТ
         {
-            DiscardTheItem(activeMainGun);
+            DiscardTheItem(mainGuns[activeMainGun]);
 
             ActiveMainGun = Math.Max(mainGuns.Count - 1, 0);
             mainGuns[ActiveMainGun].layer = 20;
@@ -157,11 +174,15 @@ public class InventorySystem : MonoBehaviour
 
 
     //-------------ПОДОБРАТЬ ИЛИ ВЫБРОСИТЬ ПРЕДМЕТ (ОРУЖИЕ И ГРАНАТЫ)---------------
-    public void DiscardTheItem(int active)
+    public void DiscardTheItem(GameObject item)
     {
-        mainGuns[active].transform.position = player.position;
-        mainGuns[active].SetActive(true);
-        mainGuns.Remove(mainGuns[active]);
+        item.transform.position = player.position;
+        item.transform.parent = null;
+        item.GetComponent<CustomTooltip>().enabled = true;
+        item.layer = 20;
+        item.SetActive(true);
+        mainGuns.Remove(item);
+        takeInHand.ClearHands();
         UpdateInventoryUIItems(activeMainGun);
     }
 
@@ -177,9 +198,8 @@ public class InventorySystem : MonoBehaviour
             if (mainGuns.Count < 3)
             {
                 mainGuns.Add(item);
-/*                MainGunsUi.UpdateMainGunsUi(activeMainGun);
-                UpdateInventoryUIItems(activeMainGun);*/
                 item.SetActive(false);
+                item.GetComponent<CustomTooltip>().enabled = false;
                 item.layer = 0;
             }
             else

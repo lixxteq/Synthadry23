@@ -94,6 +94,8 @@ GameObject:
   - component: {fileID: 8887153331366269969}
   - component: {fileID: 7701082832066546082}
   - component: {fileID: 259881409803457977}
+  - component: {fileID: 8691389946196601912}
+  - component: {fileID: 8324055481245790243}
   m_Layer: 20
   m_Name: PistolMesh
   m_TagString: Untagged
@@ -116,7 +118,7 @@ Transform:
   - {fileID: 6923487049421113004}
   - {fileID: 1957705334733042655}
   m_Father: {fileID: 0}
-  m_RootOrder: 21
+  m_RootOrder: 20
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &7701082832066546082
 BoxCollider:
@@ -178,6 +180,43 @@ MonoBehaviour:
   lantern: {fileID: 0}
   light: {fileID: 0}
   aim: {fileID: 0}
+--- !u!135 &8691389946196601912
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5730540310384131712}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 7.64
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8324055481245790243
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5730540310384131712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1f6af296b827f54a94c0f94d33cfd9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pointerParent: {fileID: 0}
+  image: {fileID: 21300000, guid: 2cda02e8d3454e1438d8224422a34e78, type: 3}
+  imageSize: {x: 40, y: 40}
+  lerpTime: 50
 --- !u!1 &8225764045355065451
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c477de684ee10c4082f9fddf19a75ce, type: 3}
   m_Name: DefaultPalette
   m_EditorClassIdentifier: 
-  m_paletteEntryIDCount: -2147483441
+  m_paletteEntryIDCount: -2147483437
   m_paletteEntries:
   - m_name: Pref_Barn1_A
     m_id: -2147483647
@@ -914,3 +914,20 @@ MonoBehaviour:
     m_id: -2147483441
     m_guid: a649302f8407dd9469e2c5b67b4a0674
     m_object: {fileID: 1000011143488790, guid: a649302f8407dd9469e2c5b67b4a0674, type: 3}
+  - m_name: TVE_Fern_var03_Prefab
+    m_id: -2147483440
+    m_guid: 620685b490f146ff966d7fb0e4195507
+    m_object: {fileID: 1055727018099338, guid: 620685b490f146ff966d7fb0e4195507, type: 3}
+  - m_name: TVE_RedBush_Var1_Prefab
+    m_id: -2147483439
+    m_guid: aa2f63007d354212bc22333f420b3cf2
+    m_object: {fileID: 1501760155080226, guid: aa2f63007d354212bc22333f420b3cf2, type: 3}
+  - m_name: TVE_Clover_01_Var3_Prefab
+    m_id: -2147483438
+    m_guid: 41fb813fd9954580beeaa5044fbf3c64
+    m_object: {fileID: 1042777077932012, guid: 41fb813fd9954580beeaa5044fbf3c64, type: 3}
+  - m_name: Grass Cross
+    m_id: -2147483437
+    m_guid: d5e025be3cbc33b4dbe07e685d1370df
+    m_object: {fileID: 5350939314242229149, guid: d5e025be3cbc33b4dbe07e685d1370df,
+      type: 3}
