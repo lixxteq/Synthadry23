@@ -567,7 +567,7 @@ Material:
     - _IsCollected: 0
     - _IsForwardPathShader: 1
     - _IsHDPipeline: 1
-    - _IsIdentifier: 40368
+    - _IsIdentifier: 40260
     - _IsLeafShader: 1
     - _IsLitShader: 1
     - _IsShared: 0

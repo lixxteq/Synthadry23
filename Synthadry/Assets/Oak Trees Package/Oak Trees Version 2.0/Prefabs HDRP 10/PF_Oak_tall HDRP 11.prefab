@@ -35,7 +35,7 @@ Transform:
   - {fileID: 4383684503835842}
   - {fileID: 516321703445312671}
   m_Father: {fileID: 0}
-  m_RootOrder: 16
+  m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!205 &205557026402887438
 LODGroup:
@@ -47,7 +47,7 @@ LODGroup:
   serializedVersion: 2
   m_LocalReferencePoint: {x: -0.0833807, y: 9.300788, z: 0.18681097}
   m_Size: 20.204409
-  m_FadeMode: 2
+  m_FadeMode: 0
   m_AnimateCrossFading: 1
   m_LastLODIsBillboard: 0
   m_LODs:
