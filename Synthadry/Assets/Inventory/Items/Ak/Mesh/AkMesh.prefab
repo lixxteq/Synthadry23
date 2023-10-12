@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4648046142373100746}
   - component: {fileID: 3997054937537033174}
   - component: {fileID: 4293972645309628968}
+  - component: {fileID: 7371785026036909991}
   m_Layer: 20
   m_Name: AkMesh
   m_TagString: Untagged
@@ -36,7 +37,7 @@ Transform:
   - {fileID: 3304060754687499414}
   - {fileID: 5087183043992222841}
   m_Father: {fileID: 0}
-  m_RootOrder: 21
+  m_RootOrder: 22
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &2034522283756588113
 BoxCollider:
@@ -72,7 +73,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemStat: {fileID: 11400000, guid: 899245d9548cbe346b5bdecb3a9439d0, type: 2}
-  damage: 10
+  damage: 60
   rateOfFire: 100
   currentAmmo: 0
   allAmmo: 0
@@ -111,8 +112,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pointerParent: {fileID: 0}
-  image: {fileID: 21300000, guid: 2cda02e8d3454e1438d8224422a34e78, type: 3}
-  imageSize: {x: 40, y: 40}
+  tooltipPrefab: {fileID: 6475609759242172703, guid: ab8ed8251d795284c8b2f3fd3c3df524,
+    type: 3}
+  imageSize: {x: 60, y: 60}
+  fontSize: 27
   lerpTime: 50
 --- !u!135 &4293972645309628968
 SphereCollider:
@@ -127,7 +130,7 @@ SphereCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 32505856
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
@@ -135,6 +138,33 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 7.64
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &7371785026036909991
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2031326137819257277}
+  serializedVersion: 4
+  m_Mass: 10
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &6049194963267171930
 GameObject:
   m_ObjectHideFlags: 0

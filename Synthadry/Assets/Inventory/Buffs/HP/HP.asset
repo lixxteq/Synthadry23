@@ -17,6 +17,6 @@ MonoBehaviour:
   description: Health Boost Buff
   increase: 50
   prefab: {fileID: 1856250759156430997, guid: 3cee8a58a2d3a6e449389b87a18c62b0, type: 3}
-  iconActive1K: {fileID: 21300000, guid: d90a87368e9b1d44496429c26efc806e, type: 3}
+  iconActive1K: {fileID: 21300000, guid: 577c7cd27ceb1914ebd1dc110bee9abb, type: 3}
   type: 0
   rarity: 0

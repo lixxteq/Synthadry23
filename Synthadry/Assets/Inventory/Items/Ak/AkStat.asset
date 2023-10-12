@@ -16,7 +16,7 @@ MonoBehaviour:
   description: Kalash
   type: 0
   rarity: 2
-  iconActive1K: {fileID: 21300000, guid: 026d4507f8b59ff4fb1cc44645d9a81a, type: 3}
-  iconDisable1K: {fileID: 0}
+  iconActive1K: {fileID: 21300000, guid: 9b995845c4a7e4142858a25f5b377248, type: 3}
+  iconDisable1K: {fileID: 21300000, guid: fa584436d6551554ba952a6fd224e71d, type: 3}
   positionOffset: {x: 0.36, y: 2.88, z: 1.36}
   rotationOffset: {x: -61.756, y: 19.634, z: 49.709}

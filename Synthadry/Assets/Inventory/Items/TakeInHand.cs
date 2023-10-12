@@ -12,12 +12,16 @@ public class TakeInHand : MonoBehaviour
     private GameObject activeGunGameObject;
     private Animator playerAnimator;
 
+    private WeaponSlotManager weaponSlotManager;
+
 
     void Start()
     {
         player = gameObject;
         mainGuns = player.GetComponent<InventorySystem>().mainGuns;
         playerAnimator = gameObject.GetComponent<Animator>();
+        weaponSlotManager = GameObject.FindGameObjectWithTag("WeaponSlot").GetComponent<WeaponSlotManager>();
+        weaponSlotManager.gameObject.SetActive(false);
     }
 
     public void takeMainGun(int activeGun, float endWeight = 1)
@@ -35,6 +39,7 @@ public class TakeInHand : MonoBehaviour
             activeGunGameObject.transform.localPosition = activeGunGameObject.GetComponent<ItemObject>().itemStat.positionOffset;
             activeGunGameObject.transform.localRotation = Quaternion.Euler(activeGunGameObject.GetComponent<ItemObject>().itemStat.rotationOffset);
             activeGunGameObject.SetActive(true);
+            weaponSlotManager.ChangeActiveWeapon(mainGuns[activeGun].GetComponent<ItemObject>());
         }
         catch
         {

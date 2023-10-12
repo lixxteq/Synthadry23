@@ -52,8 +52,6 @@ public class ItemObject : MonoBehaviour
 
     public ParticleSystem fireFx;
 
-    private MainGunsController mainGunsController;
-
     [Header("Õ¿¬≈—€")]
     public GameObject lantern;
     public GameObject light;
@@ -61,13 +59,8 @@ public class ItemObject : MonoBehaviour
 
     private void Start()
     {
-        mainGunsController = GameObject.Find("MainGuns").GetComponent<MainGunsController>();
         player = GameObject.FindGameObjectWithTag("Player");
         canvas = GameObject.FindGameObjectWithTag("MainCanvas");
-    }
-    private void OnEnable()
-    {
-        UpdateInGameUi();
     }
 
     public void Shoot()
@@ -99,8 +92,6 @@ public class ItemObject : MonoBehaviour
                 }
             }
             currentAmmo -= 1;
-            UpdateInGameUi();
-            mainGunsController.UpdateMainGunsUi();
 /*            SpawnBullet();*/
 
         }
@@ -123,12 +114,6 @@ public class ItemObject : MonoBehaviour
         Destroy(bullet, bulletAlive);
         Destroy(bulletTrace, bulletAlive);
 
-    }
-
-    public void UpdateInGameUi()
-    {
-        allAmmoInGameUi.text = allAmmo.ToString();
-        currentAmmoInGameUi.text = currentAmmo.ToString();
     }
 
     public void CheckItemParams()

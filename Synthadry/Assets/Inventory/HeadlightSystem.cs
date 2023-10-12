@@ -3,12 +3,11 @@ using UnityEngine;
 
 public class HeadlightSystem : MonoBehaviour
 {
-    public GameObject _headLight;
-    public float _maxEnergy = 100f;
-    public float _currentEnergy = 100f;
-    public float _energyLostPerFixedUpdate = 5f;
+    public GameObject headLight;
+    public float maxEnergy = 100f;
+    public float currentEnergy = 100f;
+    public float energyLostPerFixedUpdate = 5f;
     private InventorySystem inventorySystem;
-    public GameObject _energyUIBar;
 
     private void Start()
     {
@@ -21,17 +20,15 @@ public class HeadlightSystem : MonoBehaviour
         {
             if (inventorySystem.haveHeadlight)
             {
-                if (_headLight.activeInHierarchy)
+                if (headLight.activeInHierarchy)
                 {
-                    _headLight.SetActive(false);
-                    _energyUIBar.SetActive(false);
+                    headLight.SetActive(false);
                 }
                 else
                 {
-                    if (_currentEnergy > 0)
+                    if (currentEnergy > 0)
                     {
-                        _headLight.SetActive(true);
-                        _energyUIBar.SetActive(true);
+                        headLight.SetActive(true);
                     }
                 }
             }
@@ -40,14 +37,13 @@ public class HeadlightSystem : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (_headLight.activeInHierarchy)
+        if (headLight.activeInHierarchy)
         {
-            _currentEnergy = Mathf.Max(_currentEnergy - _energyLostPerFixedUpdate, 0);
-            Image _UIBar = _energyUIBar.transform.GetChild(1).GetComponent<Image>();
-            _UIBar.fillAmount = _currentEnergy / 100;
-            if (_currentEnergy <= 0)
+            currentEnergy = Mathf.Max(currentEnergy - energyLostPerFixedUpdate, 0);
+
+            if (currentEnergy <= 0)
             {
-                _headLight.SetActive(false);
+                inventorySystem.UseBattery();
             }
         }
     }
