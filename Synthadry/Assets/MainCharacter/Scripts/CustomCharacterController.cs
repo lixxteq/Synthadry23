@@ -22,9 +22,30 @@ public class CustomCharacterController : MonoBehaviour
     public float horisontal;
     public float vertical;
     private float lerpMulti = 7f;
+    private TakeInHand takeInHand;
 
     public bool canGo = true;
+
+    public bool IsRunning //переписать
+    {
+        get { return isRunning; }
+        set
+        {
+            if (value)
+            {
+                takeInHand.SetIk(endWeight: 0);
+                takeInHand.SetRunItemOffset();
+            } else
+            {
+                takeInHand.SetIk(endWeight: 1);
+                takeInHand.SetRunItemOffset(stopRunning: true);
+            }
+        }
+    }
+
+
     public bool isRunning = false;
+
 
 
     private CharacterController characterController;
@@ -36,6 +57,7 @@ public class CustomCharacterController : MonoBehaviour
         characterController = GetComponent<CharacterController>();
         this.GetComponent<CustomCharacterController>().enabled = false;
         this.GetComponent<CustomCharacterController>().enabled = true;
+        takeInHand = this.GetComponent<TakeInHand>();
     }
 
     void Run()
@@ -45,8 +67,8 @@ public class CustomCharacterController : MonoBehaviour
         anim.SetFloat("y", vertical * animationInterpolation);
 
         currentSpeed = Mathf.Lerp(currentSpeed, runningSpeed, Time.deltaTime * 3);
-        anim.SetBool("RifleRunning", true);
-        isRunning = true;
+        anim.SetBool("isRunning", true);
+        IsRunning = true;
     }
     public void Walk()
     {
@@ -57,8 +79,9 @@ public class CustomCharacterController : MonoBehaviour
 
         //currentSpeed = Mathf.Lerp(currentSpeed, walkingSpeed, Time.deltaTime * 3);
         currentSpeed = Mathf.Lerp(currentSpeed, walkingSpeed, Time.deltaTime * 3);
-        anim.SetBool("RifleRunning", false);
-        isRunning = false;
+        anim.SetBool("isRunning", false);
+        IsRunning = false;
+
     }
 
     private void Update()
