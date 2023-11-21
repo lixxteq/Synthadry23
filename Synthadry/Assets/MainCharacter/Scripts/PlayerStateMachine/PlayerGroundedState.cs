@@ -1,10 +1,9 @@
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
 
 public class PlayerGroundedState : PlayerBaseState
 {
     public PlayerGroundedState(CustomCharacterController context, PlayerStateFactory stateFactory) : base (context, stateFactory) {
+        _isRootState = true;
         InitSubState();
     }
     public override void EnterState()
@@ -24,13 +23,18 @@ public class PlayerGroundedState : PlayerBaseState
         Debug.Log("PState: exit Grounded");
     }
     public override void InitSubState() {
-
+        if (!_context.IsMoving && !_context.IsRunning) {
+            SetSubState(_stateFactory.Idle());
+        }
+        else if (_context.IsMoving && !_context.IsRunning) {
+            SetSubState(_stateFactory.Walk());
+        }
+        else {
+            SetSubState(_stateFactory.Run());
+        }
     }
     public override void CheckSwitchStates()
     {
-        if (_context.IsMoving) {
-            SwitchState(_stateFactory.Walk());
-        }
         if (_context.IsJumping) {
             SwitchState(_stateFactory.Jump());
         }

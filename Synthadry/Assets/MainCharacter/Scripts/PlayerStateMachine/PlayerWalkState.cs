@@ -40,6 +40,8 @@ public class PlayerWalkState : PlayerBaseState
         _context.animationInterpolation = Mathf.Lerp(_context.animationInterpolation, 1f, Time.deltaTime * 3);
         _context._anim.SetFloat("x", _context.CurrentMovement.x * 0.25f);
         _context._anim.SetFloat("y", _context.CurrentMovement.y * 0.25f);
+
+        _context._appliedMovement = new Vector2(_context.CurrentMovement.x, _context.CurrentMovement.y);
         
         // _context._currentVelocity = _context.rig.velocity;
         // Vector3 targetVelocity = new Vector3(_context.CurrentMovement.x, 0, _context.CurrentMovement.y);
@@ -77,6 +79,8 @@ public class PlayerWalkState : PlayerBaseState
     public override void ExitState()
     {
         Debug.Log("PState: exit Walk");
+        // _context._beforeMovement = _context.CharacterController.velocity;
+        
         // _context._currentSpeed = 0f;
         // _context._currentVelocity = Vector3.zero;
     }
@@ -85,11 +89,11 @@ public class PlayerWalkState : PlayerBaseState
     }
     public override void CheckSwitchStates()
     {
-        if (!_context.IsMoving && _context.CharacterController.isGrounded) {
-            SwitchState(_stateFactory.Grounded());
+        if (!_context.IsMoving) {
+            SwitchState(_stateFactory.Idle());
         }
-        if (_context.IsJumping) {
-            SwitchState(_stateFactory.Jump());
+        if (_context.IsMoving && _context.IsRunning) {
+            SwitchState(_stateFactory.Run());
         }
     }
 }

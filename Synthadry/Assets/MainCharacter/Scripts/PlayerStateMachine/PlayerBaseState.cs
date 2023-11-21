@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public abstract class PlayerBaseState
 {
+    protected bool _isRootState = false;
     protected CustomCharacterController _context;
     protected PlayerStateFactory _stateFactory;
     protected PlayerBaseState _currentSubState;
@@ -29,7 +30,12 @@ public abstract class PlayerBaseState
     protected void SwitchState(PlayerBaseState nextState) {
         ExitState();
         nextState.EnterState();
-        _context.CurrentState = nextState;
+        if (_isRootState) {
+            _context.CurrentState = nextState;
+        }
+        else if (_currentSuperState != null) {
+            _currentSuperState.SetSubState(nextState);
+        }
     }
 
     public abstract void InitSubState();
@@ -43,6 +49,18 @@ public abstract class PlayerBaseState
         _currentSuperState = superState;
     }
 
-    void UpdateStates(){}
+    public void UpdateStates() {
+        UpdateState();
+        if (_currentSubState != null) {
+            _currentSubState.UpdateStates();
+        }
+    }
+
+    public void FixedUpdateStates() {
+        FixedUpdateState();
+        if (_currentSubState != null) {
+            _currentSubState.FixedUpdateStates();
+        }
+    }
 }
 

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class PlayerJumpState : PlayerBaseState
 {
     public PlayerJumpState(CustomCharacterController context, PlayerStateFactory stateFactory) : base (context, stateFactory) {
+        _isRootState = true;
         InitSubState();
     }
     public override void EnterState()
@@ -29,7 +30,15 @@ public class PlayerJumpState : PlayerBaseState
         Debug.Log("PState: exit Jump");
     }
     public override void InitSubState() {
-
+        if (!_context.IsMoving && !_context.IsRunning) {
+            SetSubState(_stateFactory.Idle());
+        }
+        else if (_context.IsMoving && !_context.IsRunning) {
+            SetSubState(_stateFactory.Walk());
+        }
+        else {
+            SetSubState(_stateFactory.Run());
+        }
     }
     public override void CheckSwitchStates()
     {
