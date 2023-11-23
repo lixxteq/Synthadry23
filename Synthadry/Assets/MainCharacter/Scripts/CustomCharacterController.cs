@@ -1,6 +1,7 @@
+
+using System;
 using UnityEngine;
-
-
+using UnityEngine.InputSystem;
 
 public class CustomCharacterController : MonoBehaviour
 {
@@ -10,14 +11,26 @@ public class CustomCharacterController : MonoBehaviour
 
     public Canvas canvas;
 
-    public Animator anim;
+    public Animator _anim;
     public Rigidbody rig;
     public Transform mainCamera;
+    
     public float jumpForce = 3.5f;
     public float walkingSpeed = 10f;
     public float runningSpeed = 15f;
-    public float currentSpeed;
-    private float animationInterpolation = 1f;
+    public float _currentSpeed = 0f;
+    public float gravity = -9.8f;
+    public float animationInterpolation = 1f;
+    // РҐСЂР°РЅРёС‚ РґРІРёР¶РµРЅРёРµ РёРіСЂРѕРєР° (x,y) РІ С‚РµРєСѓС‰РёР№ С„СЂРµР№Рј
+    private Vector2 _currentMovement = Vector2.zero;
+    // РҐСЂР°РЅРёС‚ РґРІРёР¶РµРЅРёРµ РёРіСЂРѕРєР° (x,y) РїРµСЂРµРґ РїСЂС‹Р¶РєРѕРј
+    public Vector2 _appliedMovement = Vector2.zero;
+    // РҐСЂР°РЅРёС‚ rig.velocity РІ С‚РµРєСѓС‰РёР№ С„СЂРµР№Рј
+    public Vector3 _currentVelocity = Vector3.zero;
+    public Vector2 _currentLook;
+    private float xRotation = 0f;
+    public float ySensitivity = 2f;
+    public float xSensitivity = 2f;
 
     public float horisontal;
     public float vertical;
@@ -25,142 +38,114 @@ public class CustomCharacterController : MonoBehaviour
     private TakeInHand takeInHand;
 
     public bool canGo = true;
+    public bool _isRunning = false;
+    public bool _isJumping = false;
+    public bool _isMoving = false;
+    private CharacterController _characterController;
+    private PlayerInput _playerInput;
+    private PlayerBaseState _currentState;
+    private PlayerStateFactory _states;
 
-    public bool IsRunning //переписать
+    // player state related set / get methods
+    public PlayerBaseState CurrentState { get {return _currentState;} set {_currentState = value;}}
+    public CharacterController CharacterController { get {return _characterController;}}
+    public Vector2 CurrentMovement { get {return _currentMovement;}}
+    public bool IsJumping { get {return _isJumping;} set {_isJumping = value;}}
+    public bool IsMoving { get {return _isMoving;} set {_isMoving = value;}}
+    // public bool IsRunning { get {return _isRunning;}}
+
+    void Awake()
     {
-        get { return isRunning; }
+        _playerInput = GetComponent<PlayerInput>();
+        _characterController = GetComponent<CharacterController>();
+        _anim = GetComponent<Animator>();
+        _states = new PlayerStateFactory(this);
+
+        _currentState = _states.Grounded();
+        _currentState.EnterState();
+    }
+
+    void Start()
+    {
+        canvas = FindObjectOfType<Canvas>();
+        this.GetComponent<CustomCharacterController>().enabled = false;
+        this.GetComponent<CustomCharacterController>().enabled = true;
+        takeInHand = this.GetComponent<TakeInHand>();
+    }
+
+    // Р“СЂСѓРїРїР° РјРµС‚РѕРґРѕРІ PlayerInput (РІС‹Р·С‹РІР°СЋС‚СЃСЏ РїСЂРё РІРІРѕРґРµ РёРіСЂРѕРєР°)
+    private void OnEnable()
+    {
+        _playerInput.ActivateInput();
+    }
+
+    private void OnJump(InputValue value) {
+        IsJumping = value.isPressed;
+        Debug.Log("jump pressed");
+    }
+
+    private void OnMove(InputValue value) {
+        _currentMovement = value.Get<Vector2>();
+        _currentSpeed = walkingSpeed;
+        IsMoving = _currentMovement.x != 0 || _currentMovement.y != 0;
+    }
+
+    private void OnLook(InputValue value) {
+        _currentLook = value.Get<Vector2>();
+    }
+
+    private void OnRun(InputValue value) {
+        IsRunning = value.isPressed;
+        Debug.Log("run pressed");
+    }
+
+
+
+    private void Update()
+    {
+        RotationController();
+        CurrentState.UpdateStates();
+
+        // temporary workaround
+        IsRunning = Input.GetKey(KeyCode.LeftShift);
+    }
+    // Update is called once per frame
+    void FixedUpdate()
+    {
+        CurrentState.FixedUpdateStates();
+    }
+
+    private void LateUpdate() {
+        RotationController();
+    }
+
+
+    public bool IsRunning //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+    {
+        get { return _isRunning; }
         set
         {
             if (value)
             {
                 takeInHand.SetIk(endWeight: 0);
                 takeInHand.SetRunItemOffset();
-            } else
+            }
+            else
             {
                 takeInHand.SetIk(endWeight: 1);
                 takeInHand.SetRunItemOffset(stopRunning: true);
             }
+            _isRunning = value;
         }
     }
 
-
-    public bool isRunning = false;
-
-
-
-    private CharacterController characterController;
-
-
-    void Start()
-    {
-        canvas = FindObjectOfType<Canvas>();
-        characterController = GetComponent<CharacterController>();
-        this.GetComponent<CustomCharacterController>().enabled = false;
-        this.GetComponent<CustomCharacterController>().enabled = true;
-        takeInHand = this.GetComponent<TakeInHand>();
-    }
-
-    void Run()
-    {
-        animationInterpolation = Mathf.Lerp(animationInterpolation, 1.5f, Time.deltaTime * 3);
-        anim.SetFloat("x", horisontal * animationInterpolation);
-        anim.SetFloat("y", vertical * animationInterpolation);
-
-        currentSpeed = Mathf.Lerp(currentSpeed, runningSpeed, Time.deltaTime * 3);
-        anim.SetBool("isRunning", true);
-        IsRunning = true;
-    }
-    public void Walk()
-    {
-        // Mathf.Lerp - отвчает за то, чтобы каждый кадр число animationInterpolation(в данном случае) приближалось к числу 1 со скоростью Time.deltaTime * 3.
-        animationInterpolation = Mathf.Lerp(animationInterpolation, 1f, Time.deltaTime * 3);
-        anim.SetFloat("x", horisontal * 0.25f);
-        anim.SetFloat("y", vertical * 0.25f);
-
-        //currentSpeed = Mathf.Lerp(currentSpeed, walkingSpeed, Time.deltaTime * 3);
-        currentSpeed = Mathf.Lerp(currentSpeed, walkingSpeed, Time.deltaTime * 3);
-        anim.SetBool("isRunning", false);
-        IsRunning = false;
-
-    }
-
-    private void Update()
+    private void RotationController()
     {
 
-        Ray desiredTargetRay = mainCamera.gameObject.GetComponent<Camera>().ScreenPointToRay(new Vector2(Screen.width / 2, Screen.height / 2));
-        Vector3 desiredTargetPosition = desiredTargetRay.origin + desiredTargetRay.direction * multy;
-        aimTarget.position = Vector3.Lerp(aimTarget.position, desiredTargetPosition, aimLerp * Time.deltaTime);
+        xRotation -= _currentLook.y * Time.deltaTime * ySensitivity;
+        xRotation = Math.Clamp(xRotation, -80f, 80f);
 
-
-        horisontal = Input.GetAxis("Horizontal") * animationInterpolation;
-        vertical = Input.GetAxis("Vertical") * animationInterpolation;
-
-        transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, mainCamera.rotation.eulerAngles.y, transform.rotation.eulerAngles.z);
-
-        if ((Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.W)) && Input.GetKey(KeyCode.LeftShift))
-        {
-
-            Run();
-        }
-        else
-        {
-            anim.SetBool("RifleRunning", false);
-            Walk();
-        }
-
-        if (characterController.isGrounded && Input.GetKeyDown(KeyCode.Space))
-        {
-            anim.SetTrigger("Jump");
-        }
-    }
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-        /*  // Здесь мы задаем движение персонажа в зависимости от направления в которое смотрит камера
-          // Сохраняем направление вперед и вправо от камеры 
-          Vector3 camF = mainCamera.forward;
-          Vector3 camR = mainCamera.right;
-          // Чтобы направления вперед и вправо не зависили от того смотрит ли камера вверх или вниз, иначе когда мы смотрим вперед, персонаж будет идти быстрее чем когда смотрит вверх или вниз
-          // Можете сами проверить что будет убрав camF.y = 0 и camR.y = 0 :)
-          camF.y = 0;
-          camR.y = 0;
-          Vector3 movingVector;
-          // Тут мы умножаем наше нажатие на кнопки W & S на направление камеры вперед и прибавляем к нажатиям на кнопки A & D и умножаем на направление камеры вправо
-          movingVector = Vector3.ClampMagnitude(camF.normalized * vertical * currentSpeed + camR.normalized * horisontal * currentSpeed, currentSpeed);
-          // Magnitude - это длинна вектора. я делю длинну на currentSpeed так как мы умножаем этот вектор на currentSpeed на 86 строке. Я хочу получить число максимум 1.
-          anim.SetFloat("magnitude", movingVector.magnitude / currentSpeed);
-          //Debug.Log(movingVector.magnitude / currentSpeed);
-          // Здесь мы двигаем персонажа! Устанавливаем движение только по x & z потому что мы не хотим чтобы наш персонаж взлетал в воздух
-          rig.velocity = new Vector3(movingVector.x, rig.velocity.y, movingVector.z);
-          // У меня был баг, что персонаж крутился на месте и это исправил с помощью этой строки
-          rig.angularVelocity = Vector3.zero;*/
-
-
-        Vector3 camF = mainCamera.forward;
-        Vector3 camR = mainCamera.right;
-        camF.y = 0;
-        camR.y = 0;
-        Vector3 movingVector;
-        movingVector = Vector3.ClampMagnitude(camF.normalized * vertical * currentSpeed + camR.normalized * horisontal * currentSpeed, currentSpeed);
-        anim.SetFloat("magnitude", movingVector.magnitude / currentSpeed);
-
-        if (!characterController.isGrounded)
-        {
-            movingVector.y -= walkingSpeed * 2;
-        }
-
-
-        characterController.Move(movingVector * Time.fixedDeltaTime);
-
-    }
-    public void Jump()
-    {
-
-         rig.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-
-        if (characterController.isGrounded)
-        {
-            characterController.Move(Vector3.up * jumpForce * Time.fixedDeltaTime);
-        }
+        mainCamera.transform.localRotation = Quaternion.Euler(xRotation, 0, 0);
+        transform.Rotate(Vector3.up * (_currentLook.x * Time.deltaTime) * xSensitivity);
     }
 }
