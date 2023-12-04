@@ -11,57 +11,57 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 3bc5b3e225e76c34c8da71a6f5a95001,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3bc5b3e225e76c34c8da71a6f5a95001,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.953768
+      value: 1.6601753
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3bc5b3e225e76c34c8da71a6f5a95001,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.953768
+      value: 1.6601753
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3bc5b3e225e76c34c8da71a6f5a95001,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.953768
+      value: 1.6601753
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3bc5b3e225e76c34c8da71a6f5a95001,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -939.69
+      value: -2.78
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3bc5b3e225e76c34c8da71a6f5a95001,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 100.46
+      value: 2.5834808
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3bc5b3e225e76c34c8da71a6f5a95001,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -867.04736
+      value: -9.25
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3bc5b3e225e76c34c8da71a6f5a95001,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.029300699
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3bc5b3e225e76c34c8da71a6f5a95001,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3bc5b3e225e76c34c8da71a6f5a95001,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: 0.99957067
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3bc5b3e225e76c34c8da71a6f5a95001,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3bc5b3e225e76c34c8da71a6f5a95001,
         type: 3}
@@ -71,7 +71,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 3bc5b3e225e76c34c8da71a6f5a95001,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 176.642
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3bc5b3e225e76c34c8da71a6f5a95001,
         type: 3}
@@ -101,5 +101,36 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6820288194029977035, guid: 3bc5b3e225e76c34c8da71a6f5a95001,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7244140874619273629}
   m_SourcePrefab: {fileID: 100100000, guid: 3bc5b3e225e76c34c8da71a6f5a95001, type: 3}
+--- !u!1 &1675801878129704161 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6820288194029977035, guid: 3bc5b3e225e76c34c8da71a6f5a95001,
+    type: 3}
+  m_PrefabInstance: {fileID: 5325263670193160490}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &7244140874619273629
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1675801878129704161}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.2852263, y: 2.402234, z: 3.6299865}
+  m_Center: {x: -0.018488647, y: -0.00000011913987, z: 1.8304096}
