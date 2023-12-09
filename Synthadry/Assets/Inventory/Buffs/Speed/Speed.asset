@@ -17,6 +17,6 @@ MonoBehaviour:
   description: Speed Boost Buff
   increase: 35
   prefab: {fileID: 5057314138431997269, guid: d1432458b3ca49f469750ede8cdfdd61, type: 3}
-  iconActive1K: {fileID: 21300000, guid: b6ef1f6a19359694eb6cf9d297ebca06, type: 3}
+  iconActive1K: {fileID: 21300000, guid: 48c52e5e36fce7a45aa65ce6da37cbe1, type: 3}
   type: 1
   rarity: 0

@@ -39,4 +39,24 @@ public class ItemSO : ScriptableObject
 
     public Vector3 positionOffset;
     public Vector3 rotationOffset;
+
+    public Vector3 downPositionOffset;
+    public Vector3 downRotationOffset;
+
+    public Vector3 runPositionOffset;
+    public Vector3 runRotationOffset;
+
+    public Vector3 righHandIkPosition;
+    public Vector3 righHandIkRotation;
+
+    public Vector3 righHandIkPositionHint;
+    public Vector3 righHandIkRotationHint;
+
+    public Vector3 leftHandIkPosition;
+    public Vector3 leftHandIkRotation;
+
+    public Vector3 leftHandIkPositionHint;
+    public Vector3 leftHandIkRotationHint;
+
+
 }

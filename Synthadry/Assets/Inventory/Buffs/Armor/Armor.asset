@@ -17,6 +17,6 @@ MonoBehaviour:
   description: Power Boost Buff
   increase: 25
   prefab: {fileID: 6986671889028470687, guid: 3601f8e6945ed3b45a88fdf5d1891f58, type: 3}
-  iconActive1K: {fileID: 21300000, guid: a990220384f0e5c459b0c3f241e060eb, type: 3}
+  iconActive1K: {fileID: 21300000, guid: 9f07e0c44f7b4844b97dce1a5e9f5dad, type: 3}
   type: 2
   rarity: 0

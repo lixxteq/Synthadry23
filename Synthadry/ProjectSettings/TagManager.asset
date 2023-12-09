@@ -13,6 +13,9 @@ TagManager:
   - MainGunsUI
   - PostFX
   - MainCanvas
+  - WeaponSlot
+  - BuffsSlot
+  - ResourcesSlot
   layers:
   - Default
   - TransparentFX

@@ -178,9 +178,9 @@ Material:
     - _IsBark: 0
     - _LEAFTURBULENCE: 0
     - _LODTerrain: 1
-    - _LeafNoise: 8
+    - _LeafNoise: 5
     - _LeafTumbling: 1
-    - _LeafTurbulence: 0.13
+    - _LeafTurbulence: 0.1
     - _MainWind: 0
     - _Metallic: 0
     - _Mode: 3
@@ -226,8 +226,8 @@ Material:
     - _TransparentSortPriority: 0
     - _TransparentWritingMotionVec: 0
     - _TransparentZWrite: 0
-    - _TumbleFrequency: 0.375
-    - _TumbleStrength: 0.04
+    - _TumbleFrequency: 0.3
+    - _TumbleStrength: 0
     - _UVSec: 0
     - _UseArrays: 0
     - _UseDetails: 0

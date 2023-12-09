@@ -31,6 +31,7 @@ public class ItemInteraction : MonoBehaviour
                     return;
 
                 Debug.Log(hit.collider.gameObject);
+                Debug.Log("123");
 
                 inventorySystem.PickUpItem(hit.collider.gameObject);
                 hit.collider.gameObject.SetActive(false);

@@ -1,52 +1,75 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 using System;
-
 
 public class InventorySystem : MonoBehaviour
 {
     [SerializeField] private Transform player;
-    public TakeInHand takeInHand;
+
+    private TakeInHand takeInHand;
     public bool haveHeadlight;
-    public MainGunsController MainGunsUi;
-    public BuffsController BuffsUi;
 
     public List<GameObject> mainGuns;
     public List<GameObject> extraGuns;
 
-    [SerializeField] private List<GameObject> UiExtraGuns;
-    /*   0 - иконка
-         1 - количество*/
+
+    private int mainGunCounterToggler = 0;
+
+    private WeaponSlotManager weaponSlotManager;
+    private BuffsSlotManager buffsSlotManager;
+
 
     public int ActiveMainGun
     {
         get { return activeMainGun; }
         set
         {
-            activeMainGun = value;
-            takeInHand.takeMainGun(activeMainGun);
+            if (activeMainGun == value)
+            {
+                if (mainGunCounterToggler != 0)
+                {
+                    activeMainGun = value;
+                    mainGunCounterToggler = 0;
+                    takeInHand.takeMainGun(activeMainGun);
+                }
+                else
+                {
+                    takeInHand.ClearHands();
+                    mainGunCounterToggler++;
+                }
+            } else
+            {
+                if (value <= mainGuns.Count)
+                {
+                    activeMainGun = value;
+                    takeInHand.takeMainGun(activeMainGun);
+                    mainGunCounterToggler = 0;
+                }
+            }
+
         }
     }
 
-    public int activeMainGun;
+
+    public int activeMainGun = -1;
 
     public List<GameObject> hpBuffs;
     public List<GameObject> armorBuffs;
     public List<GameObject> speedBuffs;
-
-    private int TypeOfBuffsCount = 0;
 
     [SerializeField] private int activeBuff = 0;
 
     private ItemSO itemObject;
 
     private HPAndArmor hpAndArmor;
-/*
-    [SerializeField] private GrenadeThrow grenadeThrow;
 
-    [SerializeField] private GameObject mainGunSpawn;*/
+    /*
+        [SerializeField] private GrenadeThrow grenadeThrow;
+
+        [SerializeField] private GameObject mainGunSpawn;*/
+
+    public float currentBatteryEnergy = 1f;
+    public int batteries = 0;
 
     [Header("КОМПОНЕНТЫ")]
     public int fuel = 0;
@@ -72,6 +95,10 @@ public class InventorySystem : MonoBehaviour
     {
         hpAndArmor = player.GetComponent<HPAndArmor>();
         takeInHand = player.GetComponent<TakeInHand>();
+        weaponSlotManager = GameObject.FindGameObjectWithTag("WeaponSlot").GetComponent<WeaponSlotManager>();
+        buffsSlotManager = GameObject.FindGameObjectWithTag("BuffsSlot").GetComponent<BuffsSlotManager>();
+        buffsSlotManager.DrawBuffs(hpBuffs.Count, armorBuffs.Count, speedBuffs.Count, activeBuff);
+        buffsSlotManager.DrawGrenades(extraGuns.Count);
     }
 
     // Update is called once per frame
@@ -81,7 +108,7 @@ public class InventorySystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q)) //СМЕНА АКТИВНОГО БАФФА
         {
             activeBuff = (activeBuff + 1) % 3;
-            BuffsUi.UpdateBuffsUi(hpBuffs, armorBuffs, speedBuffs, activeBuff);
+            buffsSlotManager.DrawBuffs(hpBuffs.Count, armorBuffs.Count, speedBuffs.Count, activeBuff);
         }
 
         if (Input.GetKeyDown(KeyCode.X)) //ПРИМЕНЕНИЕ АКТИВНОГО БАФФА
@@ -92,10 +119,6 @@ public class InventorySystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             ActiveMainGun = 0;
-            
-/*
-            UpdateInventoryUIItems(activeMainGun);
-            MainGunsUi.UpdateMainGunsUi(activeMainGun);*/
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
@@ -104,26 +127,25 @@ public class InventorySystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             ActiveMainGun = 2;
-
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
             ActiveMainGun = 4;
-            takeInHand.ClearHands();
+            
 
         }
 
         if (Input.GetKeyDown(KeyCode.G)) //ВЫКИНУТЬ ПРЕДМЕТ
         {
-            DiscardTheItem(activeMainGun);
+            DiscardTheItem(mainGuns[activeMainGun]);
 
             ActiveMainGun = Math.Max(mainGuns.Count - 1, 0);
             mainGuns[ActiveMainGun].layer = 20;
 
 
-            UpdateInventoryUIItems(ActiveMainGun);
-            MainGunsUi.UpdateMainGunsUi(ActiveMainGun);
+
+   
         }
         if (Input.GetAxis("Mouse ScrollWheel") > 0f) //КОЛЁСИКОМ ВПЕРЁД
         {
@@ -135,8 +157,8 @@ public class InventorySystem : MonoBehaviour
                 ActiveMainGun = 0;
             }
 
-            UpdateInventoryUIItems(ActiveMainGun);
-            MainGunsUi.UpdateMainGunsUi(ActiveMainGun);
+
+
 
         }
         if (Input.GetAxis("Mouse ScrollWheel") < 0f) //КОЛЁСИКОМ НАЗАД
@@ -149,20 +171,39 @@ public class InventorySystem : MonoBehaviour
                 ActiveMainGun = 0;
             }
 
-            UpdateInventoryUIItems(ActiveMainGun);
-            MainGunsUi.UpdateMainGunsUi(ActiveMainGun);
 
+
+
+        }
+    }
+
+    public void UseBattery()
+    {
+        batteries--;
+        if (batteries > 0)
+        {
+            currentBatteryEnergy = 1f;
         }
     }
 
 
     //-------------ПОДОБРАТЬ ИЛИ ВЫБРОСИТЬ ПРЕДМЕТ (ОРУЖИЕ И ГРАНАТЫ)---------------
-    public void DiscardTheItem(int active)
+    public void DiscardTheItem(GameObject item)
     {
-        mainGuns[active].transform.position = player.position;
-        mainGuns[active].SetActive(true);
-        mainGuns.Remove(mainGuns[active]);
-        UpdateInventoryUIItems(activeMainGun);
+        item.transform.position = player.position + new Vector3(0, 2f, 0);
+        item.transform.parent = null;
+
+        item.GetComponent<CustomTooltip>().enabled = true;
+        item.GetComponent<SphereCollider>().enabled = true;
+        item.GetComponent<Rigidbody>().isKinematic = false;
+        item.GetComponent<BoxCollider>().enabled = true;
+
+        item.layer = 20;
+        item.SetActive(true);
+        mainGuns.Remove(item);
+        takeInHand.ClearHands();
+        weaponSlotManager.ChangeActiveWeapon();
+
     }
 
     public void SetActiveMainGun(int active)
@@ -177,9 +218,12 @@ public class InventorySystem : MonoBehaviour
             if (mainGuns.Count < 3)
             {
                 mainGuns.Add(item);
-/*                MainGunsUi.UpdateMainGunsUi(activeMainGun);
-                UpdateInventoryUIItems(activeMainGun);*/
                 item.SetActive(false);
+                item.GetComponent<CustomTooltip>().enabled = false;
+                item.GetComponent<SphereCollider>().enabled = false;
+                item.GetComponent<Rigidbody>().isKinematic = true;
+                item.GetComponent<BoxCollider>().enabled = false;
+
                 item.layer = 0;
             }
             else
@@ -208,26 +252,6 @@ public class InventorySystem : MonoBehaviour
 
     }
 
-    public void UpdateInventoryUIItems(int active = 0)
-    {
-        if (extraGuns.Count > 0)
-        {
-            UiExtraGuns[0].SetActive(true);
-
-            UiExtraGuns[0].GetComponent<Image>().sprite = extraGuns[0].GetComponent<ItemObject>().itemStat.iconActive1K;
-
-            UiExtraGuns[1].GetComponent<TextMeshProUGUI>().text = extraGuns.Count.ToString();
-
-            UiExtraGuns[2].SetActive(true);
-
-        } else
-        {
-            UiExtraGuns[0].SetActive(false);
-            UiExtraGuns[1].GetComponent<TextMeshProUGUI>().text = "";
-            UiExtraGuns[2].SetActive(false);
-
-        }
-    }
 
 
     //-------------ПОДОБРАТЬ БАФФЫ (ХП, СИЛА, СКОРОСТЬ)---------------
@@ -244,7 +268,7 @@ public class InventorySystem : MonoBehaviour
                 {
                     Debug.Log(hpBuffs[i]);
                 }
-                BuffsUi.UpdateBuffsUi(hpBuffs, armorBuffs, speedBuffs, activeBuff);
+
             }
             else
             {
@@ -263,7 +287,7 @@ public class InventorySystem : MonoBehaviour
                 {
                     Debug.Log(speedBuffs[i]);
                 }
-                BuffsUi.UpdateBuffsUi(hpBuffs, armorBuffs, speedBuffs, activeBuff);
+
             }
             else
             {
@@ -282,7 +306,7 @@ public class InventorySystem : MonoBehaviour
                 {
                     Debug.Log(armorBuffs[i]);
                 }
-                BuffsUi.UpdateBuffsUi(hpBuffs, armorBuffs, speedBuffs, activeBuff);
+
             }
             else
             {
@@ -290,6 +314,9 @@ public class InventorySystem : MonoBehaviour
                 Debug.Log("armor инвентарь уже полный");
             }
         }
+
+        buffsSlotManager.DrawBuffs(hpBuffs.Count, armorBuffs.Count, speedBuffs.Count, activeBuff);
+
     }
 
 
@@ -300,29 +327,25 @@ public class InventorySystem : MonoBehaviour
         {
             hpAndArmor.TakeHeal(hpBuffs[0].GetComponent<BuffObject>().BuffStat.increase, hpBuffs[0].GetComponent<BuffObject>().BuffStat.type.ToString());
             hpBuffs.RemoveAt(0);
-            BuffsUi.UpdateBuffsUi(hpBuffs, armorBuffs, speedBuffs, activeBuff);
-            return;
 
         }
         else if (activeBuff == 1 && armorBuffs.Count != 0)
         {
             hpAndArmor.TakeHeal(armorBuffs[0].GetComponent<BuffObject>().BuffStat.increase, armorBuffs[0].GetComponent<BuffObject>().BuffStat.type.ToString());
             armorBuffs.RemoveAt(0);
-            BuffsUi.UpdateBuffsUi(hpBuffs, armorBuffs, speedBuffs, activeBuff);
-            return;
-
         }
         else if (activeBuff == 2 && speedBuffs.Count != 0)
         {
             speedBuffs.RemoveAt(0);
-            BuffsUi.UpdateBuffsUi(hpBuffs, armorBuffs, speedBuffs, activeBuff);
-            return;
         }
+
+        buffsSlotManager.DrawBuffs(hpBuffs.Count, armorBuffs.Count, speedBuffs.Count, activeBuff);
+
     }
 
     public void PickUpComponent(GameObject component)
     {
-        for (var i = 0; i < component.GetComponent<ComponentsObject>().componentStat.Count; i++)
+        for (int i = 0; i < component.GetComponent<ComponentsObject>().componentStat.Count; i++)
         {
             string type = component.GetComponent<ComponentsObject>().componentStat[i].type.ToString();
             switch (type){
@@ -349,6 +372,5 @@ public class InventorySystem : MonoBehaviour
 
             }
         }
-        
     }
 }

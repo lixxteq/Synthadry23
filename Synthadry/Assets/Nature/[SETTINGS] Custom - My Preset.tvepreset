@@ -1,0 +1,147 @@
+
+// Render Settings
+
+Material SET_FLOAT _RenderMode 0
+Material SET_FLOAT _RenderCull 0
+Material SET_FLOAT _RenderNormals 0
+//Material SET_FLOAT _RenderSpecular -9999
+
+//Material SET_FLOAT _RenderDirect -9999
+//Material SET_FLOAT _RenderShadow -9999
+//Material SET_FLOAT _RenderAmbient -9999
+
+Material SET_FLOAT _RenderClip 1
+//Material SET_FLOAT _RenderCoverage -9999
+Material SET_FLOAT _AlphaClipValue 0.1
+//Material SET_FLOAT _AlphaFeatherValue -9999
+Material SET_FLOAT _FadeConstantValue 0
+//Material SET_FLOAT _FadeVerticalValue -9999
+//Material SET_FLOAT _FadeHorizontalValue -9999
+Material SET_FLOAT _FadeGlancingValue 0
+Material SET_FLOAT _FadeCameraValue 1
+
+// Global Settings
+
+Material SET_FLOAT _LayerColorsValue 0
+Material SET_FLOAT _LayerExtrasValue 0
+Material SET_FLOAT _LayerMotionValue 0
+Material SET_FLOAT _LayerVertexValue 0
+
+Material SET_FLOAT _GlobalColors 0.5
+Material SET_FLOAT _GlobalAlpha 1
+Material SET_FLOAT _GlobalOverlay 0.4
+Material SET_FLOAT _GlobalWetness 1
+Material SET_FLOAT _GlobalEmissive 1
+Material SET_FLOAT _GlobalSize 0
+
+Material SET_FLOAT _ColorsVariationValue 0.7
+Material SET_FLOAT _AlphaVariationValue 0
+Material SET_FLOAT _OverlayVariationValue 0.5
+Material SET_FLOAT _ColorsMaskMode 0
+Material SET_FLOAT _ColorsPositionMode 0
+Material SET_FLOAT _ExtrasPositionMode 0
+
+// Main Settings
+
+Material SET_VECTOR _MainUVs 1 1 0 0
+
+Material SET_VECTOR _MainColor 1.741101 1.741101 1.741101 1
+Material SET_FLOAT _MainNormalValue 1
+//Material SET_FLOAT _MainMetallicValue -9999
+Material SET_FLOAT _MainOcclusionValue 1
+Material SET_FLOAT _MainSmoothnessValue 0.5
+Material SET_FLOAT _MainMaskMinValue 0
+Material SET_FLOAT _MainMaskMaxValue 0
+//Material SET_FLOAT _DetailMode -9999
+//Material SET_FLOAT _DetailBlendMode -9999
+//Material SET_FLOAT _DetailTypeMode -9999
+//Material SET_FLOAT _DetailCoordMode -9999
+
+//Material SET_VECTOR _SecondUVs -9999 0 0 0
+
+//Material SET_VECTOR _SecondColor -9999 0 0 0
+//Material SET_FLOAT _SecondNormalValue -9999
+//Material SET_FLOAT _SecondMetallicValue -9999
+//Material SET_FLOAT _SecondOcclusionValue -9999
+//Material SET_FLOAT _SecondSmoothnessValue -9999
+//Material SET_FLOAT _SecondMaskMinValue -9999
+//Material SET_FLOAT _SecondMaskMaxValue -9999
+
+//Material SET_FLOAT _DetailNormalValue -9999
+
+//Material SET_FLOAT _DetailMaskMode -9999
+//Material SET_FLOAT _DetailMaskInvertMode -9999
+//Material SET_FLOAT _DetailMeshValue -9999
+//Material SET_FLOAT _DetailBlendMinValue -9999
+//Material SET_FLOAT _DetailBlendMaxValue -9999
+
+// Occlusion Settings
+
+Material SET_VECTOR _VertexOcclusionColor 0.7169812 0.7169812 0.7169812 1
+Material SET_FLOAT _VertexOcclusionMinValue 0
+Material SET_FLOAT _VertexOcclusionMaxValue 1
+
+// Gradient Settings
+
+Material SET_VECTOR _GradientColorOne 1 1 1 1
+Material SET_VECTOR _GradientColorTwo 1 1 1 1
+Material SET_FLOAT _GradientMinValue 0
+Material SET_FLOAT _GradientMaxValue 1
+
+//Material SET_VECTOR _NoiseColorOne -9999 0 0 0
+//Material SET_VECTOR _NoiseColorTwo -9999 0 0 0
+//Material SET_FLOAT _NoiseMinValue -9999
+//Material SET_FLOAT _NoiseMaxValue -9999
+//Material SET_FLOAT _NoiseScaleValue -9999
+
+// Subsurface Settings
+
+Material SET_FLOAT _SubsurfaceValue 1
+
+Material SET_VECTOR _SubsurfaceColor 0.4761577 0.5283019 0.1819153 1
+
+Material SET_FLOAT _SubsurfaceScatteringValue 2
+Material SET_FLOAT _SubsurfaceAngleValue 2
+//Material SET_FLOAT _SubsurfaceNormalValue -9999
+//Material SET_FLOAT _SubsurfaceDirectValue -9999
+//Material SET_FLOAT _SubsurfaceAmbientValue -9999
+//Material SET_FLOAT _SubsurfaceShadowValue -9999
+
+// Emissive Settings
+
+Material SET_VECTOR _EmissiveUVs 1 1 0 0
+
+Material SET_VECTOR _EmissiveColor 0 0 0 1
+//Material SET_FLOAT _PerspectivePushValue -9999
+//Material SET_FLOAT _PerspectiveNoiseValue -9999
+//Material SET_FLOAT _PerspectiveAngleValue -9999
+//Material SET_FLOAT _SizeFadeStartValue -9999
+//Material SET_FLOAT _SizeFadeEndValue -9999
+
+// Motion Settings
+
+//Material SET_VECTOR _MotionHighlightColor -9999 0 0 0
+Material SET_FLOAT _MotionFacingValue 1
+Material SET_FLOAT _MotionObjectVariation 0
+
+Material SET_FLOAT _MotionAmplitude_10 1
+Material SET_FLOAT _MotionSpeed_10 0
+Material SET_FLOAT _MotionScale_10 1
+Material SET_FLOAT _MotionVariation_10 3
+
+Material SET_FLOAT _MotionAmplitude_20 0
+Material SET_FLOAT _MotionAmplitude_22 0.2
+Material SET_FLOAT _MotionSpeed_20 0
+Material SET_FLOAT _MotionScale_20 5
+Material SET_FLOAT _MotionVariation_20 10
+
+Material SET_FLOAT _MotionAmplitude_32 0.2
+Material SET_FLOAT _MotionSpeed_32 30
+Material SET_FLOAT _MotionScale_32 10
+Material SET_FLOAT _MotionVariation_32 0
+
+Material SET_FLOAT _InteractionAmplitude 1
+Material SET_FLOAT _InteractionMaskValue 1
+
+Material SET_FLOAT _MotionValue_20 1
+Material SET_FLOAT _MotionValue_30 1

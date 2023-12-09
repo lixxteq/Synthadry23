@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 6986671889028470685}
   - component: {fileID: 6986671889028470684}
   - component: {fileID: 1224668184424839771}
+  - component: {fileID: 7305490249728611517}
+  - component: {fileID: 7685930712000564839}
   m_Layer: 21
   m_Name: Armor
   m_TagString: Untagged
@@ -33,7 +35,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 31
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &6986671889028470682
 MeshFilter:
@@ -93,9 +95,17 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6986671889028470687}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 1
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1224668184424839771
@@ -112,3 +122,42 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BuffStat: {fileID: 11400000, guid: 166b95a6c7cfe2f4bac0af62d92ab7ae, type: 2}
   amount: 1
+--- !u!135 &7305490249728611517
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6986671889028470687}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 32505856
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 7.64
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7685930712000564839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6986671889028470687}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1f6af296b827f54a94c0f94d33cfd9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pointerParent: {fileID: 0}
+  tooltipPrefab: {fileID: 6475609759242172703, guid: ab8ed8251d795284c8b2f3fd3c3df524,
+    type: 3}
+  imageSize: {x: 60, y: 60}
+  fontSize: 27
+  lerpTime: 50

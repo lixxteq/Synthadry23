@@ -1,0 +1,34 @@
+{
+    "name": "PlayerInputActions",
+    "maps": [
+        {
+            "name": "Player",
+            "id": "32aaffc9-3932-4f90-b437-f6cf9d765a3a",
+            "actions": [
+                {
+                    "name": "HeadlightToggle",
+                    "type": "Button",
+                    "id": "dc505695-704b-46e5-bd84-5851b9d588c1",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "139186eb-3460-45ab-a19a-3a42270517fd",
+                    "path": "<Keyboard>/b",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "HeadlightToggle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
