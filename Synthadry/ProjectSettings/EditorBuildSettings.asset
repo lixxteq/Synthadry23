@@ -27,7 +27,7 @@ EditorBuildSettings:
     path: Assets/Scenes/First Scene Vladopol/First Scene.unity
     guid: 4f9397a32810db24e930d2e7d85d1a9e
   m_configObjects:
-    com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: ed1a3912b1bbe3c4690df7160156cf91,
+    com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: a0522bdd79985684587613472199d84d,
       type: 2}
     com.unity.adaptiveperformance.samsung.android.provider_settings: {fileID: 11400000,
       guid: a941258dafbc02f438b934cdb5722d4d, type: 2}
