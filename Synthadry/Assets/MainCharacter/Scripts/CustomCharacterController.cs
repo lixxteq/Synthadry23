@@ -14,7 +14,11 @@ public class CustomCharacterController : MonoBehaviour
     public Animator _anim;
     public Rigidbody rig;
     public Transform mainCamera;
-    
+
+    public float cameraAngleUp = -65;
+    public float cameraAngleDown = 65;
+
+
     public float jumpForce = 3.5f;
     public float walkingSpeed = 10f;
     public float runningSpeed = 15f;
@@ -143,7 +147,7 @@ public class CustomCharacterController : MonoBehaviour
     {
 
         xRotation -= _currentLook.y * Time.deltaTime * ySensitivity;
-        xRotation = Math.Clamp(xRotation, -80f, 80f);
+        xRotation = Math.Clamp(xRotation, cameraAngleUp, cameraAngleDown);
 
         mainCamera.transform.localRotation = Quaternion.Euler(xRotation, 0, 0);
         transform.Rotate(Vector3.up * (_currentLook.x * Time.deltaTime) * xSensitivity);

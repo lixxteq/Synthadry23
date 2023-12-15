@@ -22,13 +22,13 @@ MonoBehaviour:
   rotationOffset: {x: 5.08, y: -78, z: 3}
   downPositionOffset: {x: 0, y: 0, z: 0}
   downRotationOffset: {x: 0, y: 0, z: 0}
-  runPositionOffset: {x: -0.35, y: 2.5, z: 0.75}
+  runPositionOffset: {x: -0.35, y: 2.5, z: 0.77}
   runRotationOffset: {x: -21.2, y: -89.4, z: -24.2}
-  righHandIkPosition: {x: 0.77, y: 0.32, z: 0.82}
-  righHandIkRotation: {x: -0.55, y: 18.84, z: -8.502}
-  righHandIkPositionHint: {x: 1.83, y: 1.1, z: -3.2}
+  righHandIkPosition: {x: -1.39, y: 0.64, z: 1.67}
+  righHandIkRotation: {x: -64.37, y: 19, z: -21.42}
+  righHandIkPositionHint: {x: 28.02, y: -30.43, z: -6.97}
   righHandIkRotationHint: {x: -0.2, y: -1.8, z: 5.4}
-  leftHandIkPosition: {x: 1.06, y: 4.6, z: 0.9}
-  leftHandIkRotation: {x: 6, y: -68, z: 88}
+  leftHandIkPosition: {x: -8.1, y: -2.77, z: -32.7}
+  leftHandIkRotation: {x: -13.39, y: -95.6, z: 153.8}
   leftHandIkPositionHint: {x: -0.06, y: 2.045, z: 4.377}
   leftHandIkRotationHint: {x: -1.8, y: -166, z: 7.1}
