@@ -22,7 +22,7 @@ public class CustomCharacterControllerx : MonoBehaviour
     public float horisontal;
     public float vertical;
     private float lerpMulti = 7f;
-    private TakeInHand takeInHand;
+    // private TakeInHand takeInHand;
 
     public bool canGo = true;
 
@@ -33,12 +33,12 @@ public class CustomCharacterControllerx : MonoBehaviour
         {
             if (value)
             {
-                takeInHand.SetIk(endWeight: 0);
-                takeInHand.SetRunItemOffset();
+                // takeInHand.SetIk(endWeight: 0);
+                // takeInHand.SetRunItemOffset();
             } else
             {
-                takeInHand.SetIk(endWeight: 1);
-                takeInHand.SetRunItemOffset(stopRunning: true);
+                // takeInHand.SetIk(endWeight: 1);
+                // takeInHand.SetRunItemOffset(stopRunning: true);
             }
         }
     }
@@ -57,7 +57,7 @@ public class CustomCharacterControllerx : MonoBehaviour
         characterController = GetComponent<CharacterController>();
         this.GetComponent<CustomCharacterController>().enabled = false;
         this.GetComponent<CustomCharacterController>().enabled = true;
-        takeInHand = this.GetComponent<TakeInHand>();
+        // takeInHand = this.GetComponent<TakeInHand>();
     }
 
     void Run()

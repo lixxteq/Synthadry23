@@ -35,7 +35,7 @@ public class TakeInHand : MonoBehaviour
         weaponSlotManager.gameObject.SetActive(false);
     }
 
-    public void SetRunItemOffset(bool stopRunning = false) //переписать
+    public void SetRunItemOffset(bool stopRunning = false) //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     {
         if (itemInHand && gameObjectInHand)
         {
@@ -118,7 +118,7 @@ public class TakeInHand : MonoBehaviour
                     break;
                 case "revolver":
                     ClearLayersWeight();
-                    StartCoroutine(LerpSetWeight(1, endWeight)); //анимка винтовки смотрится лучше, чем пистолета
+                    StartCoroutine(LerpSetWeight(1, endWeight)); //пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
                     break;
                 default:
                     break;
@@ -132,7 +132,7 @@ public class TakeInHand : MonoBehaviour
     }
 
 
-    public void SetIk(ItemSO item = null, float endWeight = 0) //переписать
+    public void SetIk(ItemSO item = null, float endWeight = 0) //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     {
         try
         {
@@ -149,7 +149,7 @@ public class TakeInHand : MonoBehaviour
                 {
                     finalItem = itemInHand;
                 }
-                Debug.Log(finalItem);
+                // Debug.Log(finalItem);
                 if (finalItem)
                 {
                     if (endWeight == 1)

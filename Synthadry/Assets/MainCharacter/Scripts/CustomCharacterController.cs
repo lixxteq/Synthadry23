@@ -39,7 +39,7 @@ public class CustomCharacterController : MonoBehaviour
     public float horisontal;
     public float vertical;
     private float lerpMulti = 7f;
-    private TakeInHand takeInHand;
+    // private TakeInHand takeInHand;
 
     public bool canGo = true;
     public bool _isRunning = false;
@@ -74,7 +74,7 @@ public class CustomCharacterController : MonoBehaviour
         canvas = FindObjectOfType<Canvas>();
         this.GetComponent<CustomCharacterController>().enabled = false;
         this.GetComponent<CustomCharacterController>().enabled = true;
-        takeInHand = this.GetComponent<TakeInHand>();
+        // takeInHand = this.GetComponent<TakeInHand>();
     }
 
     // Группа методов PlayerInput (вызываются при вводе игрока)
@@ -131,13 +131,13 @@ public class CustomCharacterController : MonoBehaviour
         {
             if (value)
             {
-                takeInHand.SetIk(endWeight: 0);
-                takeInHand.SetRunItemOffset();
+                // takeInHand.SetIk(endWeight: 0);
+                // takeInHand.SetRunItemOffset();
             }
             else
             {
-                takeInHand.SetIk(endWeight: 1);
-                takeInHand.SetRunItemOffset(stopRunning: true);
+                // takeInHand.SetIk(endWeight: 1);
+                // takeInHand.SetRunItemOffset(stopRunning: true);
             }
             _isRunning = value;
         }
