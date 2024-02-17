@@ -7,7 +7,7 @@ public class PlayerRunState : PlayerBaseState
     public PlayerRunState(CustomCharacterController context, PlayerStateFactory stateFactory) : base (context, stateFactory){}
     public override void EnterState()
     {
-        _context._anim.SetBool("isRunning", true);
+        _context._anim.SetBool("IsRunning", true);
         Debug.Log("PState: enter Run");
     }
     public override void UpdateState()
@@ -34,7 +34,7 @@ public class PlayerRunState : PlayerBaseState
     public override void ExitState()
     {
         _context._anim.SetBool("RifleRunning", false);
-        _context._anim.SetBool("isRunning", false);
+        _context._anim.SetBool("IsRunning", false);
         Debug.Log("PState: exit Run");
     }
     public override void InitSubState() {

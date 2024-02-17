@@ -20,6 +20,7 @@ public class CustomCharacterController : MonoBehaviour
 
 
     public float jumpForce = 3.5f;
+    public float maxForce = 10f;
     public float walkingSpeed = 10f;
     public float runningSpeed = 15f;
     public float _currentSpeed = 0f;
@@ -53,6 +54,7 @@ public class CustomCharacterController : MonoBehaviour
     // player state related set / get methods
     public PlayerBaseState CurrentState { get {return _currentState;} set {_currentState = value;}}
     public CharacterController CharacterController { get {return _characterController;}}
+    public Animator Animator { get {return _anim;}}
     public Vector2 CurrentMovement { get {return _currentMovement;}}
     public bool IsJumping { get {return _isJumping;} set {_isJumping = value;}}
     public bool IsMoving { get {return _isMoving;} set {_isMoving = value;}}
@@ -90,7 +92,7 @@ public class CustomCharacterController : MonoBehaviour
 
     private void OnMove(InputValue value) {
         _currentMovement = value.Get<Vector2>();
-        _currentSpeed = walkingSpeed;
+        // _currentSpeed = walkingSpeed;
         IsMoving = _currentMovement.x != 0 || _currentMovement.y != 0;
     }
 
@@ -107,7 +109,7 @@ public class CustomCharacterController : MonoBehaviour
 
     private void Update()
     {
-        RotationController();
+        // RotationController();
         CurrentState.UpdateStates();
 
         // temporary workaround
@@ -145,7 +147,6 @@ public class CustomCharacterController : MonoBehaviour
 
     private void RotationController()
     {
-
         xRotation -= _currentLook.y * Time.deltaTime * ySensitivity;
         xRotation = Math.Clamp(xRotation, cameraAngleUp, cameraAngleDown);
 
