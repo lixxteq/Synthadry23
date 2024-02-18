@@ -1,4 +1,3 @@
-
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -32,7 +31,7 @@ public class CustomCharacterController : MonoBehaviour
     public Vector2 _appliedMovement = Vector2.zero;
     // Хранит rig.velocity в текущий фрейм
     public Vector3 _currentVelocity = Vector3.zero;
-    public Vector2 _currentLook;
+    // public Vector2 _currentLook;
     private float xRotation = 0f;
     public float ySensitivity = 2f;
     public float xSensitivity = 2f;
@@ -47,6 +46,7 @@ public class CustomCharacterController : MonoBehaviour
     public bool _isJumping = false;
     public bool _isMoving = false;
     private CharacterController _characterController;
+    private InputManager _inputManager;
     private PlayerInput _playerInput;
     private PlayerBaseState _currentState;
     private PlayerStateFactory _states;
@@ -73,6 +73,7 @@ public class CustomCharacterController : MonoBehaviour
 
     void Start()
     {
+        _inputManager = InputManager.Instance;
         canvas = FindObjectOfType<Canvas>();
         this.GetComponent<CustomCharacterController>().enabled = false;
         this.GetComponent<CustomCharacterController>().enabled = true;
@@ -96,9 +97,9 @@ public class CustomCharacterController : MonoBehaviour
         IsMoving = _currentMovement.x != 0 || _currentMovement.y != 0;
     }
 
-    private void OnLook(InputValue value) {
-        _currentLook = value.Get<Vector2>();
-    }
+    // private void OnLook(InputValue value) {
+        // _currentLook = value.Get<Vector2>();
+    // }
 
     private void OnRun(InputValue value) {
         IsRunning = value.isPressed;
@@ -145,12 +146,13 @@ public class CustomCharacterController : MonoBehaviour
         }
     }
 
+    // Поворачивает transform игрока при движении мыши
     private void RotationController()
     {
-        xRotation -= _currentLook.y * Time.deltaTime * ySensitivity;
-        xRotation = Math.Clamp(xRotation, cameraAngleUp, cameraAngleDown);
+        // xRotation -= _currentLook.y * Time.deltaTime * ySensitivity;
+        // xRotation = Math.Clamp(xRotation, cameraAngleUp, cameraAngleDown);
 
-        mainCamera.transform.localRotation = Quaternion.Euler(xRotation, 0, 0);
-        transform.Rotate(Vector3.up * (_currentLook.x * Time.deltaTime) * xSensitivity);
+        // mainCamera.transform.localRotation = Quaternion.Euler(xRotation, 0, 0);
+        transform.Rotate(Vector3.up * (_inputManager.GetCurrentLook().x * Time.deltaTime) * xSensitivity);
     }
 }

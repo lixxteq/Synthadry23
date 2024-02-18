@@ -17,5 +17,6 @@ public class MoveBodyHeadTarget : MonoBehaviour
     void Update()
     {
         gameObject.transform.position = mainCamera.position + offset;
+        
     }
 }
