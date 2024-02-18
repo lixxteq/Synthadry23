@@ -10,8 +10,8 @@ public class CameraController : MonoBehaviour
     public float sensitivityX = 2;
     public float sensitivityY = 2;
 
-    [SerializeField] private int maxAngleUp = 65; //вниз
-    [SerializeField] private int maxAngleDown = 65; //вверх
+    [SerializeField] private int maxAngleUp = 65; //пїЅпїЅпїЅпїЅ
+    [SerializeField] private int maxAngleDown = 65; //пїЅпїЅпїЅпїЅпїЅ
 
     Vector3 rot = new Vector3(0, 0, 0);
 
@@ -49,8 +49,8 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float sensitivityX = 2;
     [SerializeField] private float sensitivityY = 2;
 
-    [SerializeField] private int maxAngleUp = 65; //вниз
-    [SerializeField] private int maxAngleDown = 65; //вверх
+    [SerializeField] private int maxAngleUp = 65; //пїЅпїЅпїЅпїЅ
+    [SerializeField] private int maxAngleDown = 65; //пїЅпїЅпїЅпїЅпїЅ
 
     private Vector3 initialCameraPosition;
     Vector3 rot = new Vector3(0, 0, 0);
@@ -140,3 +140,4 @@ public class CameraController : MonoBehaviour
         }
     }
 }*/
+
