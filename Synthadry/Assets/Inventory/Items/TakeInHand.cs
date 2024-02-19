@@ -32,7 +32,8 @@ public class TakeInHand : MonoBehaviour
         mainGuns = player.GetComponent<InventorySystem>().mainGuns;
         playerAnimator = gameObject.GetComponent<Animator>();
         weaponSlotManager = GameObject.FindGameObjectWithTag("WeaponSlot").GetComponent<WeaponSlotManager>();
-        weaponSlotManager.gameObject.SetActive(false);
+        // weaponSlotManager.gameObject.SetActive(false);
+        weaponSlotManager.gameObject.GetComponent<CanvasGroup>().alpha = 0;
     }
 
     public void SetRunItemOffset(bool stopRunning = false) //����������
@@ -172,7 +173,6 @@ public class TakeInHand : MonoBehaviour
                     } else
                     {
                         mainIkRig.weight = 0;
-
                     }
                 }
             }

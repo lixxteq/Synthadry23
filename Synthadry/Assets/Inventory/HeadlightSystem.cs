@@ -12,7 +12,7 @@ public class HeadlightSystem : MonoBehaviour
 
     private void Start()
     {
-        inventorySystem = GetComponent<InventorySystem>();
+        inventorySystem = GameObject.FindGameObjectWithTag("Player").GetComponent<InventorySystem>();
     }
 
     private void FixedUpdate()

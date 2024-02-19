@@ -14,6 +14,11 @@ public class CinemachineCameraController : CinemachineExtension
         customCharacterController = player.GetComponent<CustomCharacterController>();
         base.Awake();
     }
+
+    public void PositionCorrection() {
+        startingRotation = player.transform.localRotation.eulerAngles;
+    }
+    
     protected override void PostPipelineStageCallback(CinemachineVirtualCameraBase vcam, CinemachineCore.Stage stage, ref CameraState state, float deltaTime)
     {
         if (vcam.Follow) {

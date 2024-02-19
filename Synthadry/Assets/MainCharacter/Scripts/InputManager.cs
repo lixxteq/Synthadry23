@@ -48,6 +48,7 @@ public class InputManager : MonoBehaviour
             CinemachineVirtualCamera fpc = GameObject.Find("FPS Camera").GetComponent<CinemachineVirtualCamera>();
             // GameObject tpc = GameObject.Find("TPS Camera");
             fpc.m_Priority = fpc.m_Priority > 0 ? 0 : 100;
+            fpc.gameObject.GetComponent<CinemachineCameraController>().PositionCorrection();
             Debug.Log("CameraSwitchEvent fired");
         }
     }

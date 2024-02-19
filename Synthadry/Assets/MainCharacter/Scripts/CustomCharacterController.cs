@@ -30,11 +30,11 @@ public class CustomCharacterController : MonoBehaviour
     public float ySensitivity = 2f;
     public float xSensitivity = 2f;
     private float lerpMulti = 7f;
-    // private TakeInHand takeInHand;
 
     public bool _isRunning = false;
     public bool _isJumping = false;
     public bool _isMoving = false;
+    private TakeInHand _takeInHand;
     private CharacterController _characterController;
     private InputManager _inputManager;
     private PlayerBaseState _currentState;
@@ -65,39 +65,15 @@ public class CustomCharacterController : MonoBehaviour
         _canvas = FindObjectOfType<Canvas>();
         // this.GetComponent<CustomCharacterController>().enabled = false;
         // this.GetComponent<CustomCharacterController>().enabled = true;
-        // takeInHand = this.GetComponent<TakeInHand>();
+        _takeInHand = this.GetComponent<TakeInHand>();
     }
 
     // Группа ивентов PlayerInput (вызываются при вводе игрока)
-    // private void OnEnable()
-    // {
-    //     _playerInput.ActivateInput();
-    // }
-
-    // private void OnJump(InputValue value) {
-    //     IsJumping = value.isPressed;
-    // }
-
-    // private void OnMove(InputValue value) {
-    //     // _currentMovement = value.Get<Vector2>();
-    //     // _currentSpeed = walkingSpeed;
-    //     // IsMoving = _currentMovement.x != 0 || _currentMovement.y != 0;
-    //     IsMoving = value.Get<Vector2>().magnitude == 0f;
-    // }
-
-    // private void OnRun(InputValue value) {
-    //     IsRunning = Convert.ToBoolean(value.Get<float>());
-    //     RifleIkHandler();
-    //     Debug.Log("run triggered");
-    // }
     public void OnJump(InputAction.CallbackContext ctx) {
         IsJumping = ctx.ReadValueAsButton();
     }
 
     public void OnMove(InputAction.CallbackContext ctx) {
-        // _currentMovement = value.Get<Vector2>();
-        // _currentSpeed = walkingSpeed;
-        // IsMoving = _currentMovement.x != 0 || _currentMovement.y != 0;
         IsMoving = ctx.ReadValue<Vector2>().magnitude != 0f;
     }
 
@@ -121,26 +97,6 @@ public class CustomCharacterController : MonoBehaviour
         RotationController();
     }
 
-
-    // public bool IsRunning //����������
-    // {
-    //     get { return _isRunning; }
-    //     set
-    //     {
-    //         if (value)
-    //         {
-    //             // takeInHand.SetIk(endWeight: 0);
-    //             // takeInHand.SetRunItemOffset();
-    //         }
-    //         else
-    //         {
-    //             // takeInHand.SetIk(endWeight: 1);
-    //             // takeInHand.SetRunItemOffset(stopRunning: true);
-    //         }
-    //         _isRunning = value;
-    //     }
-    // }
-
     // Поворачивает transform игрока при движении мыши
     private void RotationController()
     {
@@ -148,7 +104,7 @@ public class CustomCharacterController : MonoBehaviour
     }
 
     private void RifleIkHandler() {
-        // takeInHand.SetIk(endWeight: IsRunning ? 0 : 1);
-        // takeInHand.SetRunItemOffset(stopRunning: IsRunning);
+        _takeInHand.SetIk(endWeight: IsRunning ? 0 : 1);
+        _takeInHand.SetRunItemOffset(stopRunning: !IsRunning);
     }
 }
