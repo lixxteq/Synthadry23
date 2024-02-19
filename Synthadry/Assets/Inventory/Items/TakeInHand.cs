@@ -136,7 +136,7 @@ public class TakeInHand : MonoBehaviour
     {
         try
         {
-            if (playerAnimator.GetBool("isRunning"))
+            if (playerAnimator.GetBool("IsRunning"))
             {
                 mainIkRig.weight = 0;
             } else

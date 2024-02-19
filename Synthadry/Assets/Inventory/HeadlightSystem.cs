@@ -1,5 +1,6 @@
 using UnityEngine.UI;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class HeadlightSystem : MonoBehaviour
 {
@@ -14,27 +15,6 @@ public class HeadlightSystem : MonoBehaviour
         inventorySystem = GetComponent<InventorySystem>();
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            if (inventorySystem.haveHeadlight)
-            {
-                if (headLight.activeInHierarchy)
-                {
-                    headLight.SetActive(false);
-                }
-                else
-                {
-                    if (currentEnergy > 0)
-                    {
-                        headLight.SetActive(true);
-                    }
-                }
-            }
-        }
-    }
-
     private void FixedUpdate()
     {
         if (headLight.activeInHierarchy)
@@ -44,6 +24,24 @@ public class HeadlightSystem : MonoBehaviour
             if (currentEnergy <= 0)
             {
                 inventorySystem.UseBattery();
+            }
+        }
+    }
+
+    public void OnHeadlightToggle(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed && inventorySystem.haveHeadlight)
+        {
+            if (headLight.activeInHierarchy)
+            {
+                headLight.SetActive(false);
+            }
+            else
+            {
+                if (currentEnergy > 0)
+                {
+                    headLight.SetActive(true);
+                }
             }
         }
     }

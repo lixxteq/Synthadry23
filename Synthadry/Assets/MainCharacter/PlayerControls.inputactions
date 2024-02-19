@@ -1,5 +1,5 @@
 {
-    "name": "Player",
+    "name": "PlayerControls",
     "maps": [
         {
             "name": "Player",
@@ -29,7 +29,7 @@
                     "id": "a4123ec2-5023-4eac-af0b-6bf8e0dd3cec",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "Press(behavior=2)",
                     "initialStateCheck": false
                 },
                 {
@@ -56,13 +56,49 @@
                     "id": "68102354-4dd6-4492-94ad-b84fac8463a4",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "Press(behavior=2)",
                     "initialStateCheck": false
                 },
                 {
                     "name": "Notes",
                     "type": "Button",
                     "id": "28810b7d-5cce-4219-ab41-109c4e416b84",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Screenshot",
+                    "type": "Button",
+                    "id": "b955c667-a242-45b1-8826-782844425a36",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "CameraSwitch",
+                    "type": "Button",
+                    "id": "a4a3e0bc-2c8b-4acc-98e5-739f53e4df81",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ItemPickup",
+                    "type": "Button",
+                    "id": "bf5959e2-b797-41c4-9a31-dbcfb5d5c850",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ItemDrop",
+                    "type": "Button",
+                    "id": "5f52779f-933a-4c71-b3da-be148a8dd8f0",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -331,6 +367,50 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "Notes",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "351c0a2d-0c69-4ce1-a9cd-7a939f90243e",
+                    "path": "<Keyboard>/p",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Screenshot",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "89ef05e6-5517-4f1e-ae54-42b94602dc33",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "CameraSwitch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5e66212e-7272-4fa6-9981-199c9c5ef16e",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "ItemPickup",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "143c282d-0811-4d65-87ca-86dc29b3208e",
+                    "path": "<Keyboard>/g",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ItemDrop",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -18,7 +18,7 @@ public class CinemachineCameraController : CinemachineExtension
     {
         if (vcam.Follow) {
             if (stage == CinemachineCore.Stage.Aim) {
-                if (startingRotation == null) startingRotation = transform.localRotation.eulerAngles;
+                if (startingRotation == null) startingRotation = player.transform.localRotation.eulerAngles;
                 // currentLook is mouse delta. currentLook.x is same as Input.GetAxis("Mouse X"), currentLook.y is same as Input.GetAxis("Mouse Y")
                 Vector2 currentLook = inputManager.GetCurrentLook();
 

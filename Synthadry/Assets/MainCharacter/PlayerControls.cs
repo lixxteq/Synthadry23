@@ -51,7 +51,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""id"": ""a4123ec2-5023-4eac-af0b-6bf8e0dd3cec"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """",
+                    ""interactions"": ""Press(behavior=2)"",
                     ""initialStateCheck"": false
                 },
                 {
@@ -78,13 +78,49 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""id"": ""68102354-4dd6-4492-94ad-b84fac8463a4"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """",
+                    ""interactions"": ""Press(behavior=2)"",
                     ""initialStateCheck"": false
                 },
                 {
                     ""name"": ""Notes"",
                     ""type"": ""Button"",
                     ""id"": ""28810b7d-5cce-4219-ab41-109c4e416b84"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Screenshot"",
+                    ""type"": ""Button"",
+                    ""id"": ""b955c667-a242-45b1-8826-782844425a36"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""CameraSwitch"",
+                    ""type"": ""Button"",
+                    ""id"": ""a4a3e0bc-2c8b-4acc-98e5-739f53e4df81"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ItemPickup"",
+                    ""type"": ""Button"",
+                    ""id"": ""bf5959e2-b797-41c4-9a31-dbcfb5d5c850"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ItemDrop"",
+                    ""type"": ""Button"",
+                    ""id"": ""5f52779f-933a-4c71-b3da-be148a8dd8f0"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -353,6 +389,50 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Notes"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""351c0a2d-0c69-4ce1-a9cd-7a939f90243e"",
+                    ""path"": ""<Keyboard>/p"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Screenshot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""89ef05e6-5517-4f1e-ae54-42b94602dc33"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""CameraSwitch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5e66212e-7272-4fa6-9981-199c9c5ef16e"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""ItemPickup"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""143c282d-0811-4d65-87ca-86dc29b3208e"",
+                    ""path"": ""<Keyboard>/g"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ItemDrop"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -947,6 +1027,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_HeadlightToggle = m_Player.FindAction("HeadlightToggle", throwIfNotFound: true);
         m_Player_Run = m_Player.FindAction("Run", throwIfNotFound: true);
         m_Player_Notes = m_Player.FindAction("Notes", throwIfNotFound: true);
+        m_Player_Screenshot = m_Player.FindAction("Screenshot", throwIfNotFound: true);
+        m_Player_CameraSwitch = m_Player.FindAction("CameraSwitch", throwIfNotFound: true);
+        m_Player_ItemPickup = m_Player.FindAction("ItemPickup", throwIfNotFound: true);
+        m_Player_ItemDrop = m_Player.FindAction("ItemDrop", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1027,6 +1111,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_HeadlightToggle;
     private readonly InputAction m_Player_Run;
     private readonly InputAction m_Player_Notes;
+    private readonly InputAction m_Player_Screenshot;
+    private readonly InputAction m_Player_CameraSwitch;
+    private readonly InputAction m_Player_ItemPickup;
+    private readonly InputAction m_Player_ItemDrop;
     public struct PlayerActions
     {
         private @PlayerControls m_Wrapper;
@@ -1038,6 +1126,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @HeadlightToggle => m_Wrapper.m_Player_HeadlightToggle;
         public InputAction @Run => m_Wrapper.m_Player_Run;
         public InputAction @Notes => m_Wrapper.m_Player_Notes;
+        public InputAction @Screenshot => m_Wrapper.m_Player_Screenshot;
+        public InputAction @CameraSwitch => m_Wrapper.m_Player_CameraSwitch;
+        public InputAction @ItemPickup => m_Wrapper.m_Player_ItemPickup;
+        public InputAction @ItemDrop => m_Wrapper.m_Player_ItemDrop;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1068,6 +1160,18 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Notes.started += instance.OnNotes;
             @Notes.performed += instance.OnNotes;
             @Notes.canceled += instance.OnNotes;
+            @Screenshot.started += instance.OnScreenshot;
+            @Screenshot.performed += instance.OnScreenshot;
+            @Screenshot.canceled += instance.OnScreenshot;
+            @CameraSwitch.started += instance.OnCameraSwitch;
+            @CameraSwitch.performed += instance.OnCameraSwitch;
+            @CameraSwitch.canceled += instance.OnCameraSwitch;
+            @ItemPickup.started += instance.OnItemPickup;
+            @ItemPickup.performed += instance.OnItemPickup;
+            @ItemPickup.canceled += instance.OnItemPickup;
+            @ItemDrop.started += instance.OnItemDrop;
+            @ItemDrop.performed += instance.OnItemDrop;
+            @ItemDrop.canceled += instance.OnItemDrop;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1093,6 +1197,18 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Notes.started -= instance.OnNotes;
             @Notes.performed -= instance.OnNotes;
             @Notes.canceled -= instance.OnNotes;
+            @Screenshot.started -= instance.OnScreenshot;
+            @Screenshot.performed -= instance.OnScreenshot;
+            @Screenshot.canceled -= instance.OnScreenshot;
+            @CameraSwitch.started -= instance.OnCameraSwitch;
+            @CameraSwitch.performed -= instance.OnCameraSwitch;
+            @CameraSwitch.canceled -= instance.OnCameraSwitch;
+            @ItemPickup.started -= instance.OnItemPickup;
+            @ItemPickup.performed -= instance.OnItemPickup;
+            @ItemPickup.canceled -= instance.OnItemPickup;
+            @ItemDrop.started -= instance.OnItemDrop;
+            @ItemDrop.performed -= instance.OnItemDrop;
+            @ItemDrop.canceled -= instance.OnItemDrop;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1282,6 +1398,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnHeadlightToggle(InputAction.CallbackContext context);
         void OnRun(InputAction.CallbackContext context);
         void OnNotes(InputAction.CallbackContext context);
+        void OnScreenshot(InputAction.CallbackContext context);
+        void OnCameraSwitch(InputAction.CallbackContext context);
+        void OnItemPickup(InputAction.CallbackContext context);
+        void OnItemDrop(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
