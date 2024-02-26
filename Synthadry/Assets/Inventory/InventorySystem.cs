@@ -8,7 +8,7 @@ public class InventorySystem : MonoBehaviour
     [SerializeField] private Transform player;
     [SerializeField] private Canvas canvas;
 
-    private TakeInHand takeInHand;
+    private ItemsIK takeInHand;
     public bool haveHeadlight;
 
     public List<GameObject> mainGuns;
@@ -97,7 +97,7 @@ public class InventorySystem : MonoBehaviour
     void Start()
     {
         hpAndArmor = player.GetComponent<HPAndArmor>();
-        takeInHand = player.GetComponent<TakeInHand>();
+        takeInHand = player.GetComponent<ItemsIK>();
         weaponSlotManager = GameObject.FindGameObjectWithTag("WeaponSlot").GetComponent<WeaponSlotManager>();
         buffsSlotManager = GameObject.FindGameObjectWithTag("BuffsSlot").GetComponent<BuffsSlotManager>();
         buffsSlotManager.DrawBuffs(hpBuffs.Count, armorBuffs.Count, speedBuffs.Count, activeBuff);
