@@ -58,5 +58,9 @@ public class ItemSO : ScriptableObject
     public Vector3 leftHandIkPositionHint;
     public Vector3 leftHandIkRotationHint;
 
+    public Vector3 righHandIkPositionShoot;
+    public Vector3 righHandIkRotationShoot;
 
+    public Vector3 leftHandIkPositionShoot;
+    public Vector3 leftHandIkRotationShoot;
 }

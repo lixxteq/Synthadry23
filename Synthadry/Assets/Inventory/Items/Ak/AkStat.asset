@@ -32,3 +32,7 @@ MonoBehaviour:
   leftHandIkRotation: {x: -190.7, y: -0.06, z: 0.55}
   leftHandIkPositionHint: {x: 0, y: 0, z: 0}
   leftHandIkRotationHint: {x: 0, y: 0, z: 0}
+  righHandIkPositionShoot: {x: -0.8, y: -7.57, z: -0.18}
+  righHandIkRotationShoot: {x: -0.7, y: -200, z: -109.2}
+  leftHandIkPositionShoot: {x: 5.44, y: -11, z: -2.23}
+  leftHandIkRotationShoot: {x: -190.7, y: -0.06, z: 0.55}

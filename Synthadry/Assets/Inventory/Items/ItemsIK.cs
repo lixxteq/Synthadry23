@@ -162,6 +162,29 @@ public class ItemsIK : MonoBehaviour
             playerAnimator.SetLayerWeight(i, 0);
         }
     }
+    void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            SetIKPositionShoot(activeGunGameObject);
+        }
+    }
+    public void SetIKPositionShoot(GameObject activeGunGameObject)
+    {
 
+        ItemSO finalItem = activeGunGameObject.GetComponent<ItemObject>().itemStat;
 
+        ikLeftHandHint.localPosition = finalItem.leftHandIkPositionHint;
+        ikLeftHandHint.localRotation = Quaternion.Euler(finalItem.leftHandIkRotationHint);
+
+        ikLeftHandTarget.localPosition = finalItem.leftHandIkPositionShoot;
+        ikLeftHandTarget.localRotation = Quaternion.Euler(finalItem.leftHandIkRotationShoot);
+
+        ikRightHandHint.localPosition = finalItem.righHandIkPositionHint;
+        ikRightHandHint.localRotation = Quaternion.Euler(finalItem.righHandIkRotationHint);
+
+        ikRightHandTarget.localPosition = finalItem.righHandIkPositionShoot;
+        ikRightHandTarget.localRotation = Quaternion.Euler(finalItem.righHandIkRotationShoot);
+        SetWeaponIKRig(1); 
+    }
 }
