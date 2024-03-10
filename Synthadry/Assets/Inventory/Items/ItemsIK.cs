@@ -27,8 +27,6 @@ public class ItemsIK : MonoBehaviour
     public Transform ikLeftHandTarget;
     public Transform ikLeftHandHint;
 
-
-
     public Rig weaponIkRig;
 
 
@@ -74,10 +72,7 @@ public class ItemsIK : MonoBehaviour
 
             activeGunGameObject.SetActive(true);
 
-            weaponSlotManager.ChangeActiveWeapon(mainGuns[activeGun].GetComponent<ItemObject>());
-            Debug.Log("end");
-            Debug.Log(activeGunGameObject);
-
+            weaponSlotManager.ChangeActiveWeapon(activeGunGameObject.GetComponent<ItemObject>());
         }
         catch
         {
@@ -162,19 +157,13 @@ public class ItemsIK : MonoBehaviour
             playerAnimator.SetLayerWeight(i, 0);
         }
     }
-    void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            SetIKPositionShoot(activeGunGameObject);
-        }
-    }
+
     public void SetIKPositionShoot(GameObject activeGunGameObject)
     {
 
         ItemSO finalItem = activeGunGameObject.GetComponent<ItemObject>().itemStat;
 
-        ikLeftHandHint.localPosition = finalItem.leftHandIkPositionHint;
+        ikLeftHandHint.localPosition = Vector3.Lerp(ikLeftHandHint.localPosition, finalItem.leftHandIkPositionHint, 1f);
         ikLeftHandHint.localRotation = Quaternion.Euler(finalItem.leftHandIkRotationHint);
 
         ikLeftHandTarget.localPosition = finalItem.leftHandIkPositionShoot;
@@ -187,4 +176,5 @@ public class ItemsIK : MonoBehaviour
         ikRightHandTarget.localRotation = Quaternion.Euler(finalItem.righHandIkRotationShoot);
         SetWeaponIKRig(1); 
     }
+
 }

@@ -2,15 +2,19 @@ using TMPro;
 using UnityEngine;
 using System;
 using UnityEditor;
+using UnityEditor.ShaderGraph.Drawing;
+using System.Collections;
+using System.Xml.Serialization;
 
 public class ItemObject : MonoBehaviour
 {
     public ItemSO itemStat;
     private GameObject player;
     private GameObject canvas;
+    private WeaponSlotManager weaponSlotManager;
 
     [Header("0 - 100")]
-    public float damage; 
+    public float damage;
     public float rateOfFire; //��������� � �������
 
     public int currentAmmo = 5;
@@ -57,10 +61,28 @@ public class ItemObject : MonoBehaviour
     public GameObject light;
     public GameObject aim;
 
+    private ItemsIK itemsIK;
+
+
+    private void OnEnable()
+    {
+        StartCoroutine("Attack");
+
+    }
+
+    private void OnDisable()
+    {
+        StopCoroutine("Attack");
+    }
+
+
+
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
         canvas = GameObject.FindGameObjectWithTag("MainCanvas");
+        itemsIK = player.GetComponent<ItemsIK>();
+        weaponSlotManager = GameObject.FindGameObjectWithTag("WeaponSlot").GetComponent<WeaponSlotManager>();
     }
 
     public void Shoot()
@@ -69,8 +91,13 @@ public class ItemObject : MonoBehaviour
         
         if (currentAmmo > 0)
         {
-            fireFx.Play();
-            shootSound.Play(0);
+           // itemsIK.SetIKPositionShoot(gameObject);
+            
+
+
+            Debug.Log("пиу");
+            //fireFx.Play();
+            //shootSound.Play(0);
             RaycastHit hit;
             Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
             bool isHit = Physics.Raycast(ray, out hit, range);
@@ -92,7 +119,11 @@ public class ItemObject : MonoBehaviour
                 }
             }
             currentAmmo -= 1;
-/*            SpawnBullet();*/
+            /*            SpawnBullet();*/
+
+            weaponSlotManager.ChangeActiveWeapon(this);
+            StartCoroutine("AttackAnimation");
+
 
         }
         else
@@ -101,6 +132,22 @@ public class ItemObject : MonoBehaviour
         }
 
 
+    }
+
+    IEnumerator AttackAnimation()
+    {
+        ItemSO.Name weaponName = itemStat.name;
+        
+        switch (weaponName)
+        {
+            case ItemSO.Name.ak:
+                player.GetComponent<Animator>().Play("akShoot");
+                yield return new WaitForSeconds(GetComponent<Animation>()["clip"].length * GetComponent<Animation>()["clip"].speed);
+                break;
+
+            default: break;
+        
+        }
     }
 
     void SpawnBullet()
@@ -118,19 +165,64 @@ public class ItemObject : MonoBehaviour
 
     public void CheckItemParams()
     {
-        if (itemStat.type is ItemSO.Type.firearms)
+
+        if (player.GetComponent<InventorySystem>().mainGuns.IndexOf(gameObject) != -1)
         {
-            Shoot();
+            if (itemStat.type is ItemSO.Type.firearms)
+            {
+                Shoot();
+            }
+        }
+    }
+
+    private IEnumerator Attack()
+    {
+        Debug.Log("attack");
+
+        while (true)
+        {
+            Debug.Log("1234");
+
+            while (Input.GetMouseButton(0))
+            {
+                Debug.Log("5678");
+                CheckItemParams();
+                yield return new WaitForSeconds(60 / rateOfFire);
+            }
+
+
+            yield return new WaitForEndOfFrame();
         }
     }
 
     private void Update()
     {
         
-/*        if (Input.GetMouseButtonDown(0) && !player.GetComponent<CustomCharacterController>().isRunning && canvas.activeInHierarchy)
+        /* if (attackDelay > 0)
         {
-            
-        }*/
+            canAttack = false;
+            attackDelay -= Time.deltaTime;
+        } else
+        {
+            canAttack = true;
+        }
+
+        if (Input.GetMouseButtonDown(0) && !player.GetComponent<CustomCharacterController>()._isRunning && canvas.activeInHierarchy && canAttack)
+        {
+            isSpraing = true; 
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            isSpraing = false;
+        }
+
+        if (isSpraing)
+        {
+            CheckItemParams();
+            canAttack = false;
+        }
+        */
 
         // if (Input.GetKeyDown(KeyCode.B))
         // {
