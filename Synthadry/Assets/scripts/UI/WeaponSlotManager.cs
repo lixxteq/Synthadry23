@@ -23,7 +23,6 @@ public class WeaponSlotManager : MonoBehaviour
             gameObject.GetComponent<CanvasGroup>().alpha = 1;
             weaponImage.sprite = weapon.itemStat.iconActive1K;
             weaponImage.SetNativeSize();
-            Debug.Log(weapon.currentAmmo);
             currentBulletsCount.SetText(weapon.currentAmmo.ToString());
             allBulletsCount.SetText(weapon.allAmmo.ToString());
             

@@ -48,13 +48,15 @@ public class ItemObject : MonoBehaviour
     [Header("��������")]
     public GameObject bulletPref;
     public Vector3 bulletRotation;
-    public GameObject bulletTracer;
     public Vector3 bulletOutForce;
     public int bulletAlive;
     public Transform bulletSpawnPoint;
     public AudioSource shootSound;
 
-    public ParticleSystem fireFx;
+    public ParticleSystem flameFx;
+    public ParticleSystem smokeFx;
+    public ParticleSystem muzzleFlashFx;
+
 
     [Header("������")]
     public GameObject lantern;
@@ -75,6 +77,13 @@ public class ItemObject : MonoBehaviour
         StopCoroutine("Attack");
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            Reload();
+        }
+    }
 
 
     private void Start()
@@ -83,6 +92,23 @@ public class ItemObject : MonoBehaviour
         canvas = GameObject.FindGameObjectWithTag("MainCanvas");
         itemsIK = player.GetComponent<ItemsIK>();
         weaponSlotManager = GameObject.FindGameObjectWithTag("WeaponSlot").GetComponent<WeaponSlotManager>();
+    }
+
+    void Reload()
+    {
+        allAmmo = allAmmo + currentAmmo;
+        currentAmmo = 0;
+        if (allAmmo - maximumAmmo > 0)
+        {
+            currentAmmo = maximumAmmo;
+            allAmmo -= currentAmmo;
+        }
+        else
+        {
+            currentAmmo = allAmmo;
+            allAmmo = 0;
+        }
+        weaponSlotManager.ChangeActiveWeapon(this);
     }
 
     public void Shoot()
@@ -96,8 +122,12 @@ public class ItemObject : MonoBehaviour
 
 
             Debug.Log("пиу");
-            //fireFx.Play();
-            //shootSound.Play(0);
+
+            if (flameFx) flameFx.Play();
+            if (smokeFx) smokeFx.Play();
+            if (muzzleFlashFx) muzzleFlashFx.Play();
+
+            if (shootSound) shootSound.Play(0);
             RaycastHit hit;
             Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
             bool isHit = Physics.Raycast(ray, out hit, range);
@@ -119,7 +149,7 @@ public class ItemObject : MonoBehaviour
                 }
             }
             currentAmmo -= 1;
-            /*            SpawnBullet();*/
+            SpawnBullet();
 
             weaponSlotManager.ChangeActiveWeapon(this);
             StartCoroutine("AttackAnimation");
@@ -141,8 +171,8 @@ public class ItemObject : MonoBehaviour
         switch (weaponName)
         {
             case ItemSO.Name.ak:
-                player.GetComponent<Animator>().Play("akShoot");
-                yield return new WaitForSeconds(GetComponent<Animation>()["clip"].length * GetComponent<Animation>()["clip"].speed);
+                //player.GetComponent<Animator>().Play("akShoot");
+                yield return null;
                 break;
 
             default: break;
@@ -153,20 +183,16 @@ public class ItemObject : MonoBehaviour
     void SpawnBullet()
     {
         GameObject bullet = Instantiate(bulletPref, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
-        bullet.GetComponent<Rigidbody>().velocity = bulletSpawnPoint.right * 100f;
-        GameObject bulletTrace = Instantiate(bulletTracer, bulletSpawnPoint.position, Quaternion.identity);
-
-        bulletTrace.transform.SetParent(bullet.transform);
-
+        bullet.GetComponent<Rigidbody>().velocity = bulletSpawnPoint.up * 100f;
+        
         Destroy(bullet, bulletAlive);
-        Destroy(bulletTrace, bulletAlive);
 
     }
 
     public void CheckItemParams()
     {
 
-        if (player.GetComponent<InventorySystem>().mainGuns.IndexOf(gameObject) != -1)
+        if (currentAmmo > 0)
         {
             if (itemStat.type is ItemSO.Type.firearms)
             {
@@ -177,71 +203,22 @@ public class ItemObject : MonoBehaviour
 
     private IEnumerator Attack()
     {
-        Debug.Log("attack");
 
         while (true)
         {
-            Debug.Log("1234");
 
-            while (Input.GetMouseButton(0))
+            if (Input.GetMouseButton(0) && player.GetComponent<InventorySystem>().mainGuns.IndexOf(gameObject) != -1)
             {
-                Debug.Log("5678");
+                Debug.Log("IEnumerator Attack");
                 CheckItemParams();
+
                 yield return new WaitForSeconds(60 / rateOfFire);
             }
 
 
+
             yield return new WaitForEndOfFrame();
         }
-    }
-
-    private void Update()
-    {
-        
-        /* if (attackDelay > 0)
-        {
-            canAttack = false;
-            attackDelay -= Time.deltaTime;
-        } else
-        {
-            canAttack = true;
-        }
-
-        if (Input.GetMouseButtonDown(0) && !player.GetComponent<CustomCharacterController>()._isRunning && canvas.activeInHierarchy && canAttack)
-        {
-            isSpraing = true; 
-        }
-
-        if (Input.GetMouseButtonUp(0))
-        {
-            isSpraing = false;
-        }
-
-        if (isSpraing)
-        {
-            CheckItemParams();
-            canAttack = false;
-        }
-        */
-
-        // if (Input.GetKeyDown(KeyCode.B))
-        // {
-        //     if (gameObject.activeInHierarchy)
-        //     {
-        //         if (lantern.activeInHierarchy)
-        //         {
-        //             if (!light.activeInHierarchy)
-        //             {
-        //                 light.SetActive(true);
-        //             }
-        //             else
-        //             {
-        //                 light.SetActive(false);
-        //             }
-        //         }
-        //     }
-        // }
-
     }
 
     public void AddLantern()
