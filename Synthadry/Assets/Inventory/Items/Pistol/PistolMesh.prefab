@@ -9881,7 +9881,7 @@ MonoBehaviour:
   bulletOutForce: {x: 0, y: 0, z: 0}
   bulletAlive: 0
   bulletSpawnPoint: {fileID: 7183856140982142479}
-  shootSound: {fileID: 0}
+  shootSound: {fileID: 2446766759559315575}
   flameFx: {fileID: 7678315974707043798}
   smokeFx: {fileID: 7912469859340350194}
   muzzleFlashFx: {fileID: 8697860530755785111}
