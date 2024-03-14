@@ -9,23 +9,27 @@ public class PlayerGroundedState : PlayerBaseState
     public override void EnterState()
     {
         Debug.Log("PState: enter Grounded");
+        _context.Animator.SetBool("IsGrounded", true);
     }
     public override void UpdateState()
     {
         CheckSwitchStates();
-    }
-    public override void FixedUpdateState()
-    {
         // workaround for falling w/o jump
         if (!_context.CharacterController.isGrounded)
         {
             _context._currentVelocity.y += _context.gravity * Time.deltaTime;
-            _context.CharacterController.Move(_context._currentVelocity * Time.deltaTime);
+            Vector3 gravityMove = new Vector3(0, _context._currentVelocity.y, 0);
+            _context.CharacterController.Move(gravityMove * Time.deltaTime);
         }
+    }
+    public override void FixedUpdateState()
+    {
+        
     }
     public override void ExitState()
     {
         Debug.Log("PState: exit Grounded");
+        _context.Animator.SetBool("IsGrounded", false);
     }
     public override void InitSubState() {
         if (!_context.IsMoving && !_context.IsRunning) {
