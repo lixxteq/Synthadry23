@@ -40,7 +40,7 @@ public class PlayerWalkState : PlayerBaseState
         CheckSwitchStates();
         _context._appliedMovement = new Vector2(_context.InputM.GetCurrentMovement().x, _context.InputM.GetCurrentMovement().y);
 
-        Vector3 movingVector = new Vector3(_context.InputM.GetCurrentMovement().x, 0, _context.InputM.GetCurrentMovement().y);
+        Vector3 movingVector = new Vector3(_context.InputM.GetCurrentMovement().x, 0, _context.InputM.GetCurrentMovement().y).normalized;
         _context._currentSpeed = Mathf.Lerp(_context._currentSpeed, _context.walkingSpeed, Time.deltaTime * _context.acceleration);
 
         _context._currentVelocity.x = Mathf.Lerp(_context._currentVelocity.x, movingVector.x, Time.deltaTime * 7.0f);
