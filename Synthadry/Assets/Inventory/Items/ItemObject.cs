@@ -5,6 +5,7 @@ using UnityEditor;
 // using UnityEditor.ShaderGraph.Drawing;
 using System.Collections;
 using System.Xml.Serialization;
+using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
 
 public class ItemObject : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class ItemObject : MonoBehaviour
     [Header("0 - 100")]
     public float damage;
     public float rateOfFire; //��������� � �������
+
 
     public int currentAmmo = 5;
     public int allAmmo = 20;
@@ -65,10 +67,20 @@ public class ItemObject : MonoBehaviour
 
     private ItemsIK itemsIK;
 
+    private bool lanternEnabled = false;
+    private Camera mainCamera;
+
 
     private void OnEnable()
     {
         StartCoroutine("Attack");
+        if (light.GetComponent<Light>().enabled)
+        {
+            lanternEnabled = true;
+        } else
+        {
+            lanternEnabled = false;
+        }
 
     }
 
@@ -92,7 +104,9 @@ public class ItemObject : MonoBehaviour
         canvas = GameObject.FindGameObjectWithTag("MainCanvas");
         itemsIK = player.GetComponent<ItemsIK>();
         weaponSlotManager = GameObject.FindGameObjectWithTag("WeaponSlot").GetComponent<WeaponSlotManager>();
+        mainCamera = Camera.main;
     }
+
 
     void Reload()
     {
@@ -135,7 +149,7 @@ public class ItemObject : MonoBehaviour
             {
                 onlyOneHit = false;
                 Collider hitObject = hit.collider;
-                Debug.Log("� ����� � " + hitObject);
+                Debug.Log(hitObject);
                 if (hitObject.CompareTag("Enemy"))
                 {
                     if (hitObject.TryGetComponent<EnemyDamage>(out EnemyDamage enemyDamage))
@@ -152,9 +166,7 @@ public class ItemObject : MonoBehaviour
             SpawnBullet();
 
             weaponSlotManager.ChangeActiveWeapon(this);
-            StartCoroutine("AttackAnimation");
-
-
+            itemsIK.Recoil(itemStat, 60 / (rateOfFire * itemStat.recoilSpeedMultiplier));
         }
         else
         {
@@ -164,19 +176,16 @@ public class ItemObject : MonoBehaviour
 
     }
 
-    IEnumerator AttackAnimation()
+    void ToggleLantern()
     {
-        ItemSO.Name weaponName = itemStat.name;
-        
-        switch (weaponName)
+        if (lanternEnabled)
         {
-            case ItemSO.Name.ak:
-                //player.GetComponent<Animator>().Play("akShoot");
-                yield return null;
-                break;
-
-            default: break;
-        
+            lanternEnabled = false;
+            light.GetComponent<Light>().enabled = true;
+        } else
+        {
+            lanternEnabled = true;
+            light.GetComponent<Light>().enabled = false;
         }
     }
 
@@ -191,14 +200,28 @@ public class ItemObject : MonoBehaviour
 
     public void CheckItemParams()
     {
-
-        if (currentAmmo > 0)
+        ItemSO.Type type = itemStat.type;
+        switch (type)
         {
-            if (itemStat.type is ItemSO.Type.firearms)
-            {
-                Shoot();
-            }
+            case ItemSO.Type.firearms:
+                if (currentAmmo > 0)
+                {
+                    Shoot();
+                }
+                break;
+            case ItemSO.Type.coldWeapons:
+                if (itemStat.name is ItemSO.Name.flashlight)
+                {
+                    ToggleLantern();
+                }
+
+                break;
+
+            default:
+                break;
         }
+
+
     }
 
     private IEnumerator Attack()

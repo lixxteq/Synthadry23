@@ -32,7 +32,9 @@ MonoBehaviour:
   leftHandIkRotation: {x: -11.4, y: -195.7, z: 190.6}
   leftHandIkPositionHint: {x: 1.77, y: -3, z: 2.86}
   leftHandIkRotationHint: {x: 0, y: 0, z: 0}
-  righHandIkPositionShoot: {x: -2.85, y: -8.15, z: -1.5}
-  righHandIkRotationShoot: {x: 81.32, y: 179.4, z: 282.6}
-  leftHandIkPositionShoot: {x: 4.8, y: -11, z: -1.13}
-  leftHandIkRotationShoot: {x: -11.4, y: -195.7, z: 190.6}
+  righHandIkPositionShoot: {x: -2.78, y: -8.18, z: -0.91}
+  righHandIkRotationShoot: {x: 97.858, y: -2, z: 120.1}
+  leftHandIkPositionShoot: {x: 3.97, y: -10.9, z: -0.76}
+  leftHandIkRotationShoot: {x: -163.5, y: 29.489, z: -1.45}
+  recoilSpeedMultiplier: 7
+  cameraShakeMultiplier: 2

@@ -21,6 +21,8 @@ public class ItemsIK : MonoBehaviour
 
     private ItemSO itemInHand;
     private GameObject gameObjectInHand;
+    public Transform ikHeadTarget;
+
 
     public Transform ikRightHandTarget;
     public Transform ikRightHandHint;
@@ -52,6 +54,7 @@ public class ItemsIK : MonoBehaviour
             {
                 gun.SetActive(false);
             }
+            StopAllCoroutines();
 
             activeGunGameObject = mainGuns[activeGun];
             ItemSO itemSO = activeGunGameObject.GetComponent<ItemObject>().itemStat;
@@ -97,6 +100,9 @@ public class ItemsIK : MonoBehaviour
 
         ikRightHandTarget.localPosition = finalItem.righHandIkPosition;
         ikRightHandTarget.localRotation = Quaternion.Euler(finalItem.righHandIkRotation);
+
+        activeGunGameObject.transform.localPosition = finalItem.positionOffset;
+        activeGunGameObject.transform.localRotation = Quaternion.Euler(finalItem.rotationOffset); 
         SetWeaponIKRig(1);
     }
 
@@ -158,23 +164,100 @@ public class ItemsIK : MonoBehaviour
         }
     }
 
-    public void SetIKPositionShoot(GameObject activeGunGameObject)
+
+    public void Recoil(ItemSO itemStat, float duration)
     {
+        StartCoroutine(RecoilBack(itemStat, duration));
+    }
 
-        ItemSO finalItem = activeGunGameObject.GetComponent<ItemObject>().itemStat;
+    Vector3 GenerateRecoilVector(float multiplier)
+    {
+        Vector3 recoilRotation;
+        recoilRotation.x = Random.Range(-1.0f, 1.0f) * multiplier;
+        recoilRotation.y = Random.Range(-1.0f, 1.0f) * multiplier;
+        recoilRotation.z = 0;
 
-        ikLeftHandHint.localPosition = Vector3.Lerp(ikLeftHandHint.localPosition, finalItem.leftHandIkPositionHint, 1f);
-        ikLeftHandHint.localRotation = Quaternion.Euler(finalItem.leftHandIkRotationHint);
+        return recoilRotation;
+    }
 
-        ikLeftHandTarget.localPosition = finalItem.leftHandIkPositionShoot;
-        ikLeftHandTarget.localRotation = Quaternion.Euler(finalItem.leftHandIkRotationShoot);
+    IEnumerator RecoilBack(ItemSO itemStat, float duration)
+    {
+        float time = 0;
+        Vector3 startPositionLeftHand = ikLeftHandTarget.localPosition;
+        Vector3 startPositionRightHand = ikRightHandTarget.localPosition;
 
-        ikRightHandHint.localPosition = finalItem.righHandIkPositionHint;
-        ikRightHandHint.localRotation = Quaternion.Euler(finalItem.righHandIkRotationHint);
+        Quaternion startRotationLeftHand = ikLeftHandTarget.localRotation;
+        Quaternion startRotationRightHand = ikRightHandTarget.localRotation;
 
-        ikRightHandTarget.localPosition = finalItem.righHandIkPositionShoot;
-        ikRightHandTarget.localRotation = Quaternion.Euler(finalItem.righHandIkRotationShoot);
-        SetWeaponIKRig(1); 
+
+
+        Vector3 targetPositionLeftHand = itemStat.leftHandIkPositionShoot;
+        Vector3 targetPositionRightHand  = itemStat.righHandIkPositionShoot;
+
+        Vector3 startIkHeadTarget = ikHeadTarget.localPosition;
+        Vector3 targetIkHeadTarget = startIkHeadTarget + GenerateRecoilVector(itemStat.cameraShakeMultiplier);
+
+
+        while (time < duration)
+        {
+            ikLeftHandTarget.localPosition = Vector3.Lerp(startPositionLeftHand, targetPositionLeftHand, time / duration);
+            ikRightHandTarget.localPosition = Vector3.Lerp(startPositionRightHand, targetPositionRightHand, time / duration);
+
+            ikLeftHandTarget.localRotation = Quaternion.Lerp(startRotationLeftHand, Quaternion.Euler(itemStat.leftHandIkRotationShoot), time / duration);
+            ikRightHandTarget.localRotation = Quaternion.Lerp(startRotationRightHand, Quaternion.Euler(itemStat.righHandIkRotationShoot), time / duration);
+
+            ikHeadTarget.localPosition = Vector3.Lerp(startIkHeadTarget, targetIkHeadTarget, time / duration);
+
+
+            time += Time.deltaTime;
+            yield return null;
+        }
+        ikLeftHandTarget.localPosition = targetPositionLeftHand;
+        ikRightHandTarget.localPosition = targetPositionRightHand;
+        ikLeftHandTarget.localRotation = Quaternion.Euler(itemStat.leftHandIkRotationShoot);
+        ikRightHandTarget.localRotation = Quaternion.Euler(itemStat.righHandIkRotationShoot);
+
+        ikHeadTarget.localPosition = targetIkHeadTarget;
+
+        yield return StartCoroutine(RecoilForward(itemStat, duration));
+    }
+
+    IEnumerator RecoilForward(ItemSO itemStat, float duration)
+    {
+        float time = 0;
+        Vector3 startPositionLeftHand = ikLeftHandTarget.localPosition;
+        Vector3 startPositionRightHand = ikRightHandTarget.localPosition;
+
+        Quaternion startRotationLeftHand = ikLeftHandTarget.localRotation;
+        Quaternion startRotationRightHand = ikRightHandTarget.localRotation;
+
+        Vector3 targetPositionLeftHand = itemStat.leftHandIkPosition;
+        Vector3 targetPositionRightHand = itemStat.righHandIkPosition;
+
+        Vector3 startIkHeadTarget = ikHeadTarget.localPosition;
+        Vector3 targetIkHeadTarget = new Vector3(0, 0, 14);
+
+        while (time < duration)
+        {
+            ikLeftHandTarget.localPosition = Vector3.Lerp(startPositionLeftHand, targetPositionLeftHand, time / duration);
+            ikRightHandTarget.localPosition = Vector3.Lerp(startPositionRightHand, targetPositionRightHand, time / duration);
+
+            ikLeftHandTarget.localRotation = Quaternion.Lerp(startRotationLeftHand, Quaternion.Euler(itemStat.leftHandIkRotation), time / duration);
+            ikRightHandTarget.localRotation = Quaternion.Lerp(startRotationRightHand, Quaternion.Euler(itemStat.righHandIkRotation), time / duration);
+
+            ikHeadTarget.localPosition = Vector3.Lerp(startIkHeadTarget, targetIkHeadTarget, time / duration);
+
+
+            time += Time.deltaTime;
+            yield return null;
+        }
+        ikLeftHandTarget.localPosition = targetPositionLeftHand;
+        ikRightHandTarget.localPosition = targetPositionRightHand;
+        ikLeftHandTarget.localRotation = Quaternion.Euler(itemStat.leftHandIkRotation);
+        ikRightHandTarget.localRotation = Quaternion.Euler(itemStat.righHandIkRotation);
+
+        ikHeadTarget.localPosition = targetIkHeadTarget;
+
     }
 
 }

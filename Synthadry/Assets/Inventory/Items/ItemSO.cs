@@ -9,7 +9,8 @@ public class ItemSO : ScriptableObject
     {
         ak,
         revolver,
-        sword
+        sword,
+        flashlight
     }
 
 
@@ -63,4 +64,7 @@ public class ItemSO : ScriptableObject
 
     public Vector3 leftHandIkPositionShoot;
     public Vector3 leftHandIkRotationShoot;
+
+    public float recoilSpeedMultiplier = 1;
+    public float cameraShakeMultiplier = 0;
 }

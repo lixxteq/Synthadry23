@@ -6,19 +6,19 @@ using UnityEngine.InputSystem;
 
 public class Screenshot : MonoBehaviour
 {
-    // void Update()
-    // {
-    //     if (Input.GetKeyDown("p"))
-    //     {
-    //         ScreenCapture.CaptureScreenshot("C://Users/artemGame/Desktop/screenshot" + System.DateTime.Now.ToString("MM-dd-yy (HH-mm-ss)") + ".png", 4);
-    //         Debug.Log("A screenshot was taken!");
-    //     }
-    // }
+     void Update()
+     {
+        if (Input.GetKeyDown("p"))
+         {
+             ScreenCapture.CaptureScreenshot("C://Users/artemGame/Desktop/screenshot" + System.DateTime.Now.ToString("MM-dd-yy (HH-mm-ss)") + ".png", 2);
+             Debug.Log("A screenshot was taken!");
+         }
+     }
     public void OnScreenshot(InputAction.CallbackContext ctx)
     {
         if (ctx.performed)
         {
-            ScreenCapture.CaptureScreenshot("C://Users/artemGame/Desktop/screenshot" + System.DateTime.Now.ToString("MM-dd-yy (HH-mm-ss)") + ".png", 4);
+            ScreenCapture.CaptureScreenshot("C://Users/artemGame/Desktop/screenshot" + System.DateTime.Now.ToString("MM-dd-yy (HH-mm-ss)") + ".png", 2);
             Debug.Log("A screenshot was taken!");
         }
     }
