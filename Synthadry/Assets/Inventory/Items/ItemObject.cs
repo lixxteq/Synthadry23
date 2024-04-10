@@ -150,20 +150,26 @@ public class ItemObject : MonoBehaviour
                 onlyOneHit = false;
                 Collider hitObject = hit.collider;
                 Debug.Log(hitObject);
+
                 if (hitObject.CompareTag("Enemy"))
                 {
-                    if (hitObject.TryGetComponent<EnemyDamage>(out EnemyDamage enemyDamage))
+                    if (hitObject.TryGetComponent<EnemyHealth>(out EnemyHealth enemyHealth))
                     {
-                        enemyDamage.GetDamage(damage);
-                    }
-                    if (hitObject.TryGetComponent<TargetDamage>(out TargetDamage targetDamage))
-                    {
-                        targetDamage.GetDamage(damage);
-                    }
+                        enemyHealth.GetDamage(damage);
+                    };
                 }
+
+                if (hitObject.CompareTag("EnemyHead"))
+                {
+                    if (hitObject.transform.parent.TryGetComponent<EnemyHealth>(out EnemyHealth enemyHealth))
+                    {
+                        enemyHealth.GetDamage((float)(damage * 1.25));
+                    };
+                }
+
             }
             currentAmmo -= 1;
-            SpawnBullet();
+            //SpawnBullet();
 
             weaponSlotManager.ChangeActiveWeapon(this);
             itemsIK.Recoil(itemStat, 60 / (rateOfFire * itemStat.recoilSpeedMultiplier));
@@ -192,7 +198,7 @@ public class ItemObject : MonoBehaviour
     void SpawnBullet()
     {
         GameObject bullet = Instantiate(bulletPref, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
-        bullet.GetComponent<Rigidbody>().velocity = bulletSpawnPoint.up * 100f;
+        bullet.GetComponent<Rigidbody>().velocity = bulletSpawnPoint.up * 500f;
         
         Destroy(bullet, bulletAlive);
 

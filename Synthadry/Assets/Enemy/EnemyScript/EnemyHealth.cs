@@ -1,22 +1,25 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
 {
-    [SerializeField] private float health = 500;
+    private float health;
     [SerializeField] private float timeToDestroy = 5;
 
     private ragdollController ragdoll;
 
-/*    private void Awake()
-    {
-        ragdoll = GetComponent<ragdollController>();
-    }*/
+    private Hitmarker hitmarker_canvas;
 
-    public void GetDamage(float damage, float multiply)
+    private void Awake()
     {
-        this.health -= damage * multiply;
+        health = gameObject.GetComponent<EnemyController>().enemyStat.health;
+        hitmarker_canvas = GameObject.FindWithTag("MainCanvas").GetComponent<Hitmarker>();
+    }
+
+    public void GetDamage(float damage)
+    {
+        hitmarker_canvas.DrawHitmarker(damage);
+
+        this.health = Mathf.Max(health - damage, 0);
         if (this.health <= 0)
         {
             Death();
@@ -26,8 +29,8 @@ public class EnemyHealth : MonoBehaviour
     public void Death()
     {
         /*ragdoll.ActivateRagdoll();*/
-        GetComponent<Animator>().enabled = false;
-        GetComponent<StandartAi>().enabled = false;
+        //GetComponent<Animator>().enabled = false;
+        //GetComponent<StandartAi>().enabled = false;
         Destroy(gameObject, timeToDestroy);
     }
 }

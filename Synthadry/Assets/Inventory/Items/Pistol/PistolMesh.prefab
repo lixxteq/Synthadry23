@@ -9824,7 +9824,7 @@ Transform:
   - {fileID: 2769665802722927729}
   - {fileID: 7183856140982142479}
   m_Father: {fileID: 0}
-  m_RootOrder: 32
+  m_RootOrder: 34
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &7701082832066546082
 BoxCollider:
@@ -9860,7 +9860,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemStat: {fileID: 11400000, guid: 502a18f984dcecc4aa83caa8241ddd31, type: 2}
-  damage: 35
+  damage: 50
   rateOfFire: 60
   currentAmmo: 6
   allAmmo: 20
