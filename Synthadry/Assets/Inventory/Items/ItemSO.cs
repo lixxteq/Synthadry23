@@ -1,3 +1,4 @@
+using EPOOutline;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Item", menuName = "Create new Item")]
