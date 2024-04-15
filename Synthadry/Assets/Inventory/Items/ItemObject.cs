@@ -6,9 +6,12 @@ using UnityEditor;
 using System.Collections;
 using System.Xml.Serialization;
 using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
+using EPOOutline;
 
+[RequireComponent(typeof(Outlinable))]
 public class ItemObject : MonoBehaviour
 {
+    public Outlinable outlinable;
     public ItemSO itemStat;
     private GameObject player;
     private GameObject canvas;
@@ -105,6 +108,15 @@ public class ItemObject : MonoBehaviour
         itemsIK = player.GetComponent<ItemsIK>();
         weaponSlotManager = GameObject.FindGameObjectWithTag("WeaponSlot").GetComponent<WeaponSlotManager>();
         mainCamera = Camera.main;
+
+        outlinable = GetComponent<Outlinable>();
+        outlinable.enabled = false;
+        outlinable.DrawingMode = OutlinableDrawingMode.Normal;
+        outlinable.OutlineLayer = 20;
+        outlinable.OutlineParameters.Enabled = true;
+        outlinable.OutlineParameters.Color = new Color32(80, 200, 120, 255);
+	    outlinable.OutlineParameters.FillPass.Shader = Resources.Load<Shader>("Easy performant outline/Shaders/Fills/ColorFill");
+	    outlinable.OutlineParameters.FillPass.SetColor("_PublicColor", new Color32(80, 200, 120, 51));
     }
 
 

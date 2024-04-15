@@ -134,6 +134,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""AbilityVision"",
+                    ""type"": ""Button"",
+                    ""id"": ""0d0c3d15-0a28-4dad-89ee-da2faa66db7f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -453,6 +462,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""TabToggle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4f44375f-5387-4809-9c8a-1fece0a46eb3"",
+                    ""path"": ""<Keyboard>/z"",
+                    ""interactions"": ""Press(behavior=2)"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AbilityVision"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1052,6 +1072,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_ItemPickup = m_Player.FindAction("ItemPickup", throwIfNotFound: true);
         m_Player_ItemDrop = m_Player.FindAction("ItemDrop", throwIfNotFound: true);
         m_Player_TabToggle = m_Player.FindAction("TabToggle", throwIfNotFound: true);
+        m_Player_AbilityVision = m_Player.FindAction("AbilityVision", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1137,6 +1158,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_ItemPickup;
     private readonly InputAction m_Player_ItemDrop;
     private readonly InputAction m_Player_TabToggle;
+    private readonly InputAction m_Player_AbilityVision;
     public struct PlayerActions
     {
         private @PlayerControls m_Wrapper;
@@ -1153,6 +1175,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @ItemPickup => m_Wrapper.m_Player_ItemPickup;
         public InputAction @ItemDrop => m_Wrapper.m_Player_ItemDrop;
         public InputAction @TabToggle => m_Wrapper.m_Player_TabToggle;
+        public InputAction @AbilityVision => m_Wrapper.m_Player_AbilityVision;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1198,6 +1221,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @TabToggle.started += instance.OnTabToggle;
             @TabToggle.performed += instance.OnTabToggle;
             @TabToggle.canceled += instance.OnTabToggle;
+            @AbilityVision.started += instance.OnAbilityVision;
+            @AbilityVision.performed += instance.OnAbilityVision;
+            @AbilityVision.canceled += instance.OnAbilityVision;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1238,6 +1264,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @TabToggle.started -= instance.OnTabToggle;
             @TabToggle.performed -= instance.OnTabToggle;
             @TabToggle.canceled -= instance.OnTabToggle;
+            @AbilityVision.started -= instance.OnAbilityVision;
+            @AbilityVision.performed -= instance.OnAbilityVision;
+            @AbilityVision.canceled -= instance.OnAbilityVision;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1432,6 +1461,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnItemPickup(InputAction.CallbackContext context);
         void OnItemDrop(InputAction.CallbackContext context);
         void OnTabToggle(InputAction.CallbackContext context);
+        void OnAbilityVision(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

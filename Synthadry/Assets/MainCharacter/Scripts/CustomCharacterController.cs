@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,6 +12,7 @@ public class CustomCharacterController : MonoBehaviour
     public Canvas _canvas;
     public Animator _animator;
     public Rigidbody rig;
+    private AbilityController _abil;
 
     public float cameraAngleUp = -65;
     public float cameraAngleDown = 65;
@@ -55,6 +57,7 @@ public class CustomCharacterController : MonoBehaviour
     {
         _characterController = GetComponent<CharacterController>();
         _animator = GetComponent<Animator>();
+        _abil = GetComponent<AbilityController>();
         _states = new PlayerStateFactory(this);
 
         _currentState = _states.Grounded();
