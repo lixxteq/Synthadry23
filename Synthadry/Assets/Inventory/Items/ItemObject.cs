@@ -7,6 +7,7 @@ using System.Collections;
 using System.Xml.Serialization;
 using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
 using EPOOutline;
+using Cinemachine;
 
 [RequireComponent(typeof(Outlinable))]
 public class ItemObject : MonoBehaviour
@@ -20,8 +21,6 @@ public class ItemObject : MonoBehaviour
     [Header("0 - 100")]
     public float damage;
     public float rateOfFire; //��������� � �������
-
-
     public int currentAmmo = 5;
     public int allAmmo = 20;
 
@@ -72,6 +71,7 @@ public class ItemObject : MonoBehaviour
 
     private bool lanternEnabled = false;
     private Camera mainCamera;
+    private CinemachineImpulseSource recoilSource;
 
 
     private void OnEnable()
@@ -97,6 +97,16 @@ public class ItemObject : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
         {
             Reload();
+        }
+    }
+
+    private void Awake() {
+        if (itemStat.type == ItemSO.Type.firearms) {
+            recoilSource = gameObject.AddComponent<CinemachineImpulseSource>();
+            recoilSource.m_ImpulseDefinition.m_RawSignal = Resources.Load<SignalSourceAsset>("CustomRecoil/WeaponRecoilSignal");
+            recoilSource.m_DefaultVelocity = new Vector3(0, 0, 1);
+            recoilSource.m_ImpulseDefinition.m_AmplitudeGain = -1f;
+            // recoilSource.m_ImpulseDefinition.m_ImpulseChannel = 0;
         }
     }
 
@@ -185,6 +195,7 @@ public class ItemObject : MonoBehaviour
 
             weaponSlotManager.ChangeActiveWeapon(this);
             itemsIK.Recoil(itemStat, 60 / (rateOfFire * itemStat.recoilSpeedMultiplier));
+            GetComponent<CinemachineImpulseSource>().GenerateImpulse(mainCamera.transform.forward);
         }
         else
         {

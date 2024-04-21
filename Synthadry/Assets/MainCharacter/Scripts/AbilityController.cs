@@ -6,9 +6,11 @@ using System.Collections.Generic;
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine.Rendering;
+using Cinemachine;
 
 public class AbilityController : MonoBehaviour {
     private Camera mainCamera;
+    private GameObject fpsCamera;
     private Outliner outliner;
     private GameObject player;
     private Coroutine _visionProcess = null;
@@ -17,10 +19,16 @@ public class AbilityController : MonoBehaviour {
     public float visionDistance = 40f;
     public int visionDuration = 4;
 
+    [Header("Passive player stats")]
+    public float weaponRecoilForce = 1f; // 1 = 100%
+
     public void Start() {
         mainCamera = Camera.main;
+        fpsCamera = GameObject.Find("FPS Camera");
         outliner = mainCamera.GetComponent<Outliner>();
         player = this.gameObject;
+
+        fpsCamera.GetComponent<CinemachineImpulseListener>().m_Gain = weaponRecoilForce;
 
         // load player abilities properties from save
     }
