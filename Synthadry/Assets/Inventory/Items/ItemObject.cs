@@ -108,6 +108,14 @@ public class ItemObject : MonoBehaviour
             recoilSource.m_ImpulseDefinition.m_AmplitudeGain = -1f;
             // recoilSource.m_ImpulseDefinition.m_ImpulseChannel = 0;
         }
+        // outlinable = gameObject.AddComponent<Outlinable>();
+        // outlinable.enabled = false;
+        // outlinable.DrawingMode = OutlinableDrawingMode.Normal;
+        // outlinable.OutlineLayer = 20;
+        // outlinable.OutlineParameters.Enabled = true;
+        // outlinable.OutlineParameters.Color = new Color32(80, 200, 120, 255);
+	    // outlinable.OutlineParameters.FillPass.Shader = Resources.Load<Shader>("Easy performant outline/Shaders/Fills/ColorFill");
+	    // outlinable.OutlineParameters.FillPass.SetColor("_PublicColor", new Color32(80, 200, 120, 51));
     }
 
 

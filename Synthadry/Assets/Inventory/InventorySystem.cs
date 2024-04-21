@@ -2,6 +2,7 @@
 using UnityEngine;
 using System;
 using UnityEngine.InputSystem;
+using EPOOutline;
 
 public class InventorySystem : MonoBehaviour
 {
@@ -209,6 +210,7 @@ public class InventorySystem : MonoBehaviour
         item.GetComponent<BoxCollider>().enabled = true;
 
         item.layer = 20;
+        //item.GetComponent<Outlinable>().OutlineLayer = 20;
         item.SetActive(true);
         mainGuns.Remove(item);
         takeInHand.ClearHands();
@@ -235,6 +237,7 @@ public class InventorySystem : MonoBehaviour
                 item.GetComponent<BoxCollider>().enabled = false;
 
                 item.layer = 0;
+                //item.GetComponent<Outlinable>().OutlineLayer = 0;
             }
             else
             {

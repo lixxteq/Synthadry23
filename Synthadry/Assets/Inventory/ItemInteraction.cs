@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using EPOOutline;
 
 public class ItemInteraction : MonoBehaviour
 {
@@ -30,6 +31,7 @@ public class ItemInteraction : MonoBehaviour
                     return;
 
                 Debug.Log("Raycast weapon", hit.collider.gameObject);
+                hit.collider.gameObject.GetComponent<Outlinable>().OutlineLayer = 1;
 
                 inventorySystem.PickUpItem(hit.collider.gameObject);
                 hit.collider.gameObject.SetActive(false);
