@@ -37,4 +37,4 @@ MonoBehaviour:
   leftHandIkPositionShoot: {x: 3.97, y: -10.9, z: -0.76}
   leftHandIkRotationShoot: {x: -163.5, y: 29.489, z: -1.45}
   recoilSpeedMultiplier: 7
-  cameraShakeMultiplier: 2
+  cameraShakeMultiplier: 5
