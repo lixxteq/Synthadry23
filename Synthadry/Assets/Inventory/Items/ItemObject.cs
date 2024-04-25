@@ -63,6 +63,7 @@ public class ItemObject : MonoBehaviour
 
 
     [Header("������")]
+    public bool hasLantern;
     public GameObject lantern;
     public GameObject light;
     public GameObject aim;
