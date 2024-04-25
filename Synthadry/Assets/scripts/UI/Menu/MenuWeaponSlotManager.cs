@@ -7,7 +7,7 @@ public class MenuWeaponSlotManager : MonoBehaviour
 
     public GameObject[] slots;
     public Vector3[] baseSlotsPosition;
-    public Vector3[] extendedSlotsPosition;
+
 
     public Vector2 baseSlotsSize;
     public Vector2 extendedSlotsSize;
@@ -82,6 +82,11 @@ public class MenuWeaponSlotManager : MonoBehaviour
                 slots[i].transform.localPosition = new Vector3(slots[i].transform.localPosition.x - 3, slots[i].transform.localPosition.y - (extendedSlotsSize.y - baseSlotsSize.y));
             }
         }
+    }
+
+    public void ShowInformation(ItemSO itemStat)
+    {
+
     }
 
     public void HideAllSlots()
