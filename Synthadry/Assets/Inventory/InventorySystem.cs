@@ -3,6 +3,7 @@ using UnityEngine;
 using System;
 using UnityEngine.InputSystem;
 using EPOOutline;
+using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 public class InventorySystem : MonoBehaviour
 {
@@ -20,6 +21,7 @@ public class InventorySystem : MonoBehaviour
 
     private WeaponSlotManager weaponSlotManager;
     private BuffsSlotManager buffsSlotManager;
+    private UIResourcesManager uiResourcesManager;
 
 
     public int ActiveMainGun
@@ -75,13 +77,73 @@ public class InventorySystem : MonoBehaviour
     public float currentBatteryEnergy = 1f;
     public int batteries = 0;
 
-    [Header("КОМПОНЕНТЫ")]
-    public int fuel = 0;
-    public int cloth = 0;
-    public int metal = 0;
-    public int plastic = 0;
-    public int chemical = 0;
-    public int wires = 0;
+    public int fuel
+    {
+        get { return Fuel; }
+        set
+        {
+            Fuel = value;
+            uiResourcesManager.UiUpdateResources();
+        }
+
+    }
+    public int Fuel = 0;
+    public int cloth
+    {
+        get { return Cloth; }
+        set
+        {
+            Cloth = value;
+            uiResourcesManager.UiUpdateResources();
+        }
+
+    }
+    public int Cloth = 0;
+    public int metal
+    {
+        get { return Metal; }
+        set
+        {
+            Metal = value;
+            uiResourcesManager.UiUpdateResources();
+        }
+
+    }
+    public int Metal = 0;
+
+    public int plastic
+    {
+        get { return Plastic; }
+        set
+        {
+            Plastic = value;
+            uiResourcesManager.UiUpdateResources();
+        }
+
+    }
+    public int Plastic = 0;
+    public int chemical
+    {
+        get { return Chemical; }
+        set
+        {
+            Chemical = value;
+            uiResourcesManager.UiUpdateResources();
+        }
+
+    }
+    public int Chemical = 0;
+    public int wires
+    {
+        get { return Wires; }
+        set
+        {
+            Wires = value;
+            uiResourcesManager.UiUpdateResources();
+        }
+
+    }
+    public int Wires = 0;
 
     /*    public void GetActiveMainGun()
         {
@@ -103,6 +165,7 @@ public class InventorySystem : MonoBehaviour
         buffsSlotManager = GameObject.FindGameObjectWithTag("BuffsSlot").GetComponent<BuffsSlotManager>();
         buffsSlotManager.DrawBuffs(hpBuffs.Count, armorBuffs.Count, speedBuffs.Count, activeBuff);
         buffsSlotManager.DrawGrenades(extraGuns.Count);
+        uiResourcesManager = GameObject.FindGameObjectWithTag("MenuResources").GetComponent<UIResourcesManager>();
     }
 
     public void OnBuffChange(InputAction.CallbackContext ctx) //СМЕНА АКТИВНОГО БАФФА

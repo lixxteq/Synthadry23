@@ -25,6 +25,11 @@ public class MenuWeaponSlotManager : MonoBehaviour
         menuWeaponInfoManager = gameObject.transform.parent.Find("Information").gameObject.GetComponent<MenuWeaponInfoManager>();
     }
 
+    public GameObject GetExtendedSlotWeapon()
+    {
+        return weapons[extendedSlotId];
+    }
+
 
     // Start is called before the first frame update
     void Start()
@@ -37,6 +42,31 @@ public class MenuWeaponSlotManager : MonoBehaviour
     {
 
     }
+    
+
+    public ResourcesSO GetDowngradePrice(string stat)
+    {
+        return weapons[extendedSlotId].GetComponent<ItemObject>().GetDowngradePrice(stat);
+    }
+
+    public ResourcesSO GetUpgradePrice(string stat)
+    {
+        return weapons[extendedSlotId].GetComponent<ItemObject>().GetUpgradePrice(stat);
+    }
+
+
+    public void UpgradeExtendedWeapon(string stat)
+    {
+        weapons[extendedSlotId].GetComponent<ItemObject>().UpgradeStat(stat);
+        ExtandSlot(extendedSlotId);
+    }
+
+    public void DowngradeExtendedWeapon(string stat)
+    {
+        weapons[extendedSlotId].GetComponent<ItemObject>().DowngradeStat(stat);
+        ExtandSlot(extendedSlotId);
+    }
+
 
     private void OnEnable()
     {
@@ -71,18 +101,6 @@ public class MenuWeaponSlotManager : MonoBehaviour
         image.rectTransform.sizeDelta = icon.rect.size;
         image.rectTransform.localScale = new Vector3(0.4f, 0.4f, 0.4f);
         image.color = Color.white;
-    }
-
-    public void UpgradeExtendedSlot(string stat)
-    {   
-        ItemObject itemObject = weapons[extendedSlotId].GetComponent<ItemObject>();
-        switch (stat)
-        {
-            case "damage":
-                Debug.Log(itemObject.name);
-                break;
-            default: break;
-        }
     }
 
     public int GetExtandedSlotId()

@@ -1,13 +1,10 @@
-using TMPro;
-using UnityEngine;
+using Cinemachine;
+using EPOOutline;
 using System;
-using UnityEditor;
 // using UnityEditor.ShaderGraph.Drawing;
 using System.Collections;
-using System.Xml.Serialization;
-using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
-using EPOOutline;
-using Cinemachine;
+using TMPro;
+using UnityEngine;
 
 [RequireComponent(typeof(Outlinable))]
 public class ItemObject : MonoBehaviour
@@ -24,26 +21,34 @@ public class ItemObject : MonoBehaviour
     public int currentAmmo = 5;
     public int allAmmo = 20;
 
-    [Header("���������")]
+    [Header("Upgrade price multiplier")]
+    public float upgradePriceMultiplier;
+
+    [Header("Range")]
     public float range = 50f;
 
-    [Header("����������������")]
+    [Header("RateOfFire upgrade")]
     public int maxLevelRateOfFire = 5;
     public int levelRateOfFire = 0;
+    public ResourcesSO[] rateOfFirePrice;
 
 
-    [Header("����")]
+    [Header("Damage upgrade")]
     public int maxLevelDamage = 5;
     public int levelDamage = 0;
+    public ResourcesSO[] damagePrice;
+
 
     public bool isWeapon;
 
     [Header("�������� � �������� (0 - 99)")]
     public int maximumAmmo; //� ��������/��������
 
-    [Header("������ � ��������")]
+    [Header("Ammo upgrade")]
     public int maxLevelAmmo = 5;
     public int levelAmmo = 0;
+    public ResourcesSO[] ammoPrice;
+
 
     [Header("�����")]
     public TextMeshProUGUI allAmmoInGameUi;
@@ -62,7 +67,9 @@ public class ItemObject : MonoBehaviour
     public ParticleSystem muzzleFlashFx;
 
 
-    [Header("������")]
+    [Header("Lantern")]
+    public ResourcesSO[] lanternPrice;
+    public bool canHasLantern;
     public bool hasLantern;
     public GameObject lantern;
     public GameObject light;
@@ -81,7 +88,8 @@ public class ItemObject : MonoBehaviour
         if (light.GetComponent<Light>().enabled)
         {
             lanternEnabled = true;
-        } else
+        }
+        else
         {
             lanternEnabled = false;
         }
@@ -101,8 +109,10 @@ public class ItemObject : MonoBehaviour
         }
     }
 
-    private void Awake() {
-        if (itemStat.type == ItemSO.Type.firearms) {
+    private void Awake()
+    {
+        if (itemStat.type == ItemSO.Type.firearms)
+        {
             recoilSource = gameObject.AddComponent<CinemachineImpulseSource>();
             recoilSource.m_ImpulseDefinition.m_RawSignal = Resources.Load<SignalSourceAsset>("CustomRecoil/WeaponRecoilSignal");
             recoilSource.m_DefaultVelocity = new Vector3(0, 0, 1);
@@ -115,8 +125,95 @@ public class ItemObject : MonoBehaviour
         // outlinable.OutlineLayer = 20;
         // outlinable.OutlineParameters.Enabled = true;
         // outlinable.OutlineParameters.Color = new Color32(80, 200, 120, 255);
-	    // outlinable.OutlineParameters.FillPass.Shader = Resources.Load<Shader>("Easy performant outline/Shaders/Fills/ColorFill");
-	    // outlinable.OutlineParameters.FillPass.SetColor("_PublicColor", new Color32(80, 200, 120, 51));
+        // outlinable.OutlineParameters.FillPass.Shader = Resources.Load<Shader>("Easy performant outline/Shaders/Fills/ColorFill");
+        // outlinable.OutlineParameters.FillPass.SetColor("_PublicColor", new Color32(80, 200, 120, 51));
+    }
+    
+
+    public ResourcesSO GetDowngradePrice(string stat)
+    {
+        switch (stat)
+        {
+            case "damage":
+                if (levelDamage - 1 >= 0)
+                {
+                    return damagePrice[levelDamage - 1];
+                }
+                return null;
+
+            case "rateOfFire":
+                if (levelRateOfFire - 1 >= 0)
+                {
+                    return rateOfFirePrice[levelDamage - 1];
+                }
+                return null;
+            case "ammo":
+                if (levelAmmo - 1 >= 0)
+                {
+                    return ammoPrice[levelAmmo - 1];
+                }
+                return null;
+            default:
+                {
+                    return null;
+                }
+        }
+    }
+
+    public ResourcesSO GetUpgradePrice(string stat)
+    {
+        switch (stat)
+        {
+            case "damage":
+                return damagePrice[levelDamage];
+
+            case "rateOfFire":
+                return rateOfFirePrice[levelRateOfFire];
+            case "ammo":
+                return ammoPrice[levelAmmo];
+            default:
+                {
+                    return null;
+                }
+        }
+    }
+
+    public void UpgradeStat(string stat)
+    {
+        ResourcesIneractManager resourcesIneractManager = player.GetComponent<ResourcesIneractManager>();
+        switch (stat)
+        {
+            case "damage":
+                if (levelDamage + 1 <= maxLevelDamage)
+                {
+                    if (resourcesIneractManager.CheckResources(damagePrice[levelDamage]))
+                    {
+                        resourcesIneractManager.DecreaseResources(damagePrice[levelDamage]);
+                        levelDamage += 1;
+                    }
+                }
+                break;
+            default: break;
+        }
+    }
+
+    public void DowngradeStat(string stat)
+    {
+        ResourcesIneractManager resourcesIneractManager = player.GetComponent<ResourcesIneractManager>();
+        switch (stat)
+        {
+            case "damage":
+                if (levelDamage - 1 >= 0)
+                {
+                    if (resourcesIneractManager.CheckResources(damagePrice[levelDamage - 1]))
+                    {
+                        resourcesIneractManager.IncreaseResources(damagePrice[levelDamage - 1]);
+                        levelDamage -= 1;
+                    }
+                }
+                break;
+            default: break;
+        }
     }
 
 
@@ -134,8 +231,8 @@ public class ItemObject : MonoBehaviour
         outlinable.OutlineLayer = 20;
         outlinable.OutlineParameters.Enabled = true;
         outlinable.OutlineParameters.Color = new Color32(80, 200, 120, 255);
-	    outlinable.OutlineParameters.FillPass.Shader = Resources.Load<Shader>("Easy performant outline/Shaders/Fills/ColorFill");
-	    outlinable.OutlineParameters.FillPass.SetColor("_PublicColor", new Color32(80, 200, 120, 51));
+        outlinable.OutlineParameters.FillPass.Shader = Resources.Load<Shader>("Easy performant outline/Shaders/Fills/ColorFill");
+        outlinable.OutlineParameters.FillPass.SetColor("_PublicColor", new Color32(80, 200, 120, 51));
     }
 
 
@@ -159,11 +256,11 @@ public class ItemObject : MonoBehaviour
     public void Shoot()
     {
         bool onlyOneHit = true;
-        
+
         if (currentAmmo > 0)
         {
-           // itemsIK.SetIKPositionShoot(gameObject);
-            
+            // itemsIK.SetIKPositionShoot(gameObject);
+
 
 
             Debug.Log("пиу");
@@ -186,7 +283,7 @@ public class ItemObject : MonoBehaviour
                 {
                     if (hitObject.TryGetComponent<EnemyHealth>(out EnemyHealth enemyHealth))
                     {
-                        enemyHealth.GetDamage(damage);
+                        enemyHealth.GetDamage(Mathf.Round(damage * (float)(1 + 0.15 * levelDamage)));
                     };
                 }
 
@@ -194,7 +291,7 @@ public class ItemObject : MonoBehaviour
                 {
                     if (hitObject.transform.parent.TryGetComponent<EnemyHealth>(out EnemyHealth enemyHealth))
                     {
-                        enemyHealth.GetDamage((float)(damage * 1.25));
+                        enemyHealth.GetDamage(Mathf.Round((float)(damage * 1.25 * (1 + 0.15 * levelDamage))));
                     };
                 }
 
@@ -220,7 +317,8 @@ public class ItemObject : MonoBehaviour
         {
             lanternEnabled = false;
             light.GetComponent<Light>().enabled = true;
-        } else
+        }
+        else
         {
             lanternEnabled = true;
             light.GetComponent<Light>().enabled = false;
@@ -231,7 +329,7 @@ public class ItemObject : MonoBehaviour
     {
         GameObject bullet = Instantiate(bulletPref, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
         bullet.GetComponent<Rigidbody>().velocity = bulletSpawnPoint.up * 500f;
-        
+
         Destroy(bullet, bulletAlive);
 
     }

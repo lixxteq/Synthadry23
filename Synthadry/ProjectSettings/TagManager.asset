@@ -17,6 +17,8 @@ TagManager:
   - BuffsSlot
   - ResourcesSlot
   - EnemyHead
+  - MenuWeaponSlots
+  - MenuResources
   layers:
   - Default
   - TransparentFX
