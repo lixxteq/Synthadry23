@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,6 +18,9 @@ public class MenuWeaponSlotManager : MonoBehaviour
     private GameObject informationMenu;
 
     private int extendedSlotId;
+
+    public TextMeshProUGUI weaponDescription;
+
 
     private void Awake()
     {
@@ -126,6 +130,7 @@ public class MenuWeaponSlotManager : MonoBehaviour
                 slots[i].transform.localPosition = new Vector3(slots[i].transform.localPosition.x - 3, slots[i].transform.localPosition.y - (extendedSlotsSize.y - baseSlotsSize.y));
             }
             menuWeaponInfoManager.FillCells(weapons[slotId].GetComponent<ItemObject>());
+            weaponDescription.text = weapons[slotId].GetComponent<ItemObject>().itemStat.description;
             informationMenu.SetActive(true);
         }
         else

@@ -25,6 +25,12 @@ public class MenuWeaponInformationShowPriceOnHover : MonoBehaviour, IPointerEnte
         menuWeaponSlotManager = GameObject.FindGameObjectWithTag("MenuWeaponSlots").GetComponent<MenuWeaponSlotManager>();
     }
 
+    public void ShowUpgradePrice()
+    {
+        ResourcesSO resources = menuWeaponSlotManager.GetUpgradePrice(statName);
+        DrawUpgradePrice(resources);
+    }
+
     public void ShowDowngradePrice()
     {
         ResourcesSO resources = menuWeaponSlotManager.GetDowngradePrice(statName);
@@ -95,11 +101,6 @@ public class MenuWeaponInformationShowPriceOnHover : MonoBehaviour, IPointerEnte
         priceParent.SetActive(true);
     }
 
-    public void ShowUpgradePrice()
-    {
-        ResourcesSO resources = menuWeaponSlotManager.GetUpgradePrice(statName);
-        DrawUpgradePrice(resources);
-    }
 
     void DrawUpgradePrice(ResourcesSO resources)
     {

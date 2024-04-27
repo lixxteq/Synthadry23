@@ -128,7 +128,7 @@ public class ItemObject : MonoBehaviour
         // outlinable.OutlineParameters.FillPass.Shader = Resources.Load<Shader>("Easy performant outline/Shaders/Fills/ColorFill");
         // outlinable.OutlineParameters.FillPass.SetColor("_PublicColor", new Color32(80, 200, 120, 51));
     }
-    
+
 
     public ResourcesSO GetDowngradePrice(string stat)
     {
@@ -144,13 +144,19 @@ public class ItemObject : MonoBehaviour
             case "rateOfFire":
                 if (levelRateOfFire - 1 >= 0)
                 {
-                    return rateOfFirePrice[levelDamage - 1];
+                    return rateOfFirePrice[levelRateOfFire - 1];
                 }
                 return null;
             case "ammo":
                 if (levelAmmo - 1 >= 0)
                 {
                     return ammoPrice[levelAmmo - 1];
+                }
+                return null;
+            case "lantern":
+                if (hasLantern)
+                {
+                    return lanternPrice[0];
                 }
                 return null;
             default:
@@ -171,6 +177,12 @@ public class ItemObject : MonoBehaviour
                 return rateOfFirePrice[levelRateOfFire];
             case "ammo":
                 return ammoPrice[levelAmmo];
+            case "lantern":
+                if (!hasLantern)
+                {
+                    return lanternPrice[0];
+                }
+                return null;
             default:
                 {
                     return null;
@@ -193,6 +205,41 @@ public class ItemObject : MonoBehaviour
                     }
                 }
                 break;
+            case "ammo":
+                if (levelAmmo + 1 <= maxLevelAmmo)
+                {
+                    if (resourcesIneractManager.CheckResources(ammoPrice[levelAmmo]))
+                    {
+                        resourcesIneractManager.DecreaseResources(ammoPrice[levelAmmo]);
+                        levelAmmo += 1;
+                        maximumAmmo += 5;
+                    }
+                }
+                break;
+
+            case "rateOfFire":
+                if (levelRateOfFire + 1 <= maxLevelRateOfFire)
+                {
+                    if (resourcesIneractManager.CheckResources(rateOfFirePrice[levelRateOfFire]))
+                    {
+                        resourcesIneractManager.DecreaseResources(rateOfFirePrice[levelRateOfFire]);
+                        levelRateOfFire += 1;
+                        rateOfFire = rateOfFire * 1.05f;
+                    }
+                }
+                break;
+
+            case "lantern":
+                if (!hasLantern)
+                {
+                    if (resourcesIneractManager.CheckResources(lanternPrice[0]))
+                    {
+                        resourcesIneractManager.DecreaseResources(lanternPrice[0]);
+                        //InstallLantern()
+                        hasLantern = true;
+                    }
+                }
+                break;
             default: break;
         }
     }
@@ -205,11 +252,36 @@ public class ItemObject : MonoBehaviour
             case "damage":
                 if (levelDamage - 1 >= 0)
                 {
-                    if (resourcesIneractManager.CheckResources(damagePrice[levelDamage - 1]))
-                    {
-                        resourcesIneractManager.IncreaseResources(damagePrice[levelDamage - 1]);
-                        levelDamage -= 1;
-                    }
+                    resourcesIneractManager.IncreaseResources(damagePrice[levelDamage - 1]);
+                    levelDamage -= 1;
+                }
+                break;
+            case "ammo":
+                if (levelAmmo - 1 >= 0)
+                {
+                    resourcesIneractManager.IncreaseResources(ammoPrice[levelAmmo - 1]);
+                    levelAmmo -= 1;
+                    maximumAmmo -= 5;
+                }
+                break;
+
+            case "rateOfFire":
+                if (levelRateOfFire - 1 >= 0)
+                {
+                    resourcesIneractManager.IncreaseResources(rateOfFirePrice[levelRateOfFire - 1]);
+                    levelRateOfFire -= 1;
+                    rateOfFire = rateOfFire / 1.05f;
+                }
+                break;
+
+            case "lantern":
+                if (hasLantern)
+                {
+
+                    resourcesIneractManager.IncreaseResources(lanternPrice[0]);
+                    //RemoveLantern()
+                    hasLantern = false;
+
                 }
                 break;
             default: break;

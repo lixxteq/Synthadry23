@@ -82,6 +82,11 @@ public class PageManager : MonoBehaviour
     private void OnEnable()
     {
         OpenPage("inventory");
+        Cursor.lockState = CursorLockMode.Confined;
+    }
+    private void OnDisable()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     void TintAllButtons()
