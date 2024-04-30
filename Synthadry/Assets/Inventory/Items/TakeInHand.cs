@@ -121,6 +121,12 @@ public class TakeInHand : MonoBehaviour
                     ClearLayersWeight();
                     StartCoroutine(LerpSetWeight(1, endWeight)); //������ �������� ��������� �����, ��� ���������
                     break;
+
+                case "stick":
+                    ClearLayersWeight();
+                    SetIk(item, endWeight);
+                    StartCoroutine(LerpSetWeight(1, endWeight));
+                    break;
                 default:
                     break;
             

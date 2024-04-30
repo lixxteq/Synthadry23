@@ -54,6 +54,7 @@ public class ResourcesIneractManager : MonoBehaviour
         inventorySystem.wires += resourcesPrice.wires;
     }
 
+
     public bool CheckResources(ResourcesSO resourcesPrice)
     {
         if (inventorySystem.fuel - resourcesPrice.fuel < 0)

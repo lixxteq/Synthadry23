@@ -10,7 +10,7 @@ public class ItemSO : ScriptableObject
     {
         ak,
         revolver,
-        sword,
+        stick,
         flashlight
     }
 

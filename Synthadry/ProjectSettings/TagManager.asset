@@ -19,6 +19,7 @@ TagManager:
   - EnemyHead
   - MenuWeaponSlots
   - MenuResources
+  - MenuWeaponInformation
   layers:
   - Default
   - TransparentFX

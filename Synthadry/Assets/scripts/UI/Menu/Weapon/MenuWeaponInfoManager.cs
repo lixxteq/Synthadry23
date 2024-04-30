@@ -51,11 +51,42 @@ public class MenuWeaponInfoManager : MonoBehaviour
         }
     }
 
+    public bool CheckCell(Transform cell, int statMaxLevel)
+    {
+        if (statMaxLevel == 0)
+        {
+            cell.parent.gameObject.SetActive(false);
+            return false;
+        }
+        else
+        {
+            cell.parent.gameObject.SetActive(true);
+            return true;
+        }
+    }
+
     public void FillCells(ItemObject itemObject)
     {
-        FillCell(damageCellContainer.transform, itemObject.levelDamage, itemObject.maxLevelDamage);
-        FillCell(rateOfFireCellContainer.transform, itemObject.levelRateOfFire, itemObject.maxLevelRateOfFire);
-        FillCell(maxAmmoCellContainer.transform, itemObject.levelAmmo, itemObject.maxLevelAmmo);
-        FillCell(lanternCellContainer.transform, itemObject.hasLantern ? 1 : 0, 1);
+        if (CheckCell(damageCellContainer.transform, itemObject.maxLevelDamage))
+        {
+            FillCell(damageCellContainer.transform, itemObject.levelDamage, itemObject.maxLevelDamage);
+        }
+
+        if (CheckCell(rateOfFireCellContainer.transform, itemObject.maxLevelRateOfFire))
+        {
+            FillCell(rateOfFireCellContainer.transform, itemObject.levelRateOfFire, itemObject.maxLevelRateOfFire);
+        }
+
+        if (CheckCell(maxAmmoCellContainer.transform, itemObject.maxLevelAmmo))
+        {
+            FillCell(maxAmmoCellContainer.transform, itemObject.levelAmmo, itemObject.maxLevelAmmo);
+        }
+
+        if (CheckCell(lanternCellContainer.transform, itemObject.canHasLantern ? 1 : 0))
+        {
+            FillCell(lanternCellContainer.transform, itemObject.hasLantern ? 1 : 0, itemObject.canHasLantern ? 1 : 0);
+        }
+
+
     }
 }

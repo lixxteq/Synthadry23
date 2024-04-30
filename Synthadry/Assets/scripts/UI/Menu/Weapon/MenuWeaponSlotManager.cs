@@ -21,12 +21,15 @@ public class MenuWeaponSlotManager : MonoBehaviour
 
     public TextMeshProUGUI weaponDescription;
 
+    private MenuWeaponInformationButtonsManager menuWeaponInformationButtonsManager;
+
 
     private void Awake()
     {
         weapons = GameObject.FindGameObjectWithTag("Player").GetComponent<InventorySystem>().mainGuns;
         informationMenu = gameObject.transform.parent.Find("Information").gameObject;
         menuWeaponInfoManager = gameObject.transform.parent.Find("Information").gameObject.GetComponent<MenuWeaponInfoManager>();
+        menuWeaponInformationButtonsManager = gameObject.transform.parent.Find("Information").gameObject.GetComponent<MenuWeaponInformationButtonsManager>();
     }
 
     public GameObject GetExtendedSlotWeapon()
@@ -46,7 +49,17 @@ public class MenuWeaponSlotManager : MonoBehaviour
     {
 
     }
-    
+
+    public bool CanUpgradeExtendedWeapon(string stat)
+    {
+        return weapons[extendedSlotId].GetComponent<ItemObject>().CanUpgrade(stat);
+    }
+
+    public bool CanDowngradeExtendedWeapon(string stat)
+    {
+        return weapons[extendedSlotId].GetComponent<ItemObject>().CanDowngrade(stat);
+    }
+
 
     public ResourcesSO GetDowngradePrice(string stat)
     {
@@ -63,12 +76,14 @@ public class MenuWeaponSlotManager : MonoBehaviour
     {
         weapons[extendedSlotId].GetComponent<ItemObject>().UpgradeStat(stat);
         ExtandSlot(extendedSlotId);
+
     }
 
     public void DowngradeExtendedWeapon(string stat)
     {
         weapons[extendedSlotId].GetComponent<ItemObject>().DowngradeStat(stat);
         ExtandSlot(extendedSlotId);
+
     }
 
 
@@ -132,6 +147,7 @@ public class MenuWeaponSlotManager : MonoBehaviour
             menuWeaponInfoManager.FillCells(weapons[slotId].GetComponent<ItemObject>());
             weaponDescription.text = weapons[slotId].GetComponent<ItemObject>().itemStat.description;
             informationMenu.SetActive(true);
+            menuWeaponInformationButtonsManager.CheckAllStat(this);
         }
         else
         {

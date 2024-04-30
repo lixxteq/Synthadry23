@@ -111,7 +111,7 @@ public class ItemObject : MonoBehaviour
 
     private void Awake()
     {
-        if (itemStat.type == ItemSO.Type.firearms)
+        if (itemStat.type == ItemSO.Type.firearms || itemStat.type == ItemSO.Type.coldWeapons)
         {
             recoilSource = gameObject.AddComponent<CinemachineImpulseSource>();
             recoilSource.m_ImpulseDefinition.m_RawSignal = Resources.Load<SignalSourceAsset>("CustomRecoil/WeaponRecoilSignal");
@@ -119,6 +119,7 @@ public class ItemObject : MonoBehaviour
             recoilSource.m_ImpulseDefinition.m_AmplitudeGain = -1f;
             // recoilSource.m_ImpulseDefinition.m_ImpulseChannel = 0;
         }
+
         // outlinable = gameObject.AddComponent<Outlinable>();
         // outlinable.enabled = false;
         // outlinable.DrawingMode = OutlinableDrawingMode.Normal;
@@ -127,6 +128,61 @@ public class ItemObject : MonoBehaviour
         // outlinable.OutlineParameters.Color = new Color32(80, 200, 120, 255);
         // outlinable.OutlineParameters.FillPass.Shader = Resources.Load<Shader>("Easy performant outline/Shaders/Fills/ColorFill");
         // outlinable.OutlineParameters.FillPass.SetColor("_PublicColor", new Color32(80, 200, 120, 51));
+    }
+
+    public bool CanDowngrade(string stat)
+    {
+        ResourcesIneractManager resourcesIneractManager = player.GetComponent<ResourcesIneractManager>();
+
+        switch (stat)
+        {
+            case "damage":
+                return (levelDamage > 0);
+
+            case "ammo":
+                return (levelAmmo > 0);
+            case "rateOfFire":
+                return (levelRateOfFire > 0);
+
+            case "lantern":
+                return hasLantern;
+            default: return false;
+        }
+    }
+
+    public bool CanUpgrade(string stat)
+    {
+        ResourcesIneractManager resourcesIneractManager = player.GetComponent<ResourcesIneractManager>();
+
+        switch (stat)
+        {
+            case "damage":
+                if (levelDamage == maxLevelDamage)
+                {
+                    return false;
+                }
+                return resourcesIneractManager.CheckResources(damagePrice[levelDamage]);
+
+            case "ammo":
+                if (levelAmmo == maxLevelAmmo)
+                {
+                    return false;
+                }
+                return resourcesIneractManager.CheckResources(ammoPrice[levelAmmo]);
+
+            case "rateOfFire":
+                if (levelRateOfFire == maxLevelRateOfFire)
+                {
+                    return false;
+                }
+                return resourcesIneractManager.CheckResources(rateOfFirePrice[levelRateOfFire]);
+
+            case "lantern":
+                if (hasLantern) return false;
+                if (!canHasLantern) return false;
+                return resourcesIneractManager.CheckResources(lanternPrice[0]);
+            default: return false;
+        }
     }
 
 
@@ -383,6 +439,51 @@ public class ItemObject : MonoBehaviour
 
     }
 
+    public void HandAtack()
+    {
+        bool onlyOneHit = true;
+
+        // itemsIK.SetIKPositionShoot(gameObject);
+
+
+
+        Debug.Log("пиу");
+
+
+        if (shootSound) shootSound.Play(0);
+
+        RaycastHit hit;
+        Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+        bool isHit = Physics.Raycast(ray, out hit, range);
+        if (isHit && onlyOneHit)
+        {
+            onlyOneHit = false;
+            Collider hitObject = hit.collider;
+            Debug.Log(hitObject);
+
+            if (hitObject.CompareTag("Enemy"))
+            {
+                if (hitObject.TryGetComponent<EnemyHealth>(out EnemyHealth enemyHealth))
+                {
+                    enemyHealth.GetDamage(Mathf.Round(damage * (float)(1 + 0.15 * levelDamage)));
+                };
+            }
+
+            if (hitObject.CompareTag("EnemyHead"))
+            {
+                if (hitObject.transform.parent.TryGetComponent<EnemyHealth>(out EnemyHealth enemyHealth))
+                {
+                    enemyHealth.GetDamage(Mathf.Round((float)(damage * 1.25 * (1 + 0.15 * levelDamage))));
+                };
+            }
+
+        }
+
+        weaponSlotManager.ChangeActiveWeapon(this);
+        itemsIK.Recoil(itemStat, 60 / (rateOfFire * itemStat.recoilSpeedMultiplier));
+        GetComponent<CinemachineImpulseSource>().GenerateImpulse(mainCamera.transform.forward);
+    }
+
     void ToggleLantern()
     {
         if (lanternEnabled)
@@ -421,6 +522,11 @@ public class ItemObject : MonoBehaviour
                 if (itemStat.name is ItemSO.Name.flashlight)
                 {
                     ToggleLantern();
+                    break;
+                }
+                else
+                {
+                    HandAtack();
                 }
 
                 break;

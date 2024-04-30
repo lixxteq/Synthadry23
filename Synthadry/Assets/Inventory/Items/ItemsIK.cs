@@ -120,6 +120,10 @@ public class ItemsIK : MonoBehaviour
                     ClearLayersWeight();
                     StartCoroutine(LerpSetWeight(1, endWeight)); //������ �������� ��������� �����, ��� ���������
                     break;
+                case "stick":
+                    ClearLayersWeight();
+                    StartCoroutine(LerpSetWeight(1, endWeight)); //������ �������� ��������� �����, ��� ���������
+                    break;
                 default:
                     break;
 
