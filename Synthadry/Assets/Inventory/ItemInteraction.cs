@@ -33,8 +33,10 @@ public class ItemInteraction : MonoBehaviour
                 Debug.Log("Raycast weapon", hit.collider.gameObject);
                 hit.collider.gameObject.GetComponent<Outlinable>().OutlineLayer = 1;
 
-                inventorySystem.PickUpItem(hit.collider.gameObject);
-                hit.collider.gameObject.SetActive(false);
+                if (inventorySystem.mainGuns.Count < 3) { 
+                    inventorySystem.PickUpItem(hit.collider.gameObject);
+                    hit.collider.gameObject.SetActive(false);
+                }
             }
             else if (Physics.Raycast(cam.position, cam.forward, out hit, takeDistance, buffLayer))
             {

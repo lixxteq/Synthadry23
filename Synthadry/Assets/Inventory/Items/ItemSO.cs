@@ -11,7 +11,8 @@ public class ItemSO : ScriptableObject
         ak,
         revolver,
         stick,
-        flashlight
+        flashlight,
+        axe,
     }
 
 
@@ -68,4 +69,13 @@ public class ItemSO : ScriptableObject
 
     public float recoilSpeedMultiplier = 1;
     public float cameraShakeMultiplier = 0;
+
+    [Header("Another Attack For Cold Weapon")]
+    public bool hasSecondAttack;
+
+    public Vector3 righHandIkPositionShootSecond;
+    public Vector3 righHandIkRotationShootSecond;
+
+    public Vector3 leftHandIkPositionShootSecond;
+    public Vector3 leftHandIkRotationShootSecond;
 }

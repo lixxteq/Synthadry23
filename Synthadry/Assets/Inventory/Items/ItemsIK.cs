@@ -118,11 +118,15 @@ public class ItemsIK : MonoBehaviour
                     break;
                 case "revolver":
                     ClearLayersWeight();
-                    StartCoroutine(LerpSetWeight(1, endWeight)); //������ �������� ��������� �����, ��� ���������
+                    StartCoroutine(LerpSetWeight(1, endWeight));
                     break;
                 case "stick":
                     ClearLayersWeight();
-                    StartCoroutine(LerpSetWeight(1, endWeight)); //������ �������� ��������� �����, ��� ���������
+                    StartCoroutine(LerpSetWeight(1, endWeight));
+                    break;
+                case "axe":
+                    ClearLayersWeight();
+                    StartCoroutine(LerpSetWeight(1, endWeight));
                     break;
                 default:
                     break;
@@ -192,11 +196,37 @@ public class ItemsIK : MonoBehaviour
 
         Quaternion startRotationLeftHand = ikLeftHandTarget.localRotation;
         Quaternion startRotationRightHand = ikRightHandTarget.localRotation;
+        Vector3 targetPositionLeftHand, targetPositionRightHand;
+        Vector3 targetRotationRightHand, targetRotationLeftHand;
 
 
 
-        Vector3 targetPositionLeftHand = itemStat.leftHandIkPositionShoot;
-        Vector3 targetPositionRightHand  = itemStat.righHandIkPositionShoot;
+        if (!itemStat.hasSecondAttack) {
+            targetPositionLeftHand = itemStat.leftHandIkPositionShoot;
+            targetPositionRightHand = itemStat.righHandIkPositionShoot;
+
+            targetRotationRightHand = itemStat.righHandIkRotationShoot;
+            targetRotationLeftHand = itemStat.leftHandIkRotationShoot;
+        }
+        else
+        {
+            if (Random.Range(-1f, 1f) > 0)
+            {
+                targetPositionLeftHand = itemStat.leftHandIkPositionShoot;
+                targetPositionRightHand = itemStat.righHandIkPositionShoot;
+
+                targetRotationRightHand = itemStat.righHandIkRotationShoot;
+                targetRotationLeftHand = itemStat.leftHandIkRotationShoot;
+            } else
+            {
+                targetPositionLeftHand = itemStat.leftHandIkPositionShootSecond;
+                targetPositionRightHand = itemStat.righHandIkPositionShootSecond;
+
+                targetRotationRightHand = itemStat.righHandIkRotationShootSecond;
+                targetRotationLeftHand = itemStat.leftHandIkRotationShootSecond;
+            }
+        }
+
 
         Vector3 startIkHeadTarget = ikHeadTarget.localPosition;
         Vector3 targetIkHeadTarget = startIkHeadTarget + GenerateRecoilVector(itemStat.cameraShakeMultiplier);
@@ -207,8 +237,8 @@ public class ItemsIK : MonoBehaviour
             ikLeftHandTarget.localPosition = Vector3.Lerp(startPositionLeftHand, targetPositionLeftHand, time / duration);
             ikRightHandTarget.localPosition = Vector3.Lerp(startPositionRightHand, targetPositionRightHand, time / duration);
 
-            ikLeftHandTarget.localRotation = Quaternion.Lerp(startRotationLeftHand, Quaternion.Euler(itemStat.leftHandIkRotationShoot), time / duration);
-            ikRightHandTarget.localRotation = Quaternion.Lerp(startRotationRightHand, Quaternion.Euler(itemStat.righHandIkRotationShoot), time / duration);
+            ikLeftHandTarget.localRotation = Quaternion.Lerp(startRotationLeftHand, Quaternion.Euler(targetRotationLeftHand), time / duration);
+            ikRightHandTarget.localRotation = Quaternion.Lerp(startRotationRightHand, Quaternion.Euler(targetRotationRightHand), time / duration);
 
             ikHeadTarget.localPosition = Vector3.Lerp(startIkHeadTarget, targetIkHeadTarget, time / duration);
 

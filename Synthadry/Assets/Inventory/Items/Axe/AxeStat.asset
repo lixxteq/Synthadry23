@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6882a024ce99e3546867b3e50b78eff0, type: 3}
+  m_Name: AxeStat
+  m_EditorClassIdentifier: 
+  name: 4
+  description: "\u0422\u043E\u043F\u043E\u0440\u0438\u043A-\u0440\u0443\u0431\u0438\u043B\u044C\u043D\u0438\u043A"
+  type: 1
+  rarity: 0
+  iconActive1K: {fileID: 21300000, guid: 0811f893445f9ee40b5a1f5098fe3ce5, type: 3}
+  iconDisable1K: {fileID: 21300000, guid: 5192725644b4d09439c5ce1645b5bdf1, type: 3}
+  positionOffset: {x: -1.54, y: 1.23, z: 0.16}
+  rotationOffset: {x: 355.75406, y: 0.7318391, z: 73.58999}
+  downPositionOffset: {x: 0, y: 0, z: 0}
+  downRotationOffset: {x: 0, y: 0, z: 0}
+  runPositionOffset: {x: 0, y: 0, z: 0}
+  runRotationOffset: {x: 0, y: 0, z: 0}
+  righHandIkPosition: {x: -2.22, y: -8.18, z: 0.98}
+  righHandIkRotation: {x: 45.529198, y: 134.44737, z: 238.78049}
+  righHandIkPositionHint: {x: 0, y: 0, z: 0}
+  righHandIkRotationHint: {x: 0, y: 0, z: 0}
+  leftHandIkPosition: {x: 2.89, y: -9.59, z: 2.48}
+  leftHandIkRotation: {x: 56.839096, y: 288.22333, z: 199.25816}
+  leftHandIkPositionHint: {x: 0, y: 0, z: 0}
+  leftHandIkRotationHint: {x: 0, y: 0, z: 0}
+  righHandIkPositionShoot: {x: -4.4, y: -10.93, z: 0.39}
+  righHandIkRotationShoot: {x: 34.598236, y: 152.07513, z: 197.98021}
+  leftHandIkPositionShoot: {x: 2.4989774, y: -7.387312, z: 2.3541942}
+  leftHandIkRotationShoot: {x: 14.716672, y: 195.46706, z: 167.77652}
+  recoilSpeedMultiplier: 4
+  cameraShakeMultiplier: 3
+  hasSecondAttack: 1
+  righHandIkPositionShootSecond: {x: -4.88, y: -9.44, z: 0.19}
+  righHandIkRotationShootSecond: {x: 75.91065, y: 92.83381, z: 157.4306}
+  leftHandIkPositionShootSecond: {x: 4.47, y: -10.53, z: 1.87}
+  leftHandIkRotationShootSecond: {x: 4.47, y: -10.53, z: 1.87}

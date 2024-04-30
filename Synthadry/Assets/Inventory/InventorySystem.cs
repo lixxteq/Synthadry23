@@ -298,7 +298,6 @@ public class InventorySystem : MonoBehaviour
                 item.GetComponent<SphereCollider>().enabled = false;
                 item.GetComponent<Rigidbody>().isKinematic = true;
                 item.GetComponent<BoxCollider>().enabled = false;
-
                 item.layer = 0;
                 //item.GetComponent<Outlinable>().OutlineLayer = 0;
             }
