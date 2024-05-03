@@ -88,13 +88,13 @@ MonoBehaviour:
     m_Value: 2000
   meanFreePath:
     m_OverrideState: 1
-    m_Value: 80
+    m_Value: 120
   enableVolumetricFog:
     m_OverrideState: 1
     m_Value: 1
   albedo:
     m_OverrideState: 1
-    m_Value: {r: 0.6724716, g: 0.6462264, b: 1, a: 1}
+    m_Value: {r: 0.7754717, g: 0.759434, b: 1, a: 1}
   globalLightProbeDimmer:
     m_OverrideState: 1
     m_Value: 1
