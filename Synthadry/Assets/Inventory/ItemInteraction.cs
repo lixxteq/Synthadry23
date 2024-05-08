@@ -45,6 +45,7 @@ public class ItemInteraction : MonoBehaviour
 
                 Debug.Log("Raycast buff", hit.collider.gameObject);
 
+
                 inventorySystem.PickUpBuff(hit.collider.gameObject);
                 hit.collider.gameObject.SetActive(false);
 

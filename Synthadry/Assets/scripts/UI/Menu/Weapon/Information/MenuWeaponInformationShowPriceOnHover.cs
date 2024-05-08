@@ -14,20 +14,31 @@ public class MenuWeaponInformationShowPriceOnHover : MonoBehaviour, IPointerEnte
     public GameObject priceParent;
 
     public string statName;
+    public string objectName;
+
     public bool isUpgradeButton;
 
     public Vector3 priceParentPosition;
 
     private MenuWeaponSlotManager menuWeaponSlotManager;
+    private MenuInventorySlotManager menuInventorySlotManager;
 
     private void Awake()
     {
         menuWeaponSlotManager = GameObject.FindGameObjectWithTag("MenuWeaponSlots").GetComponent<MenuWeaponSlotManager>();
+        menuInventorySlotManager = GameObject.FindGameObjectWithTag("MenuInventorySlots").GetComponent<MenuInventorySlotManager>();
     }
 
     public void ShowUpgradePrice()
     {
-        ResourcesSO resources = menuWeaponSlotManager.GetUpgradePrice(statName);
+        ResourcesSO resources = null;
+        if (statName != "")
+        {
+            resources = menuWeaponSlotManager.GetUpgradePrice(statName);
+        } else if (objectName != "")
+        {
+            resources = menuInventorySlotManager.GetPrice(objectName);
+        }
         DrawUpgradePrice(resources);
     }
 
@@ -172,6 +183,7 @@ public class MenuWeaponInformationShowPriceOnHover : MonoBehaviour, IPointerEnte
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        Debug.Log("123");
         if (gameObject.activeInHierarchy)
         {
             priceParent.GetComponent<RectTransform>().anchoredPosition = priceParentPosition;

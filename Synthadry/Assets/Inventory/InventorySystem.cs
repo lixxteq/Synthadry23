@@ -60,8 +60,17 @@ public class InventorySystem : MonoBehaviour
     public int activeMainGun = -1;
 
     public List<GameObject> hpBuffs;
+    public ResourcesSO hpPrice;
+
     public List<GameObject> armorBuffs;
+    public ResourcesSO armorPrice;
+
     public List<GameObject> speedBuffs;
+    public ResourcesSO speedPrice;
+
+
+
+    public int maximumBaffs;
 
     [SerializeField] private int activeBuff = 0;
 
