@@ -48,6 +48,8 @@ public class ItemObject : MonoBehaviour
     public int maxLevelAmmo = 5;
     public int levelAmmo = 0;
     public ResourcesSO[] ammoPrice;
+    public ResourcesSO createAmmoPrice;
+    public int increaseAmmoPerCreate;
 
 
     [Header("�����")]

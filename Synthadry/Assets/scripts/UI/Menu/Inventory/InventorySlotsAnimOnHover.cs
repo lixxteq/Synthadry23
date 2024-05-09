@@ -1,7 +1,10 @@
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class InventorySlotsAnimOnHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
@@ -31,13 +34,40 @@ public class InventorySlotsAnimOnHover : MonoBehaviour, IPointerEnterHandler, IP
 
     private InventorySystem inventorySystem;
     private MenuInventorySlotManager menuInventorySlotManager;
+    private ResourcesIneractManager resourcesIneractManager;
+
+    public GameObject lockedImage;
+    
+    private ItemObject itemObject = null;
 
 
     private void Awake()
     {
         inventorySystem = GameObject.FindGameObjectWithTag("Player").GetComponent<InventorySystem>();
         menuInventorySlotManager = GameObject.FindGameObjectWithTag("MenuInventorySlots").GetComponent<MenuInventorySlotManager>();
+        resourcesIneractManager = GameObject.FindGameObjectWithTag("Player").GetComponent<ResourcesIneractManager>();
+    }
 
+    public void CreateBuff()
+    {
+        if (inventorySystem.CreateBuff(objectName))
+        {
+            resourcesIneractManager.DecreaseResources(menuInventorySlotManager.GetPrice(objectName));
+            FillPetals();
+        };
+    }
+
+    public void CreateAmmo()
+    {
+        if (itemObject != null)
+        {
+            if (resourcesIneractManager.CheckResources(itemObject.createAmmoPrice))
+            {
+                itemObject.allAmmo += itemObject.increaseAmmoPerCreate;
+                resourcesIneractManager.DecreaseResources(itemObject.createAmmoPrice);
+                FillPetalsWeapon(objectName);
+            }
+        }
     }
 
     void FillPetals()
@@ -48,25 +78,64 @@ public class InventorySlotsAnimOnHover : MonoBehaviour, IPointerEnterHandler, IP
         switch (slotName)
         {
             case "hp":
-                Debug.Log(maximumText.text);
-                currentText.text = inventorySystem.hpBuffs.Count.ToString();
+                currentText.text = inventorySystem.hpBuffs.ToString();
                 maximumText.text = inventorySystem.maximumBaffs.ToString();
+                ShowUpgradePrice();
                 break;
             case "armor":
-                currentText.text = inventorySystem.armorBuffs.Count.ToString();
+                currentText.text = inventorySystem.armorBuffs.ToString();
                 maximumText.text = inventorySystem.maximumBaffs.ToString();
-
+                ShowUpgradePrice();
                 break;
             case "speed":
-                currentText.text = inventorySystem.speedBuffs.Count.ToString();
+                currentText.text = inventorySystem.speedBuffs.ToString();
                 maximumText.text = inventorySystem.maximumBaffs.ToString();
-
+                ShowUpgradePrice();
+                break;
+            case "ak":
+                FillPetalsWeapon(objectName);
+                break;
+            case "revolver":
+                FillPetalsWeapon(objectName);
                 break;
 
             default: break;
         };
     }
 
+    void DeactivateSlot()
+    {
+        HidePetals();
+        transform.parent.Find("Icon").GetComponent<Image>().color = Color.grey;
+        GetComponent<Button>().enabled = false;
+        lockedImage.SetActive(true);
+    }
+
+    void ActivateSlot()
+    {
+        transform.parent.Find("Icon").GetComponent<Image>().color = Color.white;
+        GetComponent<Button>().enabled = true;
+        lockedImage.SetActive(false);
+    }
+
+    void FillPetalsWeapon(string name)
+    {
+        List<GameObject> weapons = inventorySystem.mainGuns;
+        foreach (GameObject weapon in weapons)
+        {
+            ItemObject itemObject = weapon.GetComponent<ItemObject>();
+            if (itemObject.itemStat.type is ItemSO.Type.firearms)
+            {
+
+                if (itemObject.itemStat.name.ToString() == name)
+                {
+                    current.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = itemObject.allAmmo.ToString();
+                    maximum.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = itemObject.increaseAmmoPerCreate.ToString();
+                    DrawUpgradePrice(itemObject.createAmmoPrice);
+                }
+            }
+        }
+    }
 
 
     void ShowPetals()
@@ -81,6 +150,8 @@ public class InventorySlotsAnimOnHover : MonoBehaviour, IPointerEnterHandler, IP
         maximum.SetActive(false);
     }
 
+
+
     IEnumerator LerpFunction(Vector3 endValue, float duration)
     {
         if (endValue.z == 0)
@@ -88,9 +159,9 @@ public class InventorySlotsAnimOnHover : MonoBehaviour, IPointerEnterHandler, IP
             HidePetals();
         }
         RectTransform rectTransform = GetComponent<RectTransform>();
-        
+
         float time = 0;
-        
+
         Quaternion startValue = rectTransform.rotation;
 
         while (time < duration)
@@ -108,12 +179,19 @@ public class InventorySlotsAnimOnHover : MonoBehaviour, IPointerEnterHandler, IP
     }
     public void ShowUpgradePrice()
     {
-        DrawUpgradePrice(menuInventorySlotManager.GetPrice(objectName));
+        ResourcesSO resources = menuInventorySlotManager.GetPrice(objectName);
+
+        if (resources != null)
+        {
+            DrawUpgradePrice(resources);
+        } else
+        {
+            DeactivateSlot();
+        }
     }
 
     void DrawUpgradePrice(ResourcesSO resources)
     {
-        Debug.Log(resources);
         if (resources.fuel != 0)
         {
             fuel.text = "-" + resources.fuel.ToString();
@@ -181,8 +259,31 @@ public class InventorySlotsAnimOnHover : MonoBehaviour, IPointerEnterHandler, IP
         priceParent.SetActive(false);
     }
 
-    public void OnPointerEnter(PointerEventData eventData)
+    bool ForBuffs()
     {
+        return objectName == "hp" || objectName == "armor" || objectName == "speed";
+    }
+
+    void FindWeapon()
+    {
+        List<GameObject> weapons = inventorySystem.mainGuns;
+
+        foreach (GameObject weapon in weapons)
+        {
+            ItemObject item = weapon.GetComponent<ItemObject>();
+            if (item.itemStat.type is ItemSO.Type.firearms)
+            {
+                if (item.itemStat.name.ToString() == objectName)
+                {
+                    itemObject = item;
+                }
+            }
+        }
+    }
+
+    void OpenSlot()
+    {
+        StopCoroutine("LerpFunction");
         StartCoroutine(LerpFunction(openRotation, duration));
         if (gameObject.activeInHierarchy)
         {
@@ -191,12 +292,55 @@ public class InventorySlotsAnimOnHover : MonoBehaviour, IPointerEnterHandler, IP
         }
     }
 
+    void ValidateSlot()
+    {
+        if (!ForBuffs())
+        {
+            FindWeapon();
+            if (itemObject != null)
+            {
+                ActivateSlot();
+            } else
+            {
+                DeactivateSlot();
+            }
+        }
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+
+        if (ForBuffs())
+        {
+            OpenSlot();
+        } else
+        {
+            if (itemObject != null)
+            {
+                OpenSlot();
+            } else
+            {
+                DeactivateSlot();
+            }
+        }
+
+       
+    }
+
     public void OnPointerExit(PointerEventData eventData)
     {
+        StopCoroutine("LerpFunction");
         StartCoroutine(LerpFunction(closedRotation, duration));
         if (gameObject.activeInHierarchy)
         {
             HideUpgradePrice();
         }
+    }
+
+    void OnEnable()
+    {
+        StartCoroutine(LerpFunction(closedRotation, duration));
+        HideUpgradePrice();
+        ValidateSlot();
     }
 }

@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MenuInventorySlotManager : MonoBehaviour
@@ -8,6 +11,29 @@ public class MenuInventorySlotManager : MonoBehaviour
     {
         inventorySystem = GameObject.FindGameObjectWithTag("Player").GetComponent<InventorySystem>();
     }
+
+    ResourcesSO FindWeapon(string title)
+    {
+        List<GameObject> weapons = inventorySystem.mainGuns;
+
+        foreach (GameObject weapon in weapons)
+        {
+            ItemObject itemObject = weapon.GetComponent<ItemObject>();
+            if (itemObject.itemStat.type is ItemSO.Type.firearms)
+            {
+                if (itemObject.itemStat.name.ToString() == title)
+                {
+                   return itemObject.createAmmoPrice;
+                }
+            }
+            else
+            {
+                return null;
+            }
+        }
+        return null;
+    }
+
     public ResourcesSO GetPrice(string title)
     {
         switch (title)
@@ -18,6 +44,10 @@ public class MenuInventorySlotManager : MonoBehaviour
                 return inventorySystem.armorPrice;
             case "speed":
                 return inventorySystem.speedPrice;
+            case "ak":
+                return FindWeapon("ak");
+            case "revolver":
+                return FindWeapon("revolver");
         }
         return null;
     }

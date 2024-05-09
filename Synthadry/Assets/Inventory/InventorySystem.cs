@@ -59,13 +59,13 @@ public class InventorySystem : MonoBehaviour
 
     public int activeMainGun = -1;
 
-    public List<GameObject> hpBuffs;
+    public int hpBuffs;
     public ResourcesSO hpPrice;
 
-    public List<GameObject> armorBuffs;
+    public int armorBuffs;
     public ResourcesSO armorPrice;
 
-    public List<GameObject> speedBuffs;
+    public int speedBuffs;
     public ResourcesSO speedPrice;
 
 
@@ -172,7 +172,7 @@ public class InventorySystem : MonoBehaviour
         takeInHand = player.GetComponent<ItemsIK>();
         weaponSlotManager = GameObject.FindGameObjectWithTag("WeaponSlot").GetComponent<WeaponSlotManager>();
         buffsSlotManager = GameObject.FindGameObjectWithTag("BuffsSlot").GetComponent<BuffsSlotManager>();
-        buffsSlotManager.DrawBuffs(hpBuffs.Count, armorBuffs.Count, speedBuffs.Count, activeBuff);
+        buffsSlotManager.DrawBuffs(hpBuffs, armorBuffs, speedBuffs, activeBuff);
         buffsSlotManager.DrawGrenades(extraGuns.Count);
         uiResourcesManager = GameObject.FindGameObjectWithTag("MenuResources").GetComponent<UIResourcesManager>();
     }
@@ -182,7 +182,7 @@ public class InventorySystem : MonoBehaviour
         if (ctx.performed)
         {
             activeBuff = (activeBuff + 1) % 3;
-            buffsSlotManager.DrawBuffs(hpBuffs.Count, armorBuffs.Count, speedBuffs.Count, activeBuff);
+            buffsSlotManager.DrawBuffs(hpBuffs, armorBuffs, speedBuffs, activeBuff);
         }
     }
 
@@ -343,16 +343,9 @@ public class InventorySystem : MonoBehaviour
     {
         if (item.GetComponent<BuffObject>().BuffStat.type.ToString() is "hp")
         {
-            if (hpBuffs.Count < 9)
+            if (hpBuffs < maximumBaffs)
             {
-                Debug.Log("------------");
-                Debug.Log("hpBuffs:");
-                hpBuffs.Add(item);
-                for (int i = 0; i < hpBuffs.Count; i++)
-                {
-                    Debug.Log(hpBuffs[i]);
-                }
-
+                hpBuffs += 1;
             }
             else
             {
@@ -362,16 +355,9 @@ public class InventorySystem : MonoBehaviour
         }
         else if (item.GetComponent<BuffObject>().BuffStat.type.ToString() is "speed")
         {
-            if (speedBuffs.Count < 9)
+            if (speedBuffs < maximumBaffs)
             {
-                Debug.Log("------------");
-                Debug.Log("speedBuffs:");
-                speedBuffs.Add(item);
-                for (int i = 0; i < speedBuffs.Count; i++)
-                {
-                    Debug.Log(speedBuffs[i]);
-                }
-
+                speedBuffs += 1;
             }
             else
             {
@@ -381,16 +367,9 @@ public class InventorySystem : MonoBehaviour
         }
         else if (item.GetComponent<BuffObject>().BuffStat.type.ToString() is "armor")
         {
-            if (armorBuffs.Count < 9)
+            if (armorBuffs < maximumBaffs)
             {
-                Debug.Log("------------");
-                Debug.Log("armorBuffs:");
-                armorBuffs.Add(item);
-                for (int i = 0; i < armorBuffs.Count; i++)
-                {
-                    Debug.Log(armorBuffs[i]);
-                }
-
+                armorBuffs += 1;
             }
             else
             {
@@ -399,31 +378,78 @@ public class InventorySystem : MonoBehaviour
             }
         }
 
-        buffsSlotManager.DrawBuffs(hpBuffs.Count, armorBuffs.Count, speedBuffs.Count, activeBuff);
+        buffsSlotManager.DrawBuffs(hpBuffs, armorBuffs, speedBuffs, activeBuff);
+    }
 
+
+    public bool CreateBuff(string type)
+    {
+        bool flag = true;
+        if (type == "hp")
+        {
+            if (hpBuffs < maximumBaffs)
+            {
+                hpBuffs += 1;
+            }
+            else
+            {
+                Debug.Log("---------");
+                Debug.Log("ХП инвентарь уже полный");
+                flag = false;
+            }
+        }
+        else if (type == "speed")
+        {
+            if (speedBuffs < maximumBaffs)
+            {
+                speedBuffs += 1;
+            }
+            else
+            {
+                Debug.Log("---------");
+                Debug.Log("Speed инвентарь уже полный");
+                flag = false;
+            }
+        }
+        else if (type == "armor")
+        {
+            if (armorBuffs < maximumBaffs)
+            {
+                armorBuffs += 1;
+            }
+            else
+            {
+                Debug.Log("---------");
+                Debug.Log("armor инвентарь уже полный");
+                flag = false;
+            }
+        }
+
+        buffsSlotManager.DrawBuffs(hpBuffs, armorBuffs, speedBuffs, activeBuff);
+        return flag;
     }
 
 
 
     public void UseBuff(int active)
     {
-        if (activeBuff == 0 && hpBuffs.Count != 0)
+        if (activeBuff == 0 && hpBuffs != 0)
         {
-            hpAndArmor.TakeHeal(hpBuffs[0].GetComponent<BuffObject>().BuffStat.increase, hpBuffs[0].GetComponent<BuffObject>().BuffStat.type.ToString());
-            hpBuffs.RemoveAt(0);
+            hpAndArmor.TakeHeal(20, "hp");
+            hpBuffs -= 1;
 
         }
-        else if (activeBuff == 1 && armorBuffs.Count != 0)
+        else if (activeBuff == 1 && armorBuffs != 0)
         {
-            hpAndArmor.TakeHeal(armorBuffs[0].GetComponent<BuffObject>().BuffStat.increase, armorBuffs[0].GetComponent<BuffObject>().BuffStat.type.ToString());
-            armorBuffs.RemoveAt(0);
+            hpAndArmor.TakeHeal(20, "armor");
+            armorBuffs -= 1;
         }
-        else if (activeBuff == 2 && speedBuffs.Count != 0)
+        else if (activeBuff == 2 && speedBuffs != 0)
         {
-            speedBuffs.RemoveAt(0);
+            speedBuffs -= 1;
         }
 
-        buffsSlotManager.DrawBuffs(hpBuffs.Count, armorBuffs.Count, speedBuffs.Count, activeBuff);
+        buffsSlotManager.DrawBuffs(hpBuffs, armorBuffs, speedBuffs, activeBuff);
 
     }
 
