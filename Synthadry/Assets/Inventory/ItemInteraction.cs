@@ -59,9 +59,8 @@ public class ItemInteraction : MonoBehaviour
                         }*/
             else if (Physics.Raycast(cam.position, cam.forward, out hit, takeDistance, componentLayer))
             {
-                Debug.Log("Raycast component", hit.collider.gameObject);
+                Debug.Log("Raycast component" + hit.collider.gameObject);
                 inventorySystem.PickUpComponent(hit.collider.gameObject);
-                Destroy(hit.collider.gameObject);
             }
             else
             {

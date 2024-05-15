@@ -10,7 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 5730307715747079511}
   - component: {fileID: 235937941686837758}
-  m_Layer: 0
+  - component: {fileID: 167824902153776284}
+  - component: {fileID: 2024012507307562189}
+  m_Layer: 24
   m_Name: "\u0420\u0435\u0430\u0433\u0435\u043D\u0442"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -32,7 +34,7 @@ Transform:
   - {fileID: 3786319738723191343}
   - {fileID: 4941013876316457528}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!205 &235937941686837758
 LODGroup:
@@ -57,6 +59,98 @@ LODGroup:
     renderers:
     - renderer: {fileID: 7515753649780390541}
   m_Enabled: 1
+--- !u!114 &167824902153776284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2483968704901597902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0db6d3df729bbc4d851eff7b7b24b13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minAmount: 0
+  maxAmount: 10
+  outlinable: {fileID: 2024012507307562189}
+  componentStat:
+  - {fileID: 11400000, guid: 49f5a267bcfec52479d10afeed4cd423, type: 2}
+  - {fileID: 11400000, guid: f0b24dbe8bc7e1943a4ae86da45f7a7b, type: 2}
+  amount: 
+--- !u!114 &2024012507307562189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2483968704901597902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fe91dc294731a9428c0941ea7579110, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  complexMaskingMode: 0
+  drawingMode: 1
+  outlineLayer: 0
+  outlineTargets:
+  - IsVisible: 1
+    CutoutMask: 8
+    edgeDilateAmount: 5
+    frontEdgeDilateAmount: 5
+    backEdgeDilateAmount: 5
+    renderer: {fileID: 8011974843749008884}
+    SubmeshIndex: 0
+    BoundsMode: 0
+    Bounds:
+      m_Center: {x: 0, y: 0, z: 0}
+      m_Extent: {x: 0.5, y: 0.5, z: 0.5}
+    CutoutThreshold: 0.5
+    CullMode: 2
+    cutoutTextureName: 
+    DilateRenderingMode: 0
+    cutoutTextureIndex: 0
+  - IsVisible: 0
+    CutoutMask: 8
+    edgeDilateAmount: 5
+    frontEdgeDilateAmount: 5
+    backEdgeDilateAmount: 5
+    renderer: {fileID: 7515753649780390541}
+    SubmeshIndex: 0
+    BoundsMode: 0
+    Bounds:
+      m_Center: {x: 0, y: 0, z: 0}
+      m_Extent: {x: 0.5, y: 0.5, z: 0.5}
+    CutoutThreshold: 0.5
+    CullMode: 2
+    cutoutTextureName: 
+    DilateRenderingMode: 0
+    cutoutTextureIndex: 0
+  renderStyle: 1
+  outlineParameters:
+    enabled: 1
+    color: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+    dilateShift: 1
+    blurShift: 1
+    fillPass:
+      shader: {fileID: 0}
+      serializedProperties: []
+  backParameters:
+    enabled: 1
+    color: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+    dilateShift: 1
+    blurShift: 1
+    fillPass:
+      shader: {fileID: 0}
+      serializedProperties: []
+  frontParameters:
+    enabled: 1
+    color: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+    dilateShift: 1
+    blurShift: 1
+    fillPass:
+      shader: {fileID: 0}
+      serializedProperties: []
 --- !u!1 &6282031908476921405
 GameObject:
   m_ObjectHideFlags: 0
@@ -69,7 +163,8 @@ GameObject:
   - component: {fileID: 1078726905206953886}
   - component: {fileID: 8011974843749008884}
   - component: {fileID: 2724217691702401142}
-  m_Layer: 0
+  - component: {fileID: 8370686566869063360}
+  m_Layer: 24
   m_Name: reagent_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -162,6 +257,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.008467341, y: 0.008463614, z: 0.019631311}
   m_Center: {x: 0.0000037772115, y: 0.000013034092, z: -0.009814311}
+--- !u!114 &8370686566869063360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6282031908476921405}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 034bc47afcbf5e141a58d5c20b7808e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7747391748608314335
 GameObject:
   m_ObjectHideFlags: 0
@@ -173,7 +280,8 @@ GameObject:
   - component: {fileID: 4941013876316457528}
   - component: {fileID: 3384252710010428377}
   - component: {fileID: 7515753649780390541}
-  m_Layer: 0
+  - component: {fileID: 1803462820548519344}
+  m_Layer: 24
   m_Name: reagent_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -245,3 +353,15 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &1803462820548519344
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7747391748608314335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 034bc47afcbf5e141a58d5c20b7808e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

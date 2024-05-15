@@ -31,6 +31,7 @@ public class EnemyHealth : MonoBehaviour
         /*ragdoll.ActivateRagdoll();*/
         //GetComponent<Animator>().enabled = false;
         //GetComponent<StandartAi>().enabled = false;
+        Destroy(gameObject.transform.parent.gameObject, timeToDestroy);
         Destroy(gameObject, timeToDestroy);
     }
 }

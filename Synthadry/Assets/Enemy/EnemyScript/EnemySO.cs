@@ -7,7 +7,12 @@ public class EnemySO : ScriptableObject
 {
     public enum Name
     {
-        test
+        test,
+        Liho,
+        Wendi,
+        Mutant,
+        DitchDoggy,
+        Ded
     }
 
 

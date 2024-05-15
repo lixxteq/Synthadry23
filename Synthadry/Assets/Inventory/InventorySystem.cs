@@ -483,5 +483,13 @@ public class InventorySystem : MonoBehaviour
 
             }
         }
+        GameObject parent = component.transform.parent.gameObject;
+        if (parent.layer == 24)
+        {
+            Destroy(parent);
+        } else
+        {
+            Destroy(component);
+        }
     }
 }

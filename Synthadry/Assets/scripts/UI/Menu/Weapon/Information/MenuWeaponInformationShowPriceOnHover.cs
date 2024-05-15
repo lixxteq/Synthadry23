@@ -25,8 +25,15 @@ public class MenuWeaponInformationShowPriceOnHover : MonoBehaviour, IPointerEnte
 
     private void Awake()
     {
-        menuWeaponSlotManager = GameObject.FindGameObjectWithTag("MenuWeaponSlots").GetComponent<MenuWeaponSlotManager>();
-        menuInventorySlotManager = GameObject.FindGameObjectWithTag("MenuInventorySlots").GetComponent<MenuInventorySlotManager>();
+        if (GameObject.FindGameObjectWithTag("MenuWeaponSlots"))
+        {
+            menuWeaponSlotManager = GameObject.FindGameObjectWithTag("MenuWeaponSlots").GetComponent<MenuWeaponSlotManager>();
+        }
+
+        if (GameObject.FindGameObjectWithTag("MenuInventorySlots"))
+        {
+            menuInventorySlotManager = GameObject.FindGameObjectWithTag("MenuInventorySlots").GetComponent<MenuInventorySlotManager>();
+        }
     }
 
     public void ShowUpgradePrice()
