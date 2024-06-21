@@ -70,9 +70,9 @@ public class TabController : MonoBehaviour
 
     void DrawBuffs()
     {
-        hpValue.text = _playerInventory.hpBuffs.Count.ToString();
-        armorValue.text = _playerInventory.armorBuffs.Count.ToString();
-        boostValue.text = _playerInventory.speedBuffs.Count.ToString();
+        hpValue.text = _playerInventory.hpBuffs.ToString();
+        armorValue.text = _playerInventory.armorBuffs.ToString();
+        boostValue.text = _playerInventory.speedBuffs.ToString();
         grenadesValue.text = _playerInventory.extraGuns.Count.ToString();
     }
 

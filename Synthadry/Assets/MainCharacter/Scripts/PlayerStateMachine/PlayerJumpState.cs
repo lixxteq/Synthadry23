@@ -11,18 +11,20 @@ public class PlayerJumpState : PlayerBaseState
     public override void EnterState()
     {
         _context._currentVelocity.y = Mathf.Sqrt(_context.jumpForce * -3.5f * _context.gravity);
-        _context._anim.SetTrigger("Jump");
+        _context.Animator.SetTrigger("Jump");
         Debug.Log("PState: enter Jump");
     }
     public override void UpdateState()
     {
         CheckSwitchStates();
+
+        _context._currentVelocity.y += _context.gravity * Time.deltaTime;
+        _context.CharacterController.Move(new Vector3(0, _context._currentVelocity.y, 0) * Time.deltaTime);
         // _context.CharacterController.Move(Vector3.up * _context.jumpForce * Time.fixedDeltaTime);
     }
     public override void FixedUpdateState()
     {
-        _context._currentVelocity.y += _context.gravity * Time.deltaTime;
-        _context.CharacterController.Move(_context._currentVelocity * Time.deltaTime);
+
     }
     public override void ExitState()
     {

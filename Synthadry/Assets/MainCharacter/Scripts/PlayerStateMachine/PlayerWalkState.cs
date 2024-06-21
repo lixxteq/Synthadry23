@@ -9,6 +9,7 @@ public class PlayerWalkState : PlayerBaseState
     public override void EnterState()
     {
         Debug.Log("PState: enter Walk");
+        _context.Animator.SetBool("IsMoving", true);
     }
     // public override void UpdateState()
     // {
@@ -37,11 +38,25 @@ public class PlayerWalkState : PlayerBaseState
     public override void UpdateState()
     {
         CheckSwitchStates();
-        _context.animationInterpolation = Mathf.Lerp(_context.animationInterpolation, 1f, Time.deltaTime * 3);
-        _context._anim.SetFloat("x", _context.CurrentMovement.x * 0.25f);
-        _context._anim.SetFloat("y", _context.CurrentMovement.y * 0.25f);
+        _context._appliedMovement = new Vector2(_context.InputM.GetCurrentMovement().x, _context.InputM.GetCurrentMovement().y);
 
-        _context._appliedMovement = new Vector2(_context.CurrentMovement.x, _context.CurrentMovement.y);
+        Vector3 movingVector = new Vector3(_context.InputM.GetCurrentMovement().x, 0, _context.InputM.GetCurrentMovement().y).normalized;
+        _context._currentSpeed = Mathf.Lerp(_context._currentSpeed, _context.walkingSpeed, Time.deltaTime * _context.acceleration);
+
+        _context._currentVelocity.x = Mathf.Lerp(_context._currentVelocity.x, movingVector.x, Time.deltaTime * 7.0f);
+        _context._currentVelocity.z = Mathf.Lerp(_context._currentVelocity.z, movingVector.z, Time.deltaTime * 7.0f);
+
+        _context.Animator.SetFloat("x", _context._currentVelocity.x);
+        _context.Animator.SetFloat("y", _context._currentVelocity.z);
+
+        _context.CharacterController.Move(_context.transform.TransformDirection(new Vector3(_context._currentVelocity.x * _context._currentSpeed, _context._currentVelocity.y, _context._currentVelocity.z * _context._currentSpeed)) * Time.deltaTime);
+
+        _context._currentVelocity.y += _context.gravity * Time.deltaTime;
+        if (_context.CharacterController.isGrounded) {
+            _context._currentVelocity.y = -2f;
+        }
+
+        // _context.animationInterpolation = Mathf.Lerp(_context.animationInterpolation, 1f, Time.deltaTime * 3);
         
         // _context._currentVelocity = _context.rig.velocity;
         // Vector3 targetVelocity = new Vector3(_context.CurrentMovement.x, 0, _context.CurrentMovement.y);
@@ -66,15 +81,19 @@ public class PlayerWalkState : PlayerBaseState
     }
     public override void FixedUpdateState()
     {
-        Vector3 movingVector = new Vector3(_context.CurrentMovement.x, 0, _context.CurrentMovement.y);
-        _context._currentSpeed = Mathf.Lerp(_context._currentSpeed, _context.walkingSpeed, Time.deltaTime * 3);
-        _context.CharacterController.Move(_context.transform.TransformDirection(movingVector) * _context._currentSpeed * Time.deltaTime);
-        _context._currentVelocity.y += _context.gravity * Time.deltaTime;
-        if (_context.CharacterController.isGrounded) {
-            _context._currentVelocity.y = -2f;
-        }
-        _context.CharacterController.Move(_context._currentVelocity * Time.deltaTime);
-        _context._anim.SetFloat("magnitude", movingVector.magnitude / _context._currentSpeed);
+        
+
+        // _context.CharacterController.Move(new Vector3(0, _context._currentVelocity.y, 0) * Time.deltaTime);
+        // _context.Animator.SetFloat("magnitude", movingVector.magnitude / _context._currentSpeed);
+
+        // Vector3 TargetVelocity = new Vector3(_context.CurrentMovement.x, 0, _context.CurrentMovement.y);
+        // _context._currentSpeed = Mathf.Lerp(_context._currentSpeed, _context.walkingSpeed, Time.deltaTime * 3);
+        // TargetVelocity *= _context._currentSpeed;
+        // TargetVelocity = _context.transform.TransformDirection(TargetVelocity);
+        // Vector3 VelocityChange = (TargetVelocity - _context._currentVelocity);
+        // VelocityChange = new Vector3(VelocityChange.x, 0, VelocityChange.z);
+        // Vector3.ClampMagnitude(VelocityChange, _context.maxForce);
+        // _context.rig.AddForce(VelocityChange, ForceMode.VelocityChange);
     }
     public override void ExitState()
     {

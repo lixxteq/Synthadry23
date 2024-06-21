@@ -1,76 +1,405 @@
+using Cinemachine;
+using EPOOutline;
+using System;
+// using UnityEditor.ShaderGraph.Drawing;
+using System.Collections;
 using TMPro;
 using UnityEngine;
-using System;
-using UnityEditor;
 
+[RequireComponent(typeof(Outlinable))]
 public class ItemObject : MonoBehaviour
 {
+    public Outlinable outlinable;
     public ItemSO itemStat;
     private GameObject player;
     private GameObject canvas;
+    private WeaponSlotManager weaponSlotManager;
 
     [Header("0 - 100")]
-    public float damage; 
-    public float rateOfFire; //âûñòðåëîâ â ñåêóíäó
-
+    public float damage;
+    public float rateOfFire; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     public int currentAmmo = 5;
     public int allAmmo = 20;
 
-    [Header("ÄÀËÜÍÎÑÒÜ")]
+    [Header("Upgrade price multiplier")]
+    public float upgradePriceMultiplier;
+
+    [Header("Range")]
     public float range = 50f;
 
-    [Header("ÑÊÎÐÎÑÒÐÅËÜÍÎÑÒÜ")]
+    [Header("RateOfFire upgrade")]
     public int maxLevelRateOfFire = 5;
     public int levelRateOfFire = 0;
+    public ResourcesSO[] rateOfFirePrice;
 
 
-    [Header("ÓÐÎÍ")]
+    [Header("Damage upgrade")]
     public int maxLevelDamage = 5;
     public int levelDamage = 0;
+    public ResourcesSO[] damagePrice;
+
 
     public bool isWeapon;
 
-    [Header("ÌÀÊÑÈÌÓÌ Â ÌÀÃÀÇÈÍÅ (0 - 99)")]
-    public int maximumAmmo; //â áàðàáàíå/ìàãàçèíå
+    [Header("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ (0 - 99)")]
+    public int maximumAmmo; //ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½/ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
-    [Header("ÑÅÉ×ÀÑ Â ÌÀÃÀÇÈÍÅ")]
+    [Header("Ammo upgrade")]
     public int maxLevelAmmo = 5;
     public int levelAmmo = 0;
+    public ResourcesSO[] ammoPrice;
+    public ResourcesSO createAmmoPrice;
+    public int increaseAmmoPerCreate;
 
-    [Header("ÝÊÐÀÍ")]
+
+    [Header("ï¿½ï¿½ï¿½ï¿½ï¿½")]
     public TextMeshProUGUI allAmmoInGameUi;
     public TextMeshProUGUI currentAmmoInGameUi;
 
-    [Header("ÑÒÐÅËÜÁÀ")]
+    [Header("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½")]
     public GameObject bulletPref;
     public Vector3 bulletRotation;
-    public GameObject bulletTracer;
     public Vector3 bulletOutForce;
     public int bulletAlive;
     public Transform bulletSpawnPoint;
     public AudioSource shootSound;
 
-    public ParticleSystem fireFx;
+    public ParticleSystem flameFx;
+    public ParticleSystem smokeFx;
+    public ParticleSystem muzzleFlashFx;
 
-    [Header("ÍÀÂÅÑÛ")]
+
+    [Header("Lantern")]
+    public ResourcesSO[] lanternPrice;
+    public bool canHasLantern;
+    public bool hasLantern;
     public GameObject lantern;
     public GameObject light;
     public GameObject aim;
+
+    private ItemsIK itemsIK;
+
+    private bool lanternEnabled = false;
+    private Camera mainCamera;
+    private CinemachineImpulseSource recoilSource;
+
+
+    private void OnEnable()
+    {
+        StartCoroutine("Attack");
+        if (light.GetComponent<Light>().enabled)
+        {
+            lanternEnabled = true;
+        }
+        else
+        {
+            lanternEnabled = false;
+        }
+
+    }
+
+    private void OnDisable()
+    {
+        StopCoroutine("Attack");
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            Reload();
+        }
+    }
+
+    private void Awake()
+    {
+        if (itemStat.type == ItemSO.Type.firearms || itemStat.type == ItemSO.Type.coldWeapons)
+        {
+            recoilSource = gameObject.AddComponent<CinemachineImpulseSource>();
+            recoilSource.m_ImpulseDefinition.m_RawSignal = Resources.Load<SignalSourceAsset>("CustomRecoil/WeaponRecoilSignal");
+            recoilSource.m_DefaultVelocity = new Vector3(0, 0, 1);
+            recoilSource.m_ImpulseDefinition.m_AmplitudeGain = -1f;
+            // recoilSource.m_ImpulseDefinition.m_ImpulseChannel = 0;
+        }
+
+        // outlinable = gameObject.AddComponent<Outlinable>();
+        // outlinable.enabled = false;
+        // outlinable.DrawingMode = OutlinableDrawingMode.Normal;
+        // outlinable.OutlineLayer = 20;
+        // outlinable.OutlineParameters.Enabled = true;
+        // outlinable.OutlineParameters.Color = new Color32(80, 200, 120, 255);
+        // outlinable.OutlineParameters.FillPass.Shader = Resources.Load<Shader>("Easy performant outline/Shaders/Fills/ColorFill");
+        // outlinable.OutlineParameters.FillPass.SetColor("_PublicColor", new Color32(80, 200, 120, 51));
+    }
+
+    public bool CanDowngrade(string stat)
+    {
+        ResourcesIneractManager resourcesIneractManager = player.GetComponent<ResourcesIneractManager>();
+
+        switch (stat)
+        {
+            case "damage":
+                return (levelDamage > 0);
+
+            case "ammo":
+                return (levelAmmo > 0);
+            case "rateOfFire":
+                return (levelRateOfFire > 0);
+
+            case "lantern":
+                return hasLantern;
+            default: return false;
+        }
+    }
+
+    public bool CanUpgrade(string stat)
+    {
+        ResourcesIneractManager resourcesIneractManager = player.GetComponent<ResourcesIneractManager>();
+
+        switch (stat)
+        {
+            case "damage":
+                if (levelDamage == maxLevelDamage)
+                {
+                    return false;
+                }
+                return resourcesIneractManager.CheckResources(damagePrice[levelDamage]);
+
+            case "ammo":
+                if (levelAmmo == maxLevelAmmo)
+                {
+                    return false;
+                }
+                return resourcesIneractManager.CheckResources(ammoPrice[levelAmmo]);
+
+            case "rateOfFire":
+                if (levelRateOfFire == maxLevelRateOfFire)
+                {
+                    return false;
+                }
+                return resourcesIneractManager.CheckResources(rateOfFirePrice[levelRateOfFire]);
+
+            case "lantern":
+                if (hasLantern) return false;
+                if (!canHasLantern) return false;
+                return resourcesIneractManager.CheckResources(lanternPrice[0]);
+            default: return false;
+        }
+    }
+
+
+    public ResourcesSO GetDowngradePrice(string stat)
+    {
+        switch (stat)
+        {
+            case "damage":
+                if (levelDamage - 1 >= 0)
+                {
+                    return damagePrice[levelDamage - 1];
+                }
+                return null;
+
+            case "rateOfFire":
+                if (levelRateOfFire - 1 >= 0)
+                {
+                    return rateOfFirePrice[levelRateOfFire - 1];
+                }
+                return null;
+            case "ammo":
+                if (levelAmmo - 1 >= 0)
+                {
+                    return ammoPrice[levelAmmo - 1];
+                }
+                return null;
+            case "lantern":
+                if (hasLantern)
+                {
+                    return lanternPrice[0];
+                }
+                return null;
+            default:
+                {
+                    return null;
+                }
+        }
+    }
+
+    public ResourcesSO GetUpgradePrice(string stat)
+    {
+        switch (stat)
+        {
+            case "damage":
+                return damagePrice[levelDamage];
+
+            case "rateOfFire":
+                return rateOfFirePrice[levelRateOfFire];
+            case "ammo":
+                return ammoPrice[levelAmmo];
+            case "lantern":
+                if (!hasLantern)
+                {
+                    return lanternPrice[0];
+                }
+                return null;
+            default:
+                {
+                    return null;
+                }
+        }
+    }
+
+    public void UpgradeStat(string stat)
+    {
+        ResourcesIneractManager resourcesIneractManager = player.GetComponent<ResourcesIneractManager>();
+        switch (stat)
+        {
+            case "damage":
+                if (levelDamage + 1 <= maxLevelDamage)
+                {
+                    if (resourcesIneractManager.CheckResources(damagePrice[levelDamage]))
+                    {
+                        resourcesIneractManager.DecreaseResources(damagePrice[levelDamage]);
+                        levelDamage += 1;
+                    }
+                }
+                break;
+            case "ammo":
+                if (levelAmmo + 1 <= maxLevelAmmo)
+                {
+                    if (resourcesIneractManager.CheckResources(ammoPrice[levelAmmo]))
+                    {
+                        resourcesIneractManager.DecreaseResources(ammoPrice[levelAmmo]);
+                        levelAmmo += 1;
+                        maximumAmmo += 5;
+                    }
+                }
+                break;
+
+            case "rateOfFire":
+                if (levelRateOfFire + 1 <= maxLevelRateOfFire)
+                {
+                    if (resourcesIneractManager.CheckResources(rateOfFirePrice[levelRateOfFire]))
+                    {
+                        resourcesIneractManager.DecreaseResources(rateOfFirePrice[levelRateOfFire]);
+                        levelRateOfFire += 1;
+                        rateOfFire = rateOfFire * 1.05f;
+                    }
+                }
+                break;
+
+            case "lantern":
+                if (!hasLantern)
+                {
+                    if (resourcesIneractManager.CheckResources(lanternPrice[0]))
+                    {
+                        resourcesIneractManager.DecreaseResources(lanternPrice[0]);
+                        //InstallLantern()
+                        hasLantern = true;
+                    }
+                }
+                break;
+            default: break;
+        }
+    }
+
+    public void DowngradeStat(string stat)
+    {
+        ResourcesIneractManager resourcesIneractManager = player.GetComponent<ResourcesIneractManager>();
+        switch (stat)
+        {
+            case "damage":
+                if (levelDamage - 1 >= 0)
+                {
+                    resourcesIneractManager.IncreaseResources(damagePrice[levelDamage - 1]);
+                    levelDamage -= 1;
+                }
+                break;
+            case "ammo":
+                if (levelAmmo - 1 >= 0)
+                {
+                    resourcesIneractManager.IncreaseResources(ammoPrice[levelAmmo - 1]);
+                    levelAmmo -= 1;
+                    maximumAmmo -= 5;
+                }
+                break;
+
+            case "rateOfFire":
+                if (levelRateOfFire - 1 >= 0)
+                {
+                    resourcesIneractManager.IncreaseResources(rateOfFirePrice[levelRateOfFire - 1]);
+                    levelRateOfFire -= 1;
+                    rateOfFire = rateOfFire / 1.05f;
+                }
+                break;
+
+            case "lantern":
+                if (hasLantern)
+                {
+
+                    resourcesIneractManager.IncreaseResources(lanternPrice[0]);
+                    //RemoveLantern()
+                    hasLantern = false;
+
+                }
+                break;
+            default: break;
+        }
+    }
+
 
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
         canvas = GameObject.FindGameObjectWithTag("MainCanvas");
+        itemsIK = player.GetComponent<ItemsIK>();
+        weaponSlotManager = GameObject.FindGameObjectWithTag("WeaponSlot").GetComponent<WeaponSlotManager>();
+        mainCamera = Camera.main;
+
+        outlinable = GetComponent<Outlinable>();
+        outlinable.enabled = false;
+        outlinable.DrawingMode = OutlinableDrawingMode.Normal;
+        outlinable.OutlineLayer = 20;
+        outlinable.OutlineParameters.Enabled = true;
+        outlinable.OutlineParameters.Color = new Color32(80, 200, 120, 255);
+        outlinable.OutlineParameters.FillPass.Shader = Resources.Load<Shader>("Easy performant outline/Shaders/Fills/ColorFill");
+        outlinable.OutlineParameters.FillPass.SetColor("_PublicColor", new Color32(80, 200, 120, 51));
+    }
+
+
+    void Reload()
+    {
+        allAmmo = allAmmo + currentAmmo;
+        currentAmmo = 0;
+        if (allAmmo - maximumAmmo > 0)
+        {
+            currentAmmo = maximumAmmo;
+            allAmmo -= currentAmmo;
+        }
+        else
+        {
+            currentAmmo = allAmmo;
+            allAmmo = 0;
+        }
+        weaponSlotManager.ChangeActiveWeapon(this);
     }
 
     public void Shoot()
     {
         bool onlyOneHit = true;
-        
+
         if (currentAmmo > 0)
         {
-            fireFx.Play();
-            shootSound.Play(0);
+            // itemsIK.SetIKPositionShoot(gameObject);
+
+
+
+            Debug.Log("Ð¿Ð¸Ñƒ");
+
+            if (flameFx) flameFx.Play();
+            if (smokeFx) smokeFx.Play();
+            if (muzzleFlashFx) muzzleFlashFx.Play();
+
+            if (shootSound) shootSound.Play(0);
             RaycastHit hit;
             Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
             bool isHit = Physics.Raycast(ray, out hit, range);
@@ -78,78 +407,157 @@ public class ItemObject : MonoBehaviour
             {
                 onlyOneHit = false;
                 Collider hitObject = hit.collider;
-                Debug.Log("ß ïîïàë â " + hitObject);
+                Debug.Log(hitObject);
+
                 if (hitObject.CompareTag("Enemy"))
                 {
-                    if (hitObject.TryGetComponent<EnemyDamage>(out EnemyDamage enemyDamage))
+                    if (hitObject.TryGetComponent<EnemyHealth>(out EnemyHealth enemyHealth))
                     {
-                        enemyDamage.GetDamage(damage);
-                    }
-                    if (hitObject.TryGetComponent<TargetDamage>(out TargetDamage targetDamage))
-                    {
-                        targetDamage.GetDamage(damage);
-                    }
+                        enemyHealth.GetDamage(Mathf.Round(damage * (float)(1 + 0.15 * levelDamage)));
+                    };
                 }
+
+                if (hitObject.CompareTag("EnemyHead"))
+                {
+                    if (hitObject.transform.parent.TryGetComponent<EnemyHealth>(out EnemyHealth enemyHealth))
+                    {
+                        enemyHealth.GetDamage(Mathf.Round((float)(damage * 1.25 * (1 + 0.15 * levelDamage))));
+                    };
+                }
+
             }
             currentAmmo -= 1;
-/*            SpawnBullet();*/
+            //SpawnBullet();
 
+            weaponSlotManager.ChangeActiveWeapon(this);
+            itemsIK.Recoil(itemStat, 60 / (rateOfFire * itemStat.recoilSpeedMultiplier));
+            GetComponent<CinemachineImpulseSource>().GenerateImpulse(mainCamera.transform.forward);
         }
         else
         {
-            //ÇÂÓÊ ÎÑÅ×ÊÈ ÈËÈ ÏÅÐÅÇÀÐßÄÊÀ (ïîòîì ñäåëàþ)
+            //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
         }
 
 
+    }
+
+    public void HandAtack()
+    {
+        bool onlyOneHit = true;
+
+        // itemsIK.SetIKPositionShoot(gameObject);
+
+
+
+        Debug.Log("Ð¿Ð¸Ñƒ");
+
+
+        if (shootSound) shootSound.Play(0);
+
+        RaycastHit hit;
+        Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+        bool isHit = Physics.Raycast(ray, out hit, range);
+        if (isHit && onlyOneHit)
+        {
+            onlyOneHit = false;
+            Collider hitObject = hit.collider;
+            Debug.Log(hitObject);
+
+            if (hitObject.CompareTag("Enemy"))
+            {
+                if (hitObject.TryGetComponent<EnemyHealth>(out EnemyHealth enemyHealth))
+                {
+                    enemyHealth.GetDamage(Mathf.Round(damage * (float)(1 + 0.15 * levelDamage)));
+                };
+            }
+
+            if (hitObject.CompareTag("EnemyHead"))
+            {
+                if (hitObject.transform.parent.TryGetComponent<EnemyHealth>(out EnemyHealth enemyHealth))
+                {
+                    enemyHealth.GetDamage(Mathf.Round((float)(damage * 1.25 * (1 + 0.15 * levelDamage))));
+                };
+            }
+
+        }
+
+        weaponSlotManager.ChangeActiveWeapon(this);
+        itemsIK.Recoil(itemStat, 60 / (rateOfFire * itemStat.recoilSpeedMultiplier));
+        GetComponent<CinemachineImpulseSource>().GenerateImpulse(mainCamera.transform.forward);
+    }
+
+    void ToggleLantern()
+    {
+        if (lanternEnabled)
+        {
+            lanternEnabled = false;
+            light.GetComponent<Light>().enabled = true;
+        }
+        else
+        {
+            lanternEnabled = true;
+            light.GetComponent<Light>().enabled = false;
+        }
     }
 
     void SpawnBullet()
     {
         GameObject bullet = Instantiate(bulletPref, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
-        bullet.GetComponent<Rigidbody>().velocity = bulletSpawnPoint.right * 100f;
-        GameObject bulletTrace = Instantiate(bulletTracer, bulletSpawnPoint.position, Quaternion.identity);
-
-        bulletTrace.transform.SetParent(bullet.transform);
+        bullet.GetComponent<Rigidbody>().velocity = bulletSpawnPoint.up * 500f;
 
         Destroy(bullet, bulletAlive);
-        Destroy(bulletTrace, bulletAlive);
 
     }
 
     public void CheckItemParams()
     {
-        if (itemStat.type is ItemSO.Type.firearms)
+        ItemSO.Type type = itemStat.type;
+        switch (type)
         {
-            Shoot();
+            case ItemSO.Type.firearms:
+                if (currentAmmo > 0)
+                {
+                    Shoot();
+                }
+                break;
+            case ItemSO.Type.coldWeapons:
+                if (itemStat.name is ItemSO.Name.flashlight)
+                {
+                    ToggleLantern();
+                    break;
+                }
+                else
+                {
+                    HandAtack();
+                }
+
+                break;
+
+            default:
+                break;
         }
+
+
     }
 
-    private void Update()
+    private IEnumerator Attack()
     {
-        
-/*        if (Input.GetMouseButtonDown(0) && !player.GetComponent<CustomCharacterController>().isRunning && canvas.activeInHierarchy)
-        {
-            
-        }*/
 
-        if (Input.GetKeyDown(KeyCode.B))
+        while (true)
         {
-            if (gameObject.activeInHierarchy)
+
+            if (Input.GetMouseButton(0) && player.GetComponent<InventorySystem>().mainGuns.IndexOf(gameObject) != -1)
             {
-                if (lantern.activeInHierarchy)
-                {
-                    if (!light.activeInHierarchy)
-                    {
-                        light.SetActive(true);
-                    }
-                    else
-                    {
-                        light.SetActive(false);
-                    }
-                }
-            }
-        }
+                Debug.Log("IEnumerator Attack");
+                CheckItemParams();
 
+                yield return new WaitForSeconds(60 / rateOfFire);
+            }
+
+
+
+            yield return new WaitForEndOfFrame();
+        }
     }
 
     public void AddLantern()

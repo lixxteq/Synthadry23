@@ -1,3 +1,4 @@
+using EPOOutline;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Item", menuName = "Create new Item")]
@@ -9,7 +10,9 @@ public class ItemSO : ScriptableObject
     {
         ak,
         revolver,
-        sword
+        stick,
+        flashlight,
+        axe,
     }
 
 
@@ -58,5 +61,21 @@ public class ItemSO : ScriptableObject
     public Vector3 leftHandIkPositionHint;
     public Vector3 leftHandIkRotationHint;
 
+    public Vector3 righHandIkPositionShoot;
+    public Vector3 righHandIkRotationShoot;
 
+    public Vector3 leftHandIkPositionShoot;
+    public Vector3 leftHandIkRotationShoot;
+
+    public float recoilSpeedMultiplier = 1;
+    public float cameraShakeMultiplier = 0;
+
+    [Header("Another Attack For Cold Weapon")]
+    public bool hasSecondAttack;
+
+    public Vector3 righHandIkPositionShootSecond;
+    public Vector3 righHandIkRotationShootSecond;
+
+    public Vector3 leftHandIkPositionShootSecond;
+    public Vector3 leftHandIkRotationShootSecond;
 }

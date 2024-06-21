@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c477de684ee10c4082f9fddf19a75ce, type: 3}
   m_Name: DefaultPalette
   m_EditorClassIdentifier: 
-  m_paletteEntryIDCount: -2147483437
+  m_paletteEntryIDCount: -2147483430
   m_paletteEntries:
   - m_name: Pref_Barn1_A
     m_id: -2147483647
@@ -931,3 +931,37 @@ MonoBehaviour:
     m_guid: d5e025be3cbc33b4dbe07e685d1370df
     m_object: {fileID: 5350939314242229149, guid: d5e025be3cbc33b4dbe07e685d1370df,
       type: 3}
+  - m_name: "\u041A\u0443\u043A\u0443\u0440\u0443\u0437\u04301"
+    m_id: -2147483436
+    m_guid: d51d9302f05e4b44a96edfcf567079b2
+    m_object: {fileID: 919132149155446097, guid: d51d9302f05e4b44a96edfcf567079b2,
+      type: 3}
+  - m_name: "\u041A\u0443\u043A\u0443\u0440\u0443\u0437\u04301 Variant"
+    m_id: -2147483435
+    m_guid: e471317c744752242b0e8dd4f30b3ed6
+    m_object: {fileID: 7617222879862483073, guid: e471317c744752242b0e8dd4f30b3ed6,
+      type: 3}
+  - m_name: "\u043A\u0430\u0440\u0442\u043E\u0448\u043A\u04301"
+    m_id: -2147483434
+    m_guid: e5f1a91d281569a46a40b1cfacd088b6
+    m_object: {fileID: 6090929212429148935, guid: e5f1a91d281569a46a40b1cfacd088b6,
+      type: 3}
+  - m_name: "\u043A\u0430\u0440\u0442\u043E\u0448\u043A\u04302"
+    m_id: -2147483433
+    m_guid: ade299054f003954e8a33312f3dfebb3
+    m_object: {fileID: 2783683893864446442, guid: ade299054f003954e8a33312f3dfebb3,
+      type: 3}
+  - m_name: "\u043A\u0430\u0440\u0442\u043E\u0448\u043A\u04303"
+    m_id: -2147483432
+    m_guid: 8f274ff233bf3af4c83cae4ba907aa26
+    m_object: {fileID: 318882186934453204, guid: 8f274ff233bf3af4c83cae4ba907aa26,
+      type: 3}
+  - m_name: tomato
+    m_id: -2147483431
+    m_guid: a33c82cc765975a4caeaa4f98d47d77c
+    m_object: {fileID: 4910717635426526350, guid: a33c82cc765975a4caeaa4f98d47d77c,
+      type: 3}
+  - m_name: TVE_Meadow_Grass_01_Var3_Prefab
+    m_id: -2147483430
+    m_guid: 9122fb4de38c442f8e314985b7dd05c1
+    m_object: {fileID: 1553564324696662, guid: 9122fb4de38c442f8e314985b7dd05c1, type: 3}

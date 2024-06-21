@@ -1,12 +1,16 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.InputSystem;
+using EPOOutline;
+using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 public class InventorySystem : MonoBehaviour
 {
     [SerializeField] private Transform player;
+    [SerializeField] private Canvas canvas;
 
-    private TakeInHand takeInHand;
+    private ItemsIK takeInHand;
     public bool haveHeadlight;
 
     public List<GameObject> mainGuns;
@@ -17,6 +21,7 @@ public class InventorySystem : MonoBehaviour
 
     private WeaponSlotManager weaponSlotManager;
     private BuffsSlotManager buffsSlotManager;
+    private UIResourcesManager uiResourcesManager;
 
 
     public int ActiveMainGun
@@ -37,7 +42,8 @@ public class InventorySystem : MonoBehaviour
                     takeInHand.ClearHands();
                     mainGunCounterToggler++;
                 }
-            } else
+            }
+            else
             {
                 if (value <= mainGuns.Count)
                 {
@@ -53,9 +59,18 @@ public class InventorySystem : MonoBehaviour
 
     public int activeMainGun = -1;
 
-    public List<GameObject> hpBuffs;
-    public List<GameObject> armorBuffs;
-    public List<GameObject> speedBuffs;
+    public int hpBuffs;
+    public ResourcesSO hpPrice;
+
+    public int armorBuffs;
+    public ResourcesSO armorPrice;
+
+    public int speedBuffs;
+    public ResourcesSO speedPrice;
+
+
+
+    public int maximumBaffs;
 
     [SerializeField] private int activeBuff = 0;
 
@@ -71,50 +86,126 @@ public class InventorySystem : MonoBehaviour
     public float currentBatteryEnergy = 1f;
     public int batteries = 0;
 
-    [Header("КОМПОНЕНТЫ")]
-    public int fuel = 0;
-    public int cloth = 0;
-    public int metal = 0;
-    public int plastic = 0;
-    public int chemical = 0;
-    public int wires = 0;
-
-/*    public void GetActiveMainGun()
+    public int fuel
     {
-        foreach (GameObject gun in mainGuns)
+        get { return Fuel; }
+        set
         {
-            gun.SetActive(false);
+            Fuel = value;
+            uiResourcesManager.UiUpdateResources();
         }
-        mainGuns[activeMainGun].SetActive(true);
-        mainGuns[activeMainGun].transform.SetParent(mainGunSpawn.transform);
-        mainGuns[activeMainGun].transform.position = mainGunSpawn.transform.position;
-    }*/
+
+    }
+    public int Fuel = 0;
+    public int cloth
+    {
+        get { return Cloth; }
+        set
+        {
+            Cloth = value;
+            uiResourcesManager.UiUpdateResources();
+        }
+
+    }
+    public int Cloth = 0;
+    public int metal
+    {
+        get { return Metal; }
+        set
+        {
+            Metal = value;
+            uiResourcesManager.UiUpdateResources();
+        }
+
+    }
+    public int Metal = 0;
+
+    public int plastic
+    {
+        get { return Plastic; }
+        set
+        {
+            Plastic = value;
+            uiResourcesManager.UiUpdateResources();
+        }
+
+    }
+    public int Plastic = 0;
+    public int chemical
+    {
+        get { return Chemical; }
+        set
+        {
+            Chemical = value;
+            uiResourcesManager.UiUpdateResources();
+        }
+
+    }
+    public int Chemical = 0;
+    public int wires
+    {
+        get { return Wires; }
+        set
+        {
+            Wires = value;
+            uiResourcesManager.UiUpdateResources();
+        }
+
+    }
+    public int Wires = 0;
+
+    /*    public void GetActiveMainGun()
+        {
+            foreach (GameObject gun in mainGuns)
+            {
+                gun.SetActive(false);
+            }
+            mainGuns[activeMainGun].SetActive(true);
+            mainGuns[activeMainGun].transform.SetParent(mainGunSpawn.transform);
+            mainGuns[activeMainGun].transform.position = mainGunSpawn.transform.position;
+        }*/
 
     // Start is called before the first frame update
     void Start()
     {
         hpAndArmor = player.GetComponent<HPAndArmor>();
-        takeInHand = player.GetComponent<TakeInHand>();
+        takeInHand = player.GetComponent<ItemsIK>();
         weaponSlotManager = GameObject.FindGameObjectWithTag("WeaponSlot").GetComponent<WeaponSlotManager>();
         buffsSlotManager = GameObject.FindGameObjectWithTag("BuffsSlot").GetComponent<BuffsSlotManager>();
-        buffsSlotManager.DrawBuffs(hpBuffs.Count, armorBuffs.Count, speedBuffs.Count, activeBuff);
+        buffsSlotManager.DrawBuffs(hpBuffs, armorBuffs, speedBuffs, activeBuff);
         buffsSlotManager.DrawGrenades(extraGuns.Count);
+        uiResourcesManager = GameObject.FindGameObjectWithTag("MenuResources").GetComponent<UIResourcesManager>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void OnBuffChange(InputAction.CallbackContext ctx) //СМЕНА АКТИВНОГО БАФФА
     {
-
-        if (Input.GetKeyDown(KeyCode.Q)) //СМЕНА АКТИВНОГО БАФФА
+        if (ctx.performed)
         {
             activeBuff = (activeBuff + 1) % 3;
-            buffsSlotManager.DrawBuffs(hpBuffs.Count, armorBuffs.Count, speedBuffs.Count, activeBuff);
+            buffsSlotManager.DrawBuffs(hpBuffs, armorBuffs, speedBuffs, activeBuff);
         }
+    }
 
-        if (Input.GetKeyDown(KeyCode.X)) //ПРИМЕНЕНИЕ АКТИВНОГО БАФФА
+    public void OnBuffUse(InputAction.CallbackContext ctx) //ПРИМЕНЕНИЕ АКТИВНОГО БАФФА
+    {
+        if (ctx.performed)
         {
             UseBuff(activeBuff);
         }
+    }
+
+    void Update()
+    {
+        // if (Input.GetKeyDown(KeyCode.Q)) //СМЕНА АКТИВНОГО БАФФА
+        // {
+        //     activeBuff = (activeBuff + 1) % 3;
+        //     buffsSlotManager.DrawBuffs(hpBuffs.Count, armorBuffs.Count, speedBuffs.Count, activeBuff);
+        // }
+
+        // if (Input.GetKeyDown(KeyCode.X)) //ПРИМЕНЕНИЕ АКТИВНОГО БАФФА
+        // {
+        //     UseBuff(activeBuff);
+        // }
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
@@ -132,8 +223,6 @@ public class InventorySystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
             ActiveMainGun = 4;
-            
-
         }
 
         if (Input.GetKeyDown(KeyCode.G)) //ВЫКИНУТЬ ПРЕДМЕТ
@@ -145,35 +234,29 @@ public class InventorySystem : MonoBehaviour
 
 
 
-   
+
         }
         if (Input.GetAxis("Mouse ScrollWheel") > 0f) //КОЛЁСИКОМ ВПЕРЁД
         {
             if (mainGuns.Count > 0)
             {
                 ActiveMainGun = (ActiveMainGun + 1) % mainGuns.Count;
-            } else
+            }
+            else
             {
                 ActiveMainGun = 0;
             }
-
-
-
-
         }
         if (Input.GetAxis("Mouse ScrollWheel") < 0f) //КОЛЁСИКОМ НАЗАД
         {
             if (mainGuns.Count > 0)
             {
                 ActiveMainGun = (mainGuns.Count + ActiveMainGun - 1) % mainGuns.Count;
-            } else
+            }
+            else
             {
                 ActiveMainGun = 0;
             }
-
-
-
-
         }
     }
 
@@ -199,6 +282,7 @@ public class InventorySystem : MonoBehaviour
         item.GetComponent<BoxCollider>().enabled = true;
 
         item.layer = 20;
+        //item.GetComponent<Outlinable>().OutlineLayer = 20;
         item.SetActive(true);
         mainGuns.Remove(item);
         takeInHand.ClearHands();
@@ -223,8 +307,8 @@ public class InventorySystem : MonoBehaviour
                 item.GetComponent<SphereCollider>().enabled = false;
                 item.GetComponent<Rigidbody>().isKinematic = true;
                 item.GetComponent<BoxCollider>().enabled = false;
-
                 item.layer = 0;
+                //item.GetComponent<Outlinable>().OutlineLayer = 0;
             }
             else
             {
@@ -232,23 +316,23 @@ public class InventorySystem : MonoBehaviour
             }
 
         }
-/*        else if (item.GetComponent<ExtraObject>())
-        {
-            if (extraGuns.Count < 9)
-            {
-                Debug.Log("------------");
-                Debug.Log("extraGuns:");
-                extraGuns.Add(item);
+        /*        else if (item.GetComponent<ExtraObject>())
+                {
+                    if (extraGuns.Count < 9)
+                    {
+                        Debug.Log("------------");
+                        Debug.Log("extraGuns:");
+                        extraGuns.Add(item);
 
-                UpdateInventoryUIItems(activeMainGun);
-            }
-            else
-            {
-                Debug.Log("---------");
-                Debug.Log("Дополнительный (гранатный) инвентарь уже полный");
-            }
+                        UpdateInventoryUIItems(activeMainGun);
+                    }
+                    else
+                    {
+                        Debug.Log("---------");
+                        Debug.Log("Дополнительный (гранатный) инвентарь уже полный");
+                    }
 
-        }*/
+                }*/
 
     }
 
@@ -259,16 +343,9 @@ public class InventorySystem : MonoBehaviour
     {
         if (item.GetComponent<BuffObject>().BuffStat.type.ToString() is "hp")
         {
-            if (hpBuffs.Count < 9)
+            if (hpBuffs < maximumBaffs)
             {
-                Debug.Log("------------");
-                Debug.Log("hpBuffs:");
-                hpBuffs.Add(item);
-                for (int i = 0; i < hpBuffs.Count; i++)
-                {
-                    Debug.Log(hpBuffs[i]);
-                }
-
+                hpBuffs += 1;
             }
             else
             {
@@ -278,16 +355,9 @@ public class InventorySystem : MonoBehaviour
         }
         else if (item.GetComponent<BuffObject>().BuffStat.type.ToString() is "speed")
         {
-            if (speedBuffs.Count < 9)
+            if (speedBuffs < maximumBaffs)
             {
-                Debug.Log("------------");
-                Debug.Log("speedBuffs:");
-                speedBuffs.Add(item);
-                for (int i = 0; i < speedBuffs.Count; i++)
-                {
-                    Debug.Log(speedBuffs[i]);
-                }
-
+                speedBuffs += 1;
             }
             else
             {
@@ -297,16 +367,9 @@ public class InventorySystem : MonoBehaviour
         }
         else if (item.GetComponent<BuffObject>().BuffStat.type.ToString() is "armor")
         {
-            if (armorBuffs.Count < 9)
+            if (armorBuffs < maximumBaffs)
             {
-                Debug.Log("------------");
-                Debug.Log("armorBuffs:");
-                armorBuffs.Add(item);
-                for (int i = 0; i < armorBuffs.Count; i++)
-                {
-                    Debug.Log(armorBuffs[i]);
-                }
-
+                armorBuffs += 1;
             }
             else
             {
@@ -315,31 +378,78 @@ public class InventorySystem : MonoBehaviour
             }
         }
 
-        buffsSlotManager.DrawBuffs(hpBuffs.Count, armorBuffs.Count, speedBuffs.Count, activeBuff);
+        buffsSlotManager.DrawBuffs(hpBuffs, armorBuffs, speedBuffs, activeBuff);
+    }
 
+
+    public bool CreateBuff(string type)
+    {
+        bool flag = true;
+        if (type == "hp")
+        {
+            if (hpBuffs < maximumBaffs)
+            {
+                hpBuffs += 1;
+            }
+            else
+            {
+                Debug.Log("---------");
+                Debug.Log("ХП инвентарь уже полный");
+                flag = false;
+            }
+        }
+        else if (type == "speed")
+        {
+            if (speedBuffs < maximumBaffs)
+            {
+                speedBuffs += 1;
+            }
+            else
+            {
+                Debug.Log("---------");
+                Debug.Log("Speed инвентарь уже полный");
+                flag = false;
+            }
+        }
+        else if (type == "armor")
+        {
+            if (armorBuffs < maximumBaffs)
+            {
+                armorBuffs += 1;
+            }
+            else
+            {
+                Debug.Log("---------");
+                Debug.Log("armor инвентарь уже полный");
+                flag = false;
+            }
+        }
+
+        buffsSlotManager.DrawBuffs(hpBuffs, armorBuffs, speedBuffs, activeBuff);
+        return flag;
     }
 
 
 
     public void UseBuff(int active)
     {
-        if (activeBuff == 0 && hpBuffs.Count != 0)
+        if (activeBuff == 0 && hpBuffs != 0)
         {
-            hpAndArmor.TakeHeal(hpBuffs[0].GetComponent<BuffObject>().BuffStat.increase, hpBuffs[0].GetComponent<BuffObject>().BuffStat.type.ToString());
-            hpBuffs.RemoveAt(0);
+            hpAndArmor.TakeHeal(20, "hp");
+            hpBuffs -= 1;
 
         }
-        else if (activeBuff == 1 && armorBuffs.Count != 0)
+        else if (activeBuff == 1 && armorBuffs != 0)
         {
-            hpAndArmor.TakeHeal(armorBuffs[0].GetComponent<BuffObject>().BuffStat.increase, armorBuffs[0].GetComponent<BuffObject>().BuffStat.type.ToString());
-            armorBuffs.RemoveAt(0);
+            hpAndArmor.TakeHeal(20, "armor");
+            armorBuffs -= 1;
         }
-        else if (activeBuff == 2 && speedBuffs.Count != 0)
+        else if (activeBuff == 2 && speedBuffs != 0)
         {
-            speedBuffs.RemoveAt(0);
+            speedBuffs -= 1;
         }
 
-        buffsSlotManager.DrawBuffs(hpBuffs.Count, armorBuffs.Count, speedBuffs.Count, activeBuff);
+        buffsSlotManager.DrawBuffs(hpBuffs, armorBuffs, speedBuffs, activeBuff);
 
     }
 
@@ -348,7 +458,8 @@ public class InventorySystem : MonoBehaviour
         for (int i = 0; i < component.GetComponent<ComponentsObject>().componentStat.Count; i++)
         {
             string type = component.GetComponent<ComponentsObject>().componentStat[i].type.ToString();
-            switch (type){
+            switch (type)
+            {
                 case "fuel":
                     fuel += component.GetComponent<ComponentsObject>().amount[i];
                     break;
@@ -371,6 +482,14 @@ public class InventorySystem : MonoBehaviour
                     break;
 
             }
+        }
+        GameObject parent = component.transform.parent.gameObject;
+        if (parent.layer == 24)
+        {
+            Destroy(parent);
+        } else
+        {
+            Destroy(component);
         }
     }
 }
